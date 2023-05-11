@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../screens/cadastro_user_login.dart';
 import '../screens/tela_principal.dart';
 import '../themes/theme.dart';

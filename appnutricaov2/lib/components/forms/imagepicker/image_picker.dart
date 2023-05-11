@@ -9,7 +9,7 @@ import 'image_picker_ifphoto.dart';
 import 'image_picker_elsephoto.dart';
 
 class MyImagePicker extends StatefulWidget {
-  const   MyImagePicker({super.key});
+  const MyImagePicker({super.key});
 
   @override
   State<MyImagePicker> createState() => _MyImagePickerState();
@@ -18,7 +18,6 @@ class MyImagePicker extends StatefulWidget {
 String? imageSelected;
 
 class _MyImagePickerState extends State<MyImagePicker> {
-  
   File? image;
 
   Future pickImage(ImageSource source) async {
@@ -29,13 +28,12 @@ class _MyImagePickerState extends State<MyImagePicker> {
       final imageTemporary = File(image.path);
 
       final Directory caminho = await getApplicationDocumentsDirectory();
-
-      setState(() => this.image = imageTemporary);
-
-      final File newImage = await imageTemporary.copy('${caminho.toString()}/image1.jpg');
+      final File newImage = await imageTemporary.copy('${caminho.path}/image1.jpg');
       final String newCaminho = newImage.path;
-
-      setState(() => imageSelected = newCaminho);
+      setState(() {
+        this.image = imageTemporary;
+        imageSelected = newCaminho;
+      });
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
@@ -44,7 +42,13 @@ class _MyImagePickerState extends State<MyImagePicker> {
   @override
   Widget build(BuildContext context) {
     return image != null
-        ? ImgPickerIfPhoto(pickImage: pickImage,image: image,)
-        : ImgPickerElsePhoto(pickImage: pickImage, image: image,);
+        ? ImgPickerIfPhoto(
+            pickImage: pickImage,
+            image: image,
+          )
+        : ImgPickerElsePhoto(
+            pickImage: pickImage,
+            image: image,
+          );
   }
 }

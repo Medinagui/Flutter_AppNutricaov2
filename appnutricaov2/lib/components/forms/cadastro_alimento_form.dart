@@ -11,11 +11,11 @@ class CadastroAlimentoForm extends StatefulWidget {
   @override
   State<CadastroAlimentoForm> createState() => _CadastroAlimentoFormState();
 }
-
+Alimento? alimentoCadastrado = Alimento(nome: 'nome', pathFoto: 'a', categoria: 'categoria', tipo: 'tipo');
 class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
   String? categoriaRefeicao;
   String? tipoAlimento;
-  Alimento? alimentoCadastrado = Alimento(nome: 'nome', pathFoto: 'a', categoria: 'categoria', tipo: 'tipo');
+  
 
   @override
   void initState(){
@@ -23,7 +23,12 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
   }
 
   Future createAlimento(Alimento alimentoCadastrado) async {
-    alimentoCadastrado.pathFoto = imageSelected;
+
+    setState(() { 
+      alimentoCadastrado.pathFoto = imageSelected;
+      alimentoCadastrado.tipo = (tipoAlimento == null)?'tipo null':tipoAlimento!;
+      alimentoCadastrado.categoria = (categoriaRefeicao == null)?'categoria null':categoriaRefeicao!;
+    });
     return AlimentosDatabase.instance.create(alimentoCadastrado);
   }
 
@@ -77,8 +82,8 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
                   ],
                   onChanged: (val) {
                     setState(() {
-                      alimentoCadastrado!.categoria = val!;
                       categoriaRefeicao = val.toString();
+                      alimentoCadastrado!.categoria = val.toString();
                     });
                   }),
             ),
@@ -106,8 +111,8 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
                   ],
                   onChanged: (val) {
                     setState(() {
-                      alimentoCadastrado!.tipo = val!;
                       tipoAlimento = val.toString();
+                      alimentoCadastrado!.tipo = val.toString();
                     });
                   }),
             ),

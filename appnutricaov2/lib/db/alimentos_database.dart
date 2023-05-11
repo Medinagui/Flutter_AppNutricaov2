@@ -72,7 +72,7 @@ CREATE TABLE $tableAlimentos (
   }
 
   Future<List<Alimento>> readAllAlimentos() async {
-    
+    // await dropTableIfExistsThenReCreate();
     final db = await instance.database;
     const orderBy = '${AlimentosFields.id} ASC';
     final result = await db.query(tableAlimentos, orderBy: orderBy);
