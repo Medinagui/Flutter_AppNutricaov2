@@ -1,14 +1,15 @@
+
 const String tableAlimentos = 'Alimentos';
 
 class AlimentosFields {
 
   static final List<String> values = [
-    id, nome, pathFoto, categoria, tipo
+    id, nome, fotoBytes, categoria, tipo
   ];
 
   static const String id = '_id';
   static const String nome = 'nome';
-  static const String pathFoto = 'pathFoto';
+  static const String fotoBytes = 'fotoBytes';
   static const String categoria = 'categoria';
   static const String tipo = 'tipo';
 }
@@ -18,7 +19,7 @@ class AlimentosFields {
 class Alimento {
   final int? id;
   String nome;
-  String? pathFoto;
+  String? fotoBytes;
   String categoria;
   String tipo;
 
@@ -26,7 +27,7 @@ class Alimento {
       {
       this.id,
       required this.nome,
-      this.pathFoto,
+      this.fotoBytes,
       required this.categoria,
       required this.tipo}
   );
@@ -34,7 +35,7 @@ class Alimento {
   Map<String, dynamic> toJson() => {
     AlimentosFields.id: id,
     AlimentosFields.nome: nome,
-    AlimentosFields.pathFoto: pathFoto,
+    AlimentosFields.fotoBytes: fotoBytes,
     AlimentosFields.categoria: categoria,
     AlimentosFields.tipo: tipo
   };
@@ -42,7 +43,7 @@ class Alimento {
   Alimento copy({
     int? id,
     String? nome,
-    String? pathFoto,
+    String? fotoBytes,
     String? categoria,
     String? tipo
   }) =>
@@ -50,7 +51,7 @@ class Alimento {
   Alimento(
     id: id ?? this.id,
     nome: nome ?? this.nome,
-    pathFoto: pathFoto ?? this.pathFoto,
+    fotoBytes: fotoBytes ?? this.fotoBytes,
     categoria: categoria ?? this.categoria,
     tipo: tipo ?? this.tipo,
   );
@@ -58,8 +59,9 @@ class Alimento {
   static Alimento fromJson(Map<String, dynamic> json) => Alimento(
     id: json[AlimentosFields.id] as int?,
     nome: json[AlimentosFields.nome] as String, 
-    pathFoto: json[AlimentosFields.pathFoto] as String, 
+    fotoBytes: json[AlimentosFields.fotoBytes] as String, 
     categoria: json[AlimentosFields.categoria] as String, 
     tipo: json[AlimentosFields.tipo] as String);
 
 }
+

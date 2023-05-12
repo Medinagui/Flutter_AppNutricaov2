@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
-
+import 'dart:convert';
+import 'package:flutter/widgets.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,24 +16,36 @@ class MyImagePicker extends StatefulWidget {
   State<MyImagePicker> createState() => _MyImagePickerState();
 }
 
-String? imageSelected;
+String? selectedImage;
 
 class _MyImagePickerState extends State<MyImagePicker> {
   File? image;
+
+  Image imageFromBase64String(String base64String) {
+  return Image.memory(base64Decode(base64String));
+}
+
+Uint8List dataFromBase64String(String base64String) {
+  return base64Decode(base64String);
+}
+
+String base64String(Uint8List data) {
+  return base64Encode(data);
+}
 
   Future pickImage(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
       
+      final Uint8List imageToBinary = await image.readAsBytes(); 
+      String base64 = base64Encode(imageToBinary);
+
       final imageTemporary = File(image.path);
 
-      final Directory caminho = await getApplicationDocumentsDirectory();
-      final File newImage = await imageTemporary.copy('${caminho.path}/image1.jpg');
-      final String newCaminho = newImage.path;
       setState(() {
+        selectedImage = base64;
         this.image = imageTemporary;
-        imageSelected = newCaminho;
       });
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');

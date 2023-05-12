@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '../../db/alimentos_database.dart';
 import '../../themes/theme.dart';
@@ -11,19 +13,14 @@ class CadastroAlimentoForm extends StatefulWidget {
   @override
   State<CadastroAlimentoForm> createState() => _CadastroAlimentoFormState();
 }
-Alimento? alimentoCadastrado = Alimento(nome: 'nome', pathFoto: 'a', categoria: 'categoria', tipo: 'tipo');
+Alimento? alimentoCadastrado = Alimento(nome: 'nome', fotoBytes: 'a', categoria: 'categoria', tipo: 'tipo');
 class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
   String? categoriaRefeicao;
   String? tipoAlimento;
-  
-  File test = MyImagePicker.getImage;
 
-  Future createAlimento(Alimento alimentoCadastrado) async {
-
-    
-    
-    setState(() { 
-      alimentoCadastrado.pathFoto = imageSelected;
+  Future createAlimento(Alimento alimentoCadastrado) {
+    setState(() {
+      alimentoCadastrado.fotoBytes = selectedImage;
       alimentoCadastrado.tipo = (tipoAlimento == null)?'tipo null':tipoAlimento!;
       alimentoCadastrado.categoria = (categoriaRefeicao == null)?'categoria null':categoriaRefeicao!;
     });

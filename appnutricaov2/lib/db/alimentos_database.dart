@@ -37,7 +37,7 @@ class AlimentosDatabase {
 CREATE TABLE $tableAlimentos (
   ${AlimentosFields.id} $idType,
   ${AlimentosFields.nome} $textType,
-  ${AlimentosFields.pathFoto} $textType,
+  ${AlimentosFields.fotoBytes} $textType,
   ${AlimentosFields.categoria} $textType,
   ${AlimentosFields.tipo} $textType)
 ''');
@@ -59,6 +59,7 @@ CREATE TABLE $tableAlimentos (
   // temp final
 
   Future<Alimento> create(Alimento alimento) async {
+    await _initDB(DATABASE_NAME);
     final db = await instance.database;
     final id = await db.insert(tableAlimentos, alimento.toJson());
     print('CADASTRADO!');
@@ -66,6 +67,7 @@ CREATE TABLE $tableAlimentos (
   }
 
   Future<Alimento> readAlimento(int id) async {
+    //await dropTableIfExistsThenReCreate();
     final db = await instance.database;
     final maps = await db.query(tableAlimentos,
         columns: AlimentosFields.values,
@@ -80,7 +82,7 @@ CREATE TABLE $tableAlimentos (
   }
 
   Future<List<dynamic>> readAllAlimentos() async {
-    // await dropTableIfExistsThenReCreate();
+    await dropTableIfExistsThenReCreate();
     final db = await instance.database;
     const orderBy = '${AlimentosFields.id} ASC';
     final result = await db.query(tableAlimentos, orderBy: orderBy);

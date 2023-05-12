@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
@@ -15,12 +16,12 @@ class TestList extends StatefulWidget {
 class _TestListState extends State<TestList> {
 
   List<dynamic> listaAlimentos = [
-    Alimento(nome: 'teste 1', categoria: 'Categoria 1', tipo: 'tipo 1', pathFoto: 'lib/images/Nature - logo.jpg'),
-    Alimento(nome: 'teste 2', categoria: 'Categoria 2', tipo: 'tipo 2', pathFoto: 'lib/images/Nature - logo.jpg'),
-    Alimento(nome: 'teste 3', categoria: 'Categoria 3', tipo: 'tipo 3', pathFoto: 'lib/images/Nature - logo.jpg'),
-    Alimento(nome: 'teste 4', categoria: 'Categoria 4', tipo: 'tipo 4', pathFoto: 'lib/images/Nature - logo.jpg'),
-    Alimento(nome: 'teste 5', categoria: 'Categoria 5', tipo: 'tipo 5', pathFoto: 'lib/images/Nature - logo.jpg'),
-    Alimento(nome: 'teste 6', categoria: 'Categoria 6', tipo: 'tipo 6', pathFoto: 'lib/images/Nature - logo.jpg')
+    Alimento(nome: 'teste 1', categoria: 'Categoria 1', tipo: 'tipo 1', fotoBytes: 'lib/images/Nature - logo.jpg'),
+    Alimento(nome: 'teste 2', categoria: 'Categoria 2', tipo: 'tipo 2', fotoBytes: 'lib/images/Nature - logo.jpg'),
+    Alimento(nome: 'teste 3', categoria: 'Categoria 3', tipo: 'tipo 3', fotoBytes: 'lib/images/Nature - logo.jpg'),
+    Alimento(nome: 'teste 4', categoria: 'Categoria 4', tipo: 'tipo 4', fotoBytes: 'lib/images/Nature - logo.jpg'),
+    Alimento(nome: 'teste 5', categoria: 'Categoria 5', tipo: 'tipo 5', fotoBytes: 'lib/images/Nature - logo.jpg'),
+    Alimento(nome: 'teste 6', categoria: 'Categoria 6', tipo: 'tipo 6', fotoBytes: 'lib/images/Nature - logo.jpg')
     ];
   bool isLoading = false;
 
@@ -33,18 +34,22 @@ class _TestListState extends State<TestList> {
   Future refreshAlimentos() async {
     setState(() => isLoading = true);
 
-    // listaTeste = await AlimentosDatabase.instance.readAllAlimentos();
+    listaAlimentos = await AlimentosDatabase.instance.readAllAlimentos();
     
     setState(() => isLoading = false);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(child: ListView.builder(
+    return
+    (listaAlimentos.isEmpty) 
+    ? const Center(child: Text('Lista vazia.\nVá para a tela de cadastros\ne cadastre novos alimentos.'),)
+    : Expanded(child: ListView.builder(
                   itemCount: listaAlimentos.length,
                   itemBuilder: (context, index) {
                   final Alimento exemplo = listaAlimentos[index];
-                  Image foto = Image.asset(exemplo.pathFoto!);
+
+                  Image foto = Image.memory(base64Decode(exemplo.fotoBytes!));
 
                   return Card(
                     margin: const EdgeInsets.all(5),

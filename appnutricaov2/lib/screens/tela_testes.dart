@@ -42,11 +42,11 @@ class _TestesScreenState extends State<TestesScreen> {
                         );
                       },
                       child: const Text('Lista')),
-                      Text('''
-nome: ${alimentoCadastrado!.nome}, 
-pathFoto: ${alimentoCadastrado!.pathFoto},
-categoria: ${alimentoCadastrado!.categoria},
-tipo: ${alimentoCadastrado!.tipo}''')
+//                       Text('''
+// nome: ${alimentoCadastrado!.nome}, 
+// pathFoto: ${alimentoCadastrado!.fotoBytes},
+// categoria: ${alimentoCadastrado!.categoria},
+// tipo: ${alimentoCadastrado!.tipo}''')
                 ]),
           ),
         ),
