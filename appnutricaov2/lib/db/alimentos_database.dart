@@ -1,7 +1,12 @@
-import 'dart:async';
+import 'dart:io';
 import 'package:sqflite/sqflite.dart';
-
 import '../components/classes/alimento.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+
+
+// ignore: constant_identifier_names
+const String DATABASE_NAME = "alimentos.db";
 
 class AlimentosDatabase {
   static final AlimentosDatabase instance = AlimentosDatabase._init();
@@ -12,12 +17,14 @@ class AlimentosDatabase {
 
   Future<Database> get database async {
     if (_database != null) return _database!;
-    _database = await _initDB('alimentos.db');
+    _database = await _initDB(DATABASE_NAME);
     return _database!;
   }
 
   Future<Database> _initDB(String filePath) async {
-    return await openDatabase(filePath, version: 1, onCreate: _createDB);
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, filePath);
+    return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
   Future _createDB(Database db, int version) async {
@@ -40,11 +47,11 @@ CREATE TABLE $tableAlimentos (
 
   Future dropDB() async {
     final db = await instance.database;
-    db.rawQuery("DROP DATABASE alimentos.db");
+    db.rawQuery("DROP DATABASE $DATABASE_NAME");
   }
 
   Future<void> dropTableIfExistsThenReCreate() async {
-    Database db = await _initDB('alimentos.db');
+    Database db = await _initDB(DATABASE_NAME);
     await db.execute("DROP TABLE IF EXISTS $tableAlimentos");
     await _createDB(db, 1);
   }
@@ -54,6 +61,7 @@ CREATE TABLE $tableAlimentos (
   Future<Alimento> create(Alimento alimento) async {
     final db = await instance.database;
     final id = await db.insert(tableAlimentos, alimento.toJson());
+    print('CADASTRADO!');
     return alimento.copy(id: id);
   }
 
@@ -71,12 +79,15 @@ CREATE TABLE $tableAlimentos (
     }
   }
 
-  Future<List<Alimento>> readAllAlimentos() async {
+  Future<List<dynamic>> readAllAlimentos() async {
     // await dropTableIfExistsThenReCreate();
     final db = await instance.database;
     const orderBy = '${AlimentosFields.id} ASC';
     final result = await db.query(tableAlimentos, orderBy: orderBy);
-    final resultList = result.map((json) => Alimento.fromJson(json)).toList();
+    final resultList = 
+          result.isNotEmpty 
+          ? result.map((json) => Alimento.fromJson(json)).toList()
+          : [] ;
     return resultList;
   }
 

@@ -16,14 +16,12 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
   String? categoriaRefeicao;
   String? tipoAlimento;
   
-
-  @override
-  void initState(){
-    super.initState();
-  }
+  File test = MyImagePicker.getImage;
 
   Future createAlimento(Alimento alimentoCadastrado) async {
 
+    
+    
     setState(() { 
       alimentoCadastrado.pathFoto = imageSelected;
       alimentoCadastrado.tipo = (tipoAlimento == null)?'tipo null':tipoAlimento!;
@@ -83,7 +81,7 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
                   onChanged: (val) {
                     setState(() {
                       categoriaRefeicao = val.toString();
-                      alimentoCadastrado!.categoria = val.toString();
+                      // alimentoCadastrado!.categoria = val.toString();
                     });
                   }),
             ),
@@ -112,7 +110,7 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
                   onChanged: (val) {
                     setState(() {
                       tipoAlimento = val.toString();
-                      alimentoCadastrado!.tipo = val.toString();
+                      //AlimentoCadastrado!.tipo = val.toString();
                     });
                   }),
             ),

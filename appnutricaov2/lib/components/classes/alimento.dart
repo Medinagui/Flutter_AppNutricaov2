@@ -31,7 +31,7 @@ class Alimento {
       required this.tipo}
   );
 
-  Map<String, Object?> toJson() => {
+  Map<String, dynamic> toJson() => {
     AlimentosFields.id: id,
     AlimentosFields.nome: nome,
     AlimentosFields.pathFoto: pathFoto,
@@ -55,7 +55,7 @@ class Alimento {
     tipo: tipo ?? this.tipo,
   );
 
-  static Alimento fromJson(Map<String, Object?> json) => Alimento(
+  static Alimento fromJson(Map<String, dynamic> json) => Alimento(
     id: json[AlimentosFields.id] as int?,
     nome: json[AlimentosFields.nome] as String, 
     pathFoto: json[AlimentosFields.pathFoto] as String, 

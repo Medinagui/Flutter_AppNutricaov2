@@ -22,9 +22,9 @@ class _MyImagePickerState extends State<MyImagePicker> {
 
   Future pickImage(ImageSource source) async {
     try {
-      final XFile? image = await ImagePicker().pickImage(source: source);
+      final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
-
+      
       final imageTemporary = File(image.path);
 
       final Directory caminho = await getApplicationDocumentsDirectory();
@@ -37,6 +37,10 @@ class _MyImagePickerState extends State<MyImagePicker> {
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
+  }
+
+  get getImage{
+    return image;
   }
 
   @override

@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import '../components/test_list.dart';
+import '../components/alimentos_list.dart';
 import '../themes/theme.dart';
 
 class TestesScreen2 extends StatefulWidget {
@@ -11,8 +11,6 @@ class TestesScreen2 extends StatefulWidget {
 }
 
 class _TestesScreen2State extends State<TestesScreen2> {
-
-
 
   @override
   Widget build(BuildContext context) {
