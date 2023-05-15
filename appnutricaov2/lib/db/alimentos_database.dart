@@ -1,109 +1,65 @@
-import 'dart:io';
-import 'package:sqflite/sqflite.dart';
+import 'package:flutter/foundation.dart';
+import 'package:sqflite/sqflite.dart' as sql;
 import '../components/classes/alimento.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
-
-// ignore: constant_identifier_names
-const String DATABASE_NAME = "alimentos.db";
-
-class AlimentosDatabase {
-  static final AlimentosDatabase instance = AlimentosDatabase._init();
-
-  static Database? _database;
-
-  AlimentosDatabase._init();
-
-  Future<Database> get database async {
-    if (_database != null) return _database!;
-    _database = await _initDB(DATABASE_NAME);
-    return _database!;
+class SQLHelperAlimentos{
+    static Future<sql.Database> db() async {
+    return sql.openDatabase(
+      'alimentos.db',
+      version: 1,
+      onCreate: (sql.Database database, int version) async {
+        debugPrint('***** Criando tabela *****');
+        await createTables(database);
+      }
+    );
   }
 
-  Future<Database> _initDB(String filePath) async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, filePath);
-    return await openDatabase(path, version: 1, onCreate: _createDB);
-  }
-
-  Future _createDB(Database db, int version) async {
-    
-    const String idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
-    const String textType = 'TEXT';
-
-    await db.execute(
-      '''
-CREATE TABLE $tableAlimentos (
-  ${AlimentosFields.id} $idType,
-  ${AlimentosFields.nome} $textType,
-  ${AlimentosFields.fotoBytes} $textType,
-  ${AlimentosFields.categoria} $textType,
-  ${AlimentosFields.tipo} $textType)
+  static Future<void> createTables(sql.Database database) async {
+    await database.execute('''
+    CREATE TABLE alimentos(
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      ${AlimentosFields.nome} TEXT,
+      ${AlimentosFields.fotoBytes} TEXT,
+      ${AlimentosFields.categoria} TEXT,
+      ${AlimentosFields.tipo} TEXT
+    )
 ''');
   }
 
-  // temp init
-
-  Future dropDB() async {
-    final db = await instance.database;
-    db.rawQuery("DROP DATABASE $DATABASE_NAME");
+  static Future<int> createItem(String nome,String fotoBytes, String categoria, String tipo) async {
+    final db = await SQLHelperAlimentos.db();
+    final data = {
+      AlimentosFields.nome: nome,
+      AlimentosFields.fotoBytes: fotoBytes,
+      AlimentosFields.categoria: categoria,
+      AlimentosFields.tipo: tipo
+      };
+    final id = await db.insert('alimentos', data, conflictAlgorithm: sql.ConflictAlgorithm.replace);
+    return id;
   }
 
-  Future<void> dropTableIfExistsThenReCreate() async {
-    Database db = await _initDB(DATABASE_NAME);
-    await db.execute("DROP TABLE IF EXISTS $tableAlimentos");
-    await _createDB(db, 1);
+  static Future<List<Map<String, dynamic>>> getItems() async {
+    final db = await SQLHelperAlimentos.db();
+    return db.query('alimentos', orderBy: 'id');
   }
 
-  // temp final
+  static Future<int> updateItem(Alimento alimentoParaUpdate, int id) async {
+    final db = await SQLHelperAlimentos.db();
 
-  Future<Alimento> create(Alimento alimento) async {
-    await _initDB(DATABASE_NAME);
-    final db = await instance.database;
-    final id = await db.insert(tableAlimentos, alimento.toJson());
-    print('CADASTRADO!');
-    return alimento.copy(id: id);
+    final data = alimentoParaUpdate.toJson();
+
+    final result = await db.update('alimentos', data, where: 'id = ?', whereArgs: [id]);
+    return result;
   }
 
-  Future<Alimento> readAlimento(int id) async {
-    //await dropTableIfExistsThenReCreate();
-    final db = await instance.database;
-    final maps = await db.query(tableAlimentos,
-        columns: AlimentosFields.values,
-        where: '${AlimentosFields.id} = ?',
-        whereArgs: [id]);
-
-    if (maps.isNotEmpty) {
-      return Alimento.fromJson(maps.first);
-    } else {
-      throw Exception('ID $id não encontrado');
+  static Future<void> deleteItem(int id) async {
+    final db = await SQLHelperAlimentos.db();
+    try {
+      await db.delete('alimentos',
+      where: 'id = ?', whereArgs: [id]
+      );
+    } catch (err) {
+      debugPrint("Algo deu errado ao tentar deletar o item: $err");
     }
-  }
-
-  Future<List<dynamic>> readAllAlimentos() async {
-    await dropTableIfExistsThenReCreate();
-    final db = await instance.database;
-    const orderBy = '${AlimentosFields.id} ASC';
-    final result = await db.query(tableAlimentos, orderBy: orderBy);
-    final resultList = result.map((json) => Alimento.fromJson(json)).toList();
-    return resultList;
-  }
-
-  Future<int> update(Alimento alimento) async {
-    final db = await instance.database;
-    return db.update(tableAlimentos, alimento.toJson(),
-        where: '${AlimentosFields.id} = ?', whereArgs: [alimento.id]);
-  }
-
-  Future<int> delete(int id) async {
-    final db = await instance.database;
-    return  await db.delete(tableAlimentos,
-        where: '${AlimentosFields.id} = ?', whereArgs: [id]);
-  }
-
-  Future close() async {
-    final db = await instance.database;
-    db.close();
   }
 }

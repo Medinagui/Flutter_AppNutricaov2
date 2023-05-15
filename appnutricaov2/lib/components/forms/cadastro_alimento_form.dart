@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import '../../db/alimentos_database.dart';
 import '../../themes/theme.dart';
-import '../buttons/cadastro_alimento_button.dart';
 import '../classes/alimento.dart';
 import 'imagepicker/image_picker.dart';
 
@@ -13,18 +12,23 @@ class CadastroAlimentoForm extends StatefulWidget {
   @override
   State<CadastroAlimentoForm> createState() => _CadastroAlimentoFormState();
 }
-Alimento? alimentoCadastrado = Alimento(nome: 'nome', fotoBytes: 'a', categoria: 'categoria', tipo: 'tipo');
-class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
-  String? categoriaRefeicao;
-  String? tipoAlimento;
 
-  Future createAlimento(Alimento alimentoCadastrado) async {
-    setState(() {
-      alimentoCadastrado.fotoBytes = selectedImage;
-      alimentoCadastrado.tipo = (tipoAlimento == null)?'tipo null':tipoAlimento!;
-      alimentoCadastrado.categoria = (categoriaRefeicao == null)?'categoria null':categoriaRefeicao!;
-    });
-    return await AlimentosDatabase.instance.create(alimentoCadastrado);
+String? categoriaRefeicao;
+String? tipoAlimento;
+Alimento? alimentoCadastrado;
+
+class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
+  final TextEditingController _nomeController = TextEditingController();
+  final TextEditingController _fotoController = TextEditingController();
+
+    @override
+  void initState(){
+    super.initState();
+  }
+
+  Future<void> createAlimento(String nome,String fotoBytes, String categoria, String tipo) async {
+    await SQLHelperAlimentos.createItem(nome, fotoBytes, categoria, tipo);
+    debugPrint('cadastrado!');
   }
 
   @override
@@ -41,11 +45,7 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
             return null;
           },
           textInputAction: TextInputAction.next,
-          onChanged: (val){
-            setState(() {
-              alimentoCadastrado!.fotoBytes = val;
-            });
-          },
+          controller: _fotoController,
           decoration: InputDecoration(
               hintText: 'Nome da foto',
               border: OutlineInputBorder(
@@ -56,6 +56,7 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
           height: 15,
         ),
         TextFormField(
+          controller: _nomeController,
           validator: (String? value) {
             if (value == null || value.isEmpty) {
               return 'Insira o nome do alimento';
@@ -63,11 +64,6 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
             return null;
           },
           textInputAction: TextInputAction.next,
-          onChanged: (val){
-            setState(() {
-              alimentoCadastrado!.nome = val;
-            });
-          },
           decoration: InputDecoration(
               hintText: 'Nome do Alimento',
               border: OutlineInputBorder(
@@ -132,7 +128,18 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
             ),
           ),
         ),
-        CadastroAlimentoButton(cadastro: createAlimento(alimentoCadastrado!),)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            ElevatedButton(
+              onPressed: () => createAlimento(_nomeController.text, _fotoController.text, tipoAlimento!,categoriaRefeicao! ),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                      colorsOne.colorScheme.secondary)),
+              child: const Text('Cadastrar'),
+            ),
+          ],
+        ),
       ],
     ));
   }
