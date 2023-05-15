@@ -4,24 +4,24 @@ import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
 import '../components/classes/alimento.dart';
 import '../db/alimentos_database.dart';
+import 'package:appnutricao/screens/tela_testes2.dart';
 
 
 class TestList extends StatefulWidget {
   const TestList({super.key});
-
   @override
   State<TestList> createState() => _TestListState();
 }
 
 class _TestListState extends State<TestList> {
 
-  List<dynamic> listaAlimentos = [
-    Alimento(nome: 'teste 1', categoria: 'Categoria 1', tipo: 'tipo 1', fotoBytes: 'lib/images/Nature - logo.jpg'),
-    Alimento(nome: 'teste 2', categoria: 'Categoria 2', tipo: 'tipo 2', fotoBytes: 'lib/images/Nature - logo.jpg'),
-    Alimento(nome: 'teste 3', categoria: 'Categoria 3', tipo: 'tipo 3', fotoBytes: 'lib/images/Nature - logo.jpg'),
-    Alimento(nome: 'teste 4', categoria: 'Categoria 4', tipo: 'tipo 4', fotoBytes: 'lib/images/Nature - logo.jpg'),
-    Alimento(nome: 'teste 5', categoria: 'Categoria 5', tipo: 'tipo 5', fotoBytes: 'lib/images/Nature - logo.jpg'),
-    Alimento(nome: 'teste 6', categoria: 'Categoria 6', tipo: 'tipo 6', fotoBytes: 'lib/images/Nature - logo.jpg')
+    List<dynamic> listaAlimentos = [
+    // Alimento(nome: 'teste 1', categoria: 'Categoria 1', tipo: 'tipo 1', fotoBytes: 'lib/images/Nature - logo.jpg'),
+    // Alimento(nome: 'teste 2', categoria: 'Categoria 2', tipo: 'tipo 2', fotoBytes: 'lib/images/Nature - logo.jpg'),
+    // Alimento(nome: 'teste 3', categoria: 'Categoria 3', tipo: 'tipo 3', fotoBytes: 'lib/images/Nature - logo.jpg'),
+    // Alimento(nome: 'teste 4', categoria: 'Categoria 4', tipo: 'tipo 4', fotoBytes: 'lib/images/Nature - logo.jpg'),
+    // Alimento(nome: 'teste 5', categoria: 'Categoria 5', tipo: 'tipo 5', fotoBytes: 'lib/images/Nature - logo.jpg'),
+    // Alimento(nome: 'teste 6', categoria: 'Categoria 6', tipo: 'tipo 6', fotoBytes: 'lib/images/Nature - logo.jpg')
     ];
   bool isLoading = false;
 
@@ -49,8 +49,8 @@ class _TestListState extends State<TestList> {
                   itemBuilder: (context, index) {
                   final Alimento exemplo = listaAlimentos[index];
 
-                  Image foto = Image.memory(base64Decode(exemplo.fotoBytes!));
-
+                  // Image foto = Image.memory(base64Decode(exemplo.fotoBytes!));
+                  
                   return Card(
                     margin: const EdgeInsets.all(5),
                     elevation: 5,
@@ -66,7 +66,8 @@ class _TestListState extends State<TestList> {
                               minHeight: 100,
                               minWidth: 100
                             ),
-                            child: ClipOval(child: foto)),
+                            child: Text(exemplo.fotoBytes!)),
+                            //ClipOval(child: foto)),
                           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                             Text(exemplo.nome, style: myTextThemes.textTheme.labelMedium,),
                             Text('${exemplo.tipo} - ${exemplo.categoria}', style: myTextThemes.textTheme.labelSmall)

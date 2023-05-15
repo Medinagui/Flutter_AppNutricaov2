@@ -7,7 +7,7 @@ class AlimentosFields {
     id, nome, fotoBytes, categoria, tipo
   ];
 
-  static const String id = '_id';
+  static const String id = 'id';
   static const String nome = 'nome';
   static const String fotoBytes = 'fotoBytes';
   static const String categoria = 'categoria';

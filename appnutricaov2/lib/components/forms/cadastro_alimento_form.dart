@@ -18,13 +18,13 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
   String? categoriaRefeicao;
   String? tipoAlimento;
 
-  Future createAlimento(Alimento alimentoCadastrado) {
+  Future createAlimento(Alimento alimentoCadastrado) async {
     setState(() {
       alimentoCadastrado.fotoBytes = selectedImage;
       alimentoCadastrado.tipo = (tipoAlimento == null)?'tipo null':tipoAlimento!;
       alimentoCadastrado.categoria = (categoriaRefeicao == null)?'categoria null':categoriaRefeicao!;
     });
-    return AlimentosDatabase.instance.create(alimentoCadastrado);
+    return await AlimentosDatabase.instance.create(alimentoCadastrado);
   }
 
   @override
@@ -32,7 +32,26 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
     return Form(
         child: Column(
       children: [
-        const MyImagePicker(),
+        //const MyImagePicker(),
+        TextFormField(
+          validator: (String? value) {
+            if (value == null || value.isEmpty) {
+              return 'Insira o nome da foto';
+            }
+            return null;
+          },
+          textInputAction: TextInputAction.next,
+          onChanged: (val){
+            setState(() {
+              alimentoCadastrado!.fotoBytes = val;
+            });
+          },
+          decoration: InputDecoration(
+              hintText: 'Nome da foto',
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: colorsTwo.colorScheme.secondary),
+              )),
+        ),
         const SizedBox(
           height: 15,
         ),

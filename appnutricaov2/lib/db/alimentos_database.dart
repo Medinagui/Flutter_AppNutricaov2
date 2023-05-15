@@ -86,10 +86,7 @@ CREATE TABLE $tableAlimentos (
     final db = await instance.database;
     const orderBy = '${AlimentosFields.id} ASC';
     final result = await db.query(tableAlimentos, orderBy: orderBy);
-    final resultList = 
-          result.isNotEmpty 
-          ? result.map((json) => Alimento.fromJson(json)).toList()
-          : [] ;
+    final resultList = result.map((json) => Alimento.fromJson(json)).toList();
     return resultList;
   }
 
