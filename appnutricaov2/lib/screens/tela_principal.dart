@@ -44,7 +44,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     PrincipalScreenButton(
                       icon: Icons.search,
                       label: 'Consulta',
-                      screen: screenList[3],
+                      screen: screenList[5],
                     ),
                     const SizedBox(
                       height: 10,

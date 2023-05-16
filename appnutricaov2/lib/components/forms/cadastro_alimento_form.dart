@@ -27,7 +27,7 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
     super.initState();
   }
 
-  Future<void> createAlimento(String nome,Uint8List fotoBytes, String categoria, String tipo) async {
+  Future<void> createAlimento(String nome,String fotoBytes, String categoria, String tipo) async {
     await SQLHelperAlimentos.createItem(nome, fotoBytes, categoria, tipo);
     debugPrint('cadastrado!');
   }
@@ -133,7 +133,7 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ElevatedButton(
-              onPressed: () => createAlimento(_nomeController.text, selectedImage!, tipoAlimento!,categoriaRefeicao! ),
+              onPressed: () => createAlimento(_nomeController.text, selectedImage!.path, tipoAlimento!,categoriaRefeicao! ),
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
                       colorsOne.colorScheme.secondary)),

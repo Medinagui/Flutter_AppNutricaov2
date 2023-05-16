@@ -29,7 +29,7 @@ class _TestesScreen2State extends State<TestesScreen2> {
         child: const Card(
           child: Padding(
             padding: EdgeInsets.all(5),
-            child: TestList()
+            child: AlimentosList()
           ),
         ),
       ),

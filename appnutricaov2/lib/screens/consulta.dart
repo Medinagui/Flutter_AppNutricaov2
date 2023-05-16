@@ -1,3 +1,4 @@
+import 'package:appnutricao/components/alimentos_list.dart';
 import 'package:flutter/material.dart';
 
 import '../themes/theme.dart';
@@ -33,7 +34,7 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
       body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
          Expanded(
           child: Card(
-            margin: const EdgeInsets.fromLTRB(25, 20, 25, 20),
+            margin: const EdgeInsets.fromLTRB(15, 15, 20, 15),
             child: Padding(
               padding: const EdgeInsets.all(10),
               child: Column(
@@ -48,15 +49,7 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
                       )
                     ),
                   ),
-                  Expanded(child: ListView.builder(
-                    itemCount: listaExemplo.length,
-                    itemBuilder: (context, index) {
-                    final String exemplo = listaExemplo[index];
-
-                    return ListTile(
-                      title: Text(exemplo),
-                    );
-                  }))
+                  const AlimentosList()
                 ],
               )
             ),

@@ -35,7 +35,7 @@ class SQLHelperAlimentos{
 ''');
   }
 
-  static Future<int> createItem(String nome,Uint8List fotoBytes, String categoria, String tipo) async {
+  static Future<int> createItem(String nome,String fotoBytes, String categoria, String tipo) async {
     final db = await SQLHelperAlimentos.db();
     final data = {
       AlimentosFields.nome: nome,

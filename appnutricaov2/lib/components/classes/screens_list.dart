@@ -1,3 +1,4 @@
+import 'package:appnutricao/screens/consulta.dart';
 import 'package:flutter/material.dart';
 
 import '../../screens/cadastro.dart';
@@ -16,5 +17,7 @@ List<Widget> screenList = const[
   // 3
   CreditosScreen(),
   // 4 
-  CadastroScreen()
+  CadastroScreen(),
+  // 5
+  ConsultaScreen()
 ];

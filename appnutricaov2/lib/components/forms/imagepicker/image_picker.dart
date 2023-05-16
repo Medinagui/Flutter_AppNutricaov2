@@ -16,42 +16,28 @@ class MyImagePicker extends StatefulWidget {
   State<MyImagePicker> createState() => _MyImagePickerState();
 }
 
-Uint8List? selectedImage;
+File? selectedImage;
+File? newImage;
 
 class _MyImagePickerState extends State<MyImagePicker> {
   File? image;
-
-  Image imageFromBase64String(String base64String) {
-  return Image.memory(base64Decode(base64String));
-}
-
-Uint8List dataFromBase64String(String base64String) {
-  return base64Decode(base64String);
-}
-
-String base64String(Uint8List data) {
-  return base64Encode(data);
-}
-
   Future pickImage(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(source: source);
-      if (image == null) return;
-      
-      final Uint8List imageToBinary = await image.readAsBytes(); 
-      //String base64 = base64Encode(imageToBinary);
-
+      if (image == null) return null;
+      final String path =
+      await getApplicationDocumentsDirectory().then((value) => value.path);
       final imageTemporary = File(image.path);
-
+      newImage =
+          await imageTemporary.copy('$path/Alimento - ${DateTime.now()}.jpg');
       setState(() {
-        selectedImage = imageToBinary;
+        selectedImage = newImage;
         this.image = imageTemporary;
       });
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

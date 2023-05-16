@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
@@ -6,13 +7,13 @@ import '../components/classes/alimento.dart';
 import '../db/alimentos_database.dart';
 
 
-class TestList extends StatefulWidget {
-  const TestList({super.key});
+class AlimentosList extends StatefulWidget {
+  const AlimentosList({super.key});
   @override
-  State<TestList> createState() => _TestListState();
+  State<AlimentosList> createState() => _AlimentosListState();
 }
 
-class _TestListState extends State<TestList> {
+class _AlimentosListState extends State<AlimentosList> {
 
   List<dynamic> listaAlimentos = [];
   bool isLoading = true;
@@ -45,25 +46,27 @@ class _TestListState extends State<TestList> {
     return
     Column(
       children: [
-        ElevatedButton(onPressed: refreshAlimentos, child: const Text('Atualizar Lista')),
+        //ElevatedButton(onPressed: refreshAlimentos, child: const Text('Atualizar Lista')),
         (listaAlimentos.isEmpty)
         ? const Center(child: Text('Lista vazia.\nVá para a tela de cadastros\ne cadastre novos alimentos.'),)
-        : Expanded(child: ListView.builder(
-                      itemCount: listaAlimentos.length,
-                      itemBuilder: (context, index) {
-                      final exemplo = listaAlimentos[index];
-
-                      Image foto = Image.memory(base64Decode(exemplo.fotoBytes!));
-                      
-                      return Card(
-                        margin: const EdgeInsets.all(5),
-                        elevation: 5,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ConstrainedBox(
+        : SizedBox(
+          height: MediaQuery.of(context).size.height * 0.75,
+          child: Expanded(child: ListView.builder(
+                        itemCount: listaAlimentos.length,
+                        itemBuilder: (context, index) {
+                        final exemplo = listaAlimentos[index];
+        
+                        Image foto = Image.file(File(exemplo['fotoBytes']), fit: BoxFit.cover,);
+                        
+                        return Card(
+                          margin: const EdgeInsets.all(5),
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ConstrainedBox(
                                 constraints: const BoxConstraints(
                                   maxHeight: 100,
                                   maxWidth: 100,
@@ -73,21 +76,20 @@ class _TestListState extends State<TestList> {
                                 child: 
                                 //Text('fotoBytes: ${exemplo['fotoBytes']},\nID: ${exemplo['id']}}')),
                                 ClipOval(child: foto)),
-                              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                Text(exemplo['nome'], style: myTextThemes.textTheme.labelMedium,),
-                                Text('${exemplo['tipo']} - ${exemplo['categoria']}', style: myTextThemes.textTheme.labelSmall)
-                                ],),
-                                Row(
-                                  children: [
-                                    IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
-                                    IconButton(onPressed: () => _deleteItem(exemplo['id']), icon: const Icon(Icons.delete)),
-                                  ],
-                                )
-                            ],
+                                Flexible(
+                                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                    Text(exemplo['nome'], style: myTextThemes.textTheme.labelMedium,),
+                                    Text('${exemplo['tipo']} - ${exemplo['categoria']}', style: myTextThemes.textTheme.labelSmall)
+                                    ],),
+                                ),
+                                  IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
+                                  //IconButton(onPressed: () => _deleteItem(exemplo['id']), icon: const Icon(Icons.delete))
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    })),
+                        );
+                      })),
+        ),
       ],
     );
   }
