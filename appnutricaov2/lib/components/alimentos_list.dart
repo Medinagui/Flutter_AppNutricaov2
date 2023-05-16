@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
 import '../components/classes/alimento.dart';
@@ -51,7 +53,7 @@ class _TestListState extends State<TestList> {
                       itemBuilder: (context, index) {
                       final exemplo = listaAlimentos[index];
 
-                      // Image foto = Image.memory(base64Decode(exemplo.fotoBytes!));
+                      Image foto = Image.memory(base64Decode(exemplo.fotoBytes!));
                       
                       return Card(
                         margin: const EdgeInsets.all(5),
@@ -68,8 +70,9 @@ class _TestListState extends State<TestList> {
                                   minHeight: 100,
                                   minWidth: 100
                                 ),
-                                child: Text(exemplo['fotoBytes'])),
-                                //ClipOval(child: foto)),
+                                child: 
+                                //Text('fotoBytes: ${exemplo['fotoBytes']},\nID: ${exemplo['id']}}')),
+                                ClipOval(child: foto)),
                               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                 Text(exemplo['nome'], style: myTextThemes.textTheme.labelMedium,),
                                 Text('${exemplo['tipo']} - ${exemplo['categoria']}', style: myTextThemes.textTheme.labelSmall)
@@ -77,7 +80,7 @@ class _TestListState extends State<TestList> {
                                 Row(
                                   children: [
                                     IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
-                                    IconButton(onPressed: () => _deleteItem(index), icon: const Icon(Icons.delete)),
+                                    IconButton(onPressed: () => _deleteItem(exemplo['id']), icon: const Icon(Icons.delete)),
                                   ],
                                 )
                             ],

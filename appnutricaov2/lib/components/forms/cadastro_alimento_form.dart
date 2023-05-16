@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import '../../db/alimentos_database.dart';
@@ -26,7 +27,7 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
     super.initState();
   }
 
-  Future<void> createAlimento(String nome,String fotoBytes, String categoria, String tipo) async {
+  Future<void> createAlimento(String nome,Uint8List fotoBytes, String categoria, String tipo) async {
     await SQLHelperAlimentos.createItem(nome, fotoBytes, categoria, tipo);
     debugPrint('cadastrado!');
   }
@@ -36,22 +37,22 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
     return Form(
         child: Column(
       children: [
-        //const MyImagePicker(),
-        TextFormField(
-          validator: (String? value) {
-            if (value == null || value.isEmpty) {
-              return 'Insira o nome da foto';
-            }
-            return null;
-          },
-          textInputAction: TextInputAction.next,
-          controller: _fotoController,
-          decoration: InputDecoration(
-              hintText: 'Nome da foto',
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: colorsTwo.colorScheme.secondary),
-              )),
-        ),
+        const MyImagePicker(),
+        // TextFormField(
+        //   validator: (String? value) {
+        //     if (value == null || value.isEmpty) {
+        //       return 'Insira o nome da foto';
+        //     }
+        //     return null;
+        //   },
+        //   textInputAction: TextInputAction.next,
+        //   controller: _fotoController,
+        //   decoration: InputDecoration(
+        //       hintText: 'Nome da foto',
+        //       border: OutlineInputBorder(
+        //         borderSide: BorderSide(color: colorsTwo.colorScheme.secondary),
+        //       )),
+        // ),
         const SizedBox(
           height: 15,
         ),
@@ -132,7 +133,7 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ElevatedButton(
-              onPressed: () => createAlimento(_nomeController.text, _fotoController.text, tipoAlimento!,categoriaRefeicao! ),
+              onPressed: () => createAlimento(_nomeController.text, selectedImage!, tipoAlimento!,categoriaRefeicao! ),
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
                       colorsOne.colorScheme.secondary)),

@@ -16,7 +16,7 @@ class MyImagePicker extends StatefulWidget {
   State<MyImagePicker> createState() => _MyImagePickerState();
 }
 
-String? selectedImage;
+Uint8List? selectedImage;
 
 class _MyImagePickerState extends State<MyImagePicker> {
   File? image;
@@ -39,12 +39,12 @@ String base64String(Uint8List data) {
       if (image == null) return;
       
       final Uint8List imageToBinary = await image.readAsBytes(); 
-      String base64 = base64Encode(imageToBinary);
+      //String base64 = base64Encode(imageToBinary);
 
       final imageTemporary = File(image.path);
 
       setState(() {
-        selectedImage = base64;
+        selectedImage = imageToBinary;
         this.image = imageTemporary;
       });
     } on PlatformException catch (e) {
@@ -52,9 +52,6 @@ String base64String(Uint8List data) {
     }
   }
 
-  get getImage{
-    return image;
-  }
 
   @override
   Widget build(BuildContext context) {

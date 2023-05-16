@@ -1,12 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart' as sql;
+import 'package:sqflite/sqflite.dart';
 import '../components/classes/alimento.dart';
+import 'package:path_provider/path_provider.dart';
 
 class SQLHelperAlimentos{
     static Future<sql.Database> db() async {
     return sql.openDatabase(
       'alimentos.db',
       version: 1,
+      //onOpen: createTables,
       onCreate: (sql.Database database, int version) async {
         debugPrint('***** Criando tabela *****');
         await createTables(database);
@@ -14,7 +17,13 @@ class SQLHelperAlimentos{
     );
   }
 
+  static Future<List<Map<String, Object?>>> dropDB() async {
+    final db = await SQLHelperAlimentos.db();
+    return db.rawQuery('DROP DATABASE alimentos.db');
+  }
+
   static Future<void> createTables(sql.Database database) async {
+    debugPrint('***** Criando tabela *****');
     await database.execute('''
     CREATE TABLE alimentos(
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -26,7 +35,7 @@ class SQLHelperAlimentos{
 ''');
   }
 
-  static Future<int> createItem(String nome,String fotoBytes, String categoria, String tipo) async {
+  static Future<int> createItem(String nome,Uint8List fotoBytes, String categoria, String tipo) async {
     final db = await SQLHelperAlimentos.db();
     final data = {
       AlimentosFields.nome: nome,
@@ -37,6 +46,9 @@ class SQLHelperAlimentos{
     final id = await db.insert('alimentos', data, conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return id;
   }
+
+  Future<void> deleteDatabase(String path) =>
+    databaseFactory.deleteDatabase(path);
 
   static Future<List<Map<String, dynamic>>> getItems() async {
     final db = await SQLHelperAlimentos.db();
@@ -54,6 +66,7 @@ class SQLHelperAlimentos{
 
   static Future<void> deleteItem(int id) async {
     final db = await SQLHelperAlimentos.db();
+    debugPrint('Deletando item com o ID: $id');
     try {
       await db.delete('alimentos',
       where: 'id = ?', whereArgs: [id]
