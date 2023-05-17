@@ -1,7 +1,8 @@
 import 'package:appnutricao/components/alimentos_list.dart';
 import 'package:flutter/material.dart';
-
+import '../components/alimentos_list.dart' as alimentos_list;
 import '../themes/theme.dart';
+import 'package:appnutricao/db/alimentos_database.dart';
 
 class ConsultaScreen extends StatefulWidget {
   const ConsultaScreen({super.key});
@@ -32,13 +33,26 @@ List<String> listaOptionsSearch = [
   'Cardápio',
 ];
 
+String searchName = '';
+
 class _ConsultaScreenState extends State<ConsultaScreen> {
+
+    Future searchAlimentosName(String name) async {
+    setState(() => alimentos_list.isLoading = true);
+    final data = await SQLHelperAlimentos.getItemsByName(name);
+    setState(() {
+      alimentos_list.isLoading = false;
+      alimentos_list.listaAlimentos = data;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         backgroundColor: colorsTwo.colorScheme.secondary,
         title: const Text('Consulta', textAlign: TextAlign.center),
         centerTitle: true,
@@ -113,10 +127,15 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
                 padding: const EdgeInsets.all(10),
                 onPressed: () {
                   showModalBottomSheet(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15) 
+                        )),
                       context: context,
                       builder: ((context) {
-                        return const ModalSearcher();
-                      }));
+                        return const ModalSearcher(/*sendName: searchAlimentosName(searchName),*/);
+                      })).then((value) => searchAlimentosName(searchName));
                 },
                 icon: const Icon(
                   Icons.search,
@@ -129,23 +148,61 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
   }
 }
 
-class ModalSearcher extends StatelessWidget {
-  const ModalSearcher({super.key});
+class ModalSearcher extends StatefulWidget {
+  const ModalSearcher({super.key, /*required this.sendName*/});
+
+  //final Future sendName;
+
+  @override
+  State<ModalSearcher> createState() => _ModalSearcherState();
+}
+
+class _ModalSearcherState extends State<ModalSearcher> {
+
+  final TextEditingController _nomeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 200,
+    return Container(
+      color: colorsOne.colorScheme.primary,
+      height: 400,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: TextField(
-          decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.search),
-              hintText: listaOptionsSearch[_buttonPressed],
-              border: OutlineInputBorder( 
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide:
-                      BorderSide(color: colorsOne.colorScheme.secondary))),
+        child: Column(
+          children: [
+            Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              elevation: 5,
+              child: SizedBox(
+                height: 60,
+                child: Center(
+                  child: TextField(
+                    controller: _nomeController,
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: const Icon(Icons.search),
+                        hintText: listaOptionsSearch[_buttonPressed],
+                        ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(onPressed: () {
+                  setState(() => searchName = _nomeController.text);
+                  debugPrint(searchName);
+                  // ignore: use_build_context_synchronously
+                  Navigator.pop(context);
+                  //widget.sendName;
+                },
+                style: buttonsTheme.elevatedButtonTheme.style,
+                child: const Text('Pesquisar')),
+              ],
+            )
+          ],
         ),
       ),
     );
