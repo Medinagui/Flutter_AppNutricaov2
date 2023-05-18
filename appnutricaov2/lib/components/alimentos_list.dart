@@ -1,6 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
+
+import 'package:appnutricao/screens/consulta.dart';
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
+import '../components/classes/alimento.dart';
 import '../db/alimentos_database.dart';
 import '../screens/consulta.dart';
 
@@ -9,17 +13,16 @@ class AlimentosList extends StatefulWidget {
   @override
   State<AlimentosList> createState() => _AlimentosListState();
 }
+  List<dynamic> listaAlimentos = [];
+  bool isLoading = true;
 
-List<dynamic> listaAlimentos = [];
-bool isLoading = true;
 class _AlimentosListState extends State<AlimentosList> {
 
   @override
   void initState() {
     super.initState();
     if(searchName == ''){
-
-      refreshAlimentos();
+    refreshAlimentos();
     }
     else{
       searchAlimentosName(searchName);
@@ -44,8 +47,6 @@ class _AlimentosListState extends State<AlimentosList> {
       listaAlimentos = data;
     });
   }
-
-
 
   void _deleteItem(int id) async {
     await SQLHelperAlimentos.deleteItem(id);
@@ -82,7 +83,7 @@ class _AlimentosListState extends State<AlimentosList> {
                       children: [
                         SizedBox(
                             height:
-                                MediaQuery.of(context).size.height * 0.69 - 2.2,
+                                (MediaQuery.of(context).size.height * 0.8) - 35,
                             child: ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: listaAlimentos.length,

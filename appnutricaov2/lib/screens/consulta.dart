@@ -35,6 +35,8 @@ List<String> listaOptionsSearch = [
 
 String searchName = '';
 
+bool listReset = false;
+
 class _ConsultaScreenState extends State<ConsultaScreen> {
 
     Future searchAlimentosName(String name) async {
@@ -48,6 +50,14 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final String action = ModalRoute.of(context)!.settings.arguments as String;
+
+    if (action == "limpalista") {
+      setState(() {
+        alimentos_list.listaAlimentos = [];  
+      });
+    }
+ 
     final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -101,16 +111,7 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
                             child: const Text('Cardápio')),
                       ],
                     ),
-                    // TextField(
-                    //   decoration: InputDecoration(
-                    //       prefixIcon: const Icon(Icons.search),
-                    //       hintText: 'Insira o nome que deseja procurar',
-                    //       border: OutlineInputBorder(
-                    //           borderRadius: BorderRadius.circular(15),
-                    //           borderSide: BorderSide(
-                    //               color: colorsOne.colorScheme.secondary))),
-                    // ),
-                    if (!isKeyboard) listasDisponiveis[_buttonPressed]
+                    if (!isKeyboard || listReset) listasDisponiveis[_buttonPressed]
                   ],
                 )),
           ),
@@ -118,8 +119,8 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
       ]),
       backgroundColor: colorsOne.colorScheme.primary,
       floatingActionButton: SizedBox(
-        height: 70,
-        width: 70,
+        height: 50,
+        width: 50,
         child: ClipOval(
           child: Container(
             color: colorsTwo.colorScheme.secondary,
@@ -134,12 +135,15 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
                         )),
                       context: context,
                       builder: ((context) {
-                        return const ModalSearcher(/*sendName: searchAlimentosName(searchName),*/);
-                      })).then((value) => searchAlimentosName(searchName));
+                        return const ModalSearcher();
+                      })).then((value) {
+                        searchAlimentosName(searchName).then((value) => listReset = false);
+
+                      });
                 },
                 icon: const Icon(
                   Icons.search,
-                  size: 40,
+                  size: 30,
                 )),
           ),
         ),
@@ -149,9 +153,8 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
 }
 
 class ModalSearcher extends StatefulWidget {
-  const ModalSearcher({super.key, /*required this.sendName*/});
+  const ModalSearcher({super.key});
 
-  //final Future sendName;
 
   @override
   State<ModalSearcher> createState() => _ModalSearcherState();
@@ -189,14 +192,26 @@ class _ModalSearcherState extends State<ModalSearcher> {
             ),
             const SizedBox(height: 20,),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                ElevatedButton(onPressed: () {
+                  setState((){
+                    searchName = '';
+                    listReset = true;
+                    });
+                  debugPrint(searchName);
+                  // ignore: use_build_context_synchronously
+                  
+                  Navigator.pushNamed(context, '/consulta', arguments: "limpalista");
+                  //Navigator.pop(context);
+                },
+                style: buttonsTheme.elevatedButtonTheme.style,
+                child: const Text('Limpar Filtro')),
                 ElevatedButton(onPressed: () {
                   setState(() => searchName = _nomeController.text);
                   debugPrint(searchName);
                   // ignore: use_build_context_synchronously
                   Navigator.pop(context);
-                  //widget.sendName;
                 },
                 style: buttonsTheme.elevatedButtonTheme.style,
                 child: const Text('Pesquisar')),

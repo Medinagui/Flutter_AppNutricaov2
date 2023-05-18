@@ -23,9 +23,12 @@ class NutricaoApp extends StatefulWidget {
 class _NutricaoAppState extends State<NutricaoApp> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ConsultaScreen()
+      home: const TelaPrincipal(),
+      routes: {
+        '/consulta' : (context) => const ConsultaScreen()
+      },
     );
   }
 } 

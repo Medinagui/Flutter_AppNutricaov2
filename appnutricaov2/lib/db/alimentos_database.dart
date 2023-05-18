@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqflite.dart';
 import '../components/classes/alimento.dart';
+import 'package:path_provider/path_provider.dart';
 
 class SQLHelperAlimentos{
     static Future<sql.Database> db() async {
@@ -78,6 +79,6 @@ class SQLHelperAlimentos{
   static Future<List<Map<String, dynamic>>> getItemsByName(String name) async {
     final db = await SQLHelperAlimentos.db();
     return db.rawQuery('SELECT * FROM alimentos WHERE nome like "%$name%" ORDER BY id');
-  }
+}
 }
 
