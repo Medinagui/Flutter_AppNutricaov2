@@ -18,9 +18,10 @@ class MyImagePicker extends StatefulWidget {
 
 File? selectedImage;
 File? newImage;
+File? imageStateHelper;
 
 class _MyImagePickerState extends State<MyImagePicker> {
-  File? image;
+  File? image = imageStateHelper;
   Future pickImage(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(source: source);

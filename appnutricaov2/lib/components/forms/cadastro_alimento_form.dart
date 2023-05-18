@@ -133,7 +133,15 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ElevatedButton(
-              onPressed: () => createAlimento(_nomeController.text, selectedImage!.path, tipoAlimento!,categoriaRefeicao! ),
+              onPressed: ()async {
+                await createAlimento(_nomeController.text, selectedImage!.path, tipoAlimento!,categoriaRefeicao!);
+                setState(() {  
+                _nomeController.text = '';
+                imageStateHelper = null;
+                tipoAlimento = '';
+                categoriaRefeicao = '';
+                });
+                },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
                       colorsOne.colorScheme.secondary)),

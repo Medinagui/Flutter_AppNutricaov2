@@ -73,7 +73,6 @@ class _AlimentosListState extends State<AlimentosList> {
           )
         : Column(
             children: [
-              //ElevatedButton(onPressed: refreshAlimentos, child: const Text('Atualizar Lista')),
               (listaAlimentos.isEmpty)
                   ? const Center(
                       child: Text(

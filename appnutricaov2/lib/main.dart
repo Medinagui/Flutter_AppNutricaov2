@@ -27,7 +27,8 @@ class _NutricaoAppState extends State<NutricaoApp> {
       debugShowCheckedModeBanner: false,
       home: const TelaPrincipal(),
       routes: {
-        '/consulta' : (context) => const ConsultaScreen()
+        '/consulta' : (context) => const ConsultaScreen(),
+        '/telaprincipal' : (context) => const TelaPrincipal(),
       },
     );
   }

@@ -1,4 +1,5 @@
 import 'package:appnutricao/components/alimentos_list.dart';
+import 'package:appnutricao/screens/tela_principal.dart';
 import 'package:flutter/material.dart';
 import '../components/alimentos_list.dart' as alimentos_list;
 import '../themes/theme.dart';
@@ -38,8 +39,7 @@ String searchName = '';
 bool listReset = false;
 
 class _ConsultaScreenState extends State<ConsultaScreen> {
-
-    Future searchAlimentosName(String name) async {
+  Future searchAlimentosName(String name) async {
     setState(() => alimentos_list.isLoading = true);
     final data = await SQLHelperAlimentos.getItemsByName(name);
     setState(() {
@@ -50,19 +50,29 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final String action = ModalRoute.of(context)!.settings.arguments as String;
+    // final String action =
+    //     (ModalRoute.of(context)!.settings.arguments == null)
+    //         ? ''
+    //         : ModalRoute.of(context)!.settings.arguments as String;
 
-    if (action == "limpalista") {
-      setState(() {
-        alimentos_list.listaAlimentos = [];  
-      });
-    }
- 
+    // if (action == "limpalista") {
+    //   setState(() {
+    //     alimentos_list.listaAlimentos = [];
+    //   });
+    // }
+
     final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
+        leading: GestureDetector(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const TelaPrincipal()),
+          ),
+          child: const Icon(Icons.home),
+        ),
         backgroundColor: colorsTwo.colorScheme.secondary,
         title: const Text('Consulta', textAlign: TextAlign.center),
         centerTitle: true,
@@ -111,14 +121,17 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
                             child: const Text('Cardápio')),
                       ],
                     ),
-                    if (!isKeyboard || listReset) listasDisponiveis[_buttonPressed]
+                    if (!isKeyboard || listReset)
+                      listasDisponiveis[_buttonPressed]
                   ],
                 )),
           ),
         ),
       ]),
       backgroundColor: colorsOne.colorScheme.primary,
-      floatingActionButton: SizedBox(
+      floatingActionButton: 
+      (_buttonPressed != 2)?
+      SizedBox(
         height: 50,
         width: 50,
         child: ClipOval(
@@ -129,17 +142,16 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
                 onPressed: () {
                   showModalBottomSheet(
                       shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15),
-                          topRight: Radius.circular(15) 
-                        )),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(15),
+                              topRight: Radius.circular(15))),
                       context: context,
                       builder: ((context) {
                         return const ModalSearcher();
                       })).then((value) {
-                        searchAlimentosName(searchName).then((value) => listReset = false);
-
-                      });
+                    searchAlimentosName(searchName)
+                        .then((value) => listReset = false);
+                  });
                 },
                 icon: const Icon(
                   Icons.search,
@@ -147,7 +159,9 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
                 )),
           ),
         ),
-      ),
+      )
+      :
+      null
     );
   }
 }
@@ -155,13 +169,11 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
 class ModalSearcher extends StatefulWidget {
   const ModalSearcher({super.key});
 
-
   @override
   State<ModalSearcher> createState() => _ModalSearcherState();
 }
 
 class _ModalSearcherState extends State<ModalSearcher> {
-
   final TextEditingController _nomeController = TextEditingController();
 
   @override
@@ -174,7 +186,8 @@ class _ModalSearcherState extends State<ModalSearcher> {
         child: Column(
           children: [
             Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
               elevation: 5,
               child: SizedBox(
                 height: 60,
@@ -182,39 +195,43 @@ class _ModalSearcherState extends State<ModalSearcher> {
                   child: TextField(
                     controller: _nomeController,
                     decoration: InputDecoration(
-                        border: InputBorder.none,
-                        prefixIcon: const Icon(Icons.search),
-                        hintText: listaOptionsSearch[_buttonPressed],
-                        ),
+                      border: InputBorder.none,
+                      prefixIcon: const Icon(Icons.search),
+                      hintText: listaOptionsSearch[_buttonPressed],
+                    ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton(onPressed: () {
-                  setState((){
-                    searchName = '';
-                    listReset = true;
-                    });
-                  debugPrint(searchName);
-                  // ignore: use_build_context_synchronously
-                  
-                  Navigator.pushNamed(context, '/consulta', arguments: "limpalista");
-                  //Navigator.pop(context);
-                },
-                style: buttonsTheme.elevatedButtonTheme.style,
-                child: const Text('Limpar Filtro')),
-                ElevatedButton(onPressed: () {
-                  setState(() => searchName = _nomeController.text);
-                  debugPrint(searchName);
-                  // ignore: use_build_context_synchronously
-                  Navigator.pop(context);
-                },
-                style: buttonsTheme.elevatedButtonTheme.style,
-                child: const Text('Pesquisar')),
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        searchName = '';
+                        listReset = true;
+                      });
+                      debugPrint(searchName);
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushReplacementNamed(context, '/consulta');
+                      //Navigator.pushNamed(context, '/consulta', arguments: "limpalista");
+                      //Navigator.pop(context);
+                    },
+                    style: buttonsTheme.elevatedButtonTheme.style,
+                    child: const Text('Limpar Filtro')),
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() => searchName = _nomeController.text);
+                      debugPrint(searchName);
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(context);
+                    },
+                    style: buttonsTheme.elevatedButtonTheme.style,
+                    child: const Text('Pesquisar')),
               ],
             )
           ],
