@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:appnutricao/screens/consulta.dart';
+import 'package:appnutricao/screens/edit_records.dart';
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
 import '../components/classes/alimento.dart';
@@ -30,7 +31,7 @@ class _AlimentosListState extends State<AlimentosList> {
     debugPrint('..numero de items: ${listaAlimentos.length}');
   }
 
-      Future searchAlimentosName(String name) async {
+    Future searchAlimentosName(String name) async {
     setState(() => isLoading = true);
     final data = await SQLHelperAlimentos.getItemsByName(name);
     setState(() {
@@ -130,7 +131,9 @@ class _AlimentosListState extends State<AlimentosList> {
                                             ),
                                           ),
                                           IconButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  EditRecordsScreen(idRecord: exemplo['id'], buttonPressed: buttonPressed,)));
+                                              },
                                               icon: const Icon(Icons.edit)),
                                           //IconButton(onPressed: () => _deleteItem(exemplo['id']), icon: const Icon(Icons.delete))
                                         ],

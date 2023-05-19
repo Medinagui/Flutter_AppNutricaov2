@@ -54,6 +54,10 @@ class SQLHelperAlimentos{
     final db = await SQLHelperAlimentos.db();
     return db.query('alimentos', orderBy: 'id');
   }
+  static Future<List<Map<String, dynamic>>> getItemByID(int id) async {
+    final db = await SQLHelperAlimentos.db();
+    return db.query('alimentos', where: 'id = ?', whereArgs: [id.toString()]);
+  }
 
   static Future<int> updateItem(Alimento alimentoParaUpdate, int id) async {
     final db = await SQLHelperAlimentos.db();

@@ -12,7 +12,7 @@ class ConsultaScreen extends StatefulWidget {
   State<ConsultaScreen> createState() => _ConsultaScreenState();
 }
 
-int _buttonPressed = 0;
+int buttonPressed = 0;
 
 MaterialStateProperty<Color> buttonSelected(int buttonPressed, int buttonID) {
   if (buttonPressed == buttonID) {
@@ -36,8 +36,6 @@ List<String> listaOptionsSearch = [
 
 String searchName = '';
 
-bool listReset = false;
-
 class _ConsultaScreenState extends State<ConsultaScreen> {
   Future searchAlimentosName(String name) async {
     setState(() => alimentos_list.isLoading = true);
@@ -50,119 +48,98 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final String action =
-    //     (ModalRoute.of(context)!.settings.arguments == null)
-    //         ? ''
-    //         : ModalRoute.of(context)!.settings.arguments as String;
-
-    // if (action == "limpalista") {
-    //   setState(() {
-    //     alimentos_list.listaAlimentos = [];
-    //   });
-    // }
-
     final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: GestureDetector(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const TelaPrincipal()),
-          ),
-          child: const Icon(Icons.home),
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          automaticallyImplyLeading: true,
+          backgroundColor: colorsTwo.colorScheme.secondary,
+          title: const Text('Consulta', textAlign: TextAlign.center),
+          centerTitle: true,
         ),
-        backgroundColor: colorsTwo.colorScheme.secondary,
-        title: const Text('Consulta', textAlign: TextAlign.center),
-        centerTitle: true,
-      ),
-      body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Expanded(
-          child: Card(
-            margin: const EdgeInsets.fromLTRB(15, 15, 20, 15),
-            child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    ButtonBar(
-                      alignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              _buttonPressed = 0;
-                            });
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: buttonSelected(_buttonPressed, 0),
+        body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Expanded(
+            child: Card(
+              margin: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+              child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      ButtonBar(
+                        alignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                buttonPressed = 0;
+                              });
+                            },
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  buttonSelected(buttonPressed, 0),
+                            ),
+                            child: const Text('Usuário'),
                           ),
-                          child: const Text('Usuário'),
-                        ),
-                        ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                _buttonPressed = 1;
-                              });
-                            },
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    buttonSelected(_buttonPressed, 1)),
-                            child: const Text('Alimento')),
-                        ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                _buttonPressed = 2;
-                              });
-                            },
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    buttonSelected(_buttonPressed, 2)),
-                            child: const Text('Cardápio')),
-                      ],
-                    ),
-                    if (!isKeyboard || listReset)
-                      listasDisponiveis[_buttonPressed]
-                  ],
-                )),
+                          ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  buttonPressed = 1;
+                                });
+                              },
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      buttonSelected(buttonPressed, 1)),
+                              child: const Text('Alimento')),
+                          ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  buttonPressed = 2;
+                                });
+                              },
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      buttonSelected(buttonPressed, 2)),
+                              child: const Text('Cardápio')),
+                        ],
+                      ),
+                      if (!isKeyboard) listasDisponiveis[buttonPressed]
+                    ],
+                  )),
+            ),
           ),
-        ),
-      ]),
-      backgroundColor: colorsOne.colorScheme.primary,
-      floatingActionButton: 
-      (_buttonPressed != 2)?
-      SizedBox(
-        height: 50,
-        width: 50,
-        child: ClipOval(
-          child: Container(
-            color: colorsTwo.colorScheme.secondary,
-            child: IconButton(
-                padding: const EdgeInsets.all(10),
-                onPressed: () {
-                  showModalBottomSheet(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15),
-                              topRight: Radius.circular(15))),
-                      context: context,
-                      builder: ((context) {
-                        return const ModalSearcher();
-                      })).then((value) {
-                    searchAlimentosName(searchName)
-                        .then((value) => listReset = false);
-                  });
-                },
-                icon: const Icon(
-                  Icons.search,
-                  size: 30,
-                )),
-          ),
-        ),
-      )
-      :
-      null
-    );
+        ]),
+        backgroundColor: colorsOne.colorScheme.primary,
+        floatingActionButton: (buttonPressed != 2)
+            ? SizedBox(
+                height: 50,
+                width: 50,
+                child: ClipOval(
+                  child: Container(
+                    color: colorsTwo.colorScheme.secondary,
+                    child: IconButton(
+                        padding: const EdgeInsets.all(10),
+                        onPressed: () {
+                          showModalBottomSheet(
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(15),
+                                      topRight: Radius.circular(15))),
+                              context: context,
+                              builder: ((context) {
+                                return const ModalSearcher();
+                              })).then((value) async {
+                            await  searchAlimentosName(searchName);
+                            buttonPressed = 1;
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.search,
+                          size: 30,
+                        )),
+                  ),
+                ),
+              )
+            : null);
   }
 }
 
@@ -197,7 +174,7 @@ class _ModalSearcherState extends State<ModalSearcher> {
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       prefixIcon: const Icon(Icons.search),
-                      hintText: listaOptionsSearch[_buttonPressed],
+                      hintText: listaOptionsSearch[buttonPressed],
                     ),
                   ),
                 ),
@@ -213,13 +190,11 @@ class _ModalSearcherState extends State<ModalSearcher> {
                     onPressed: () {
                       setState(() {
                         searchName = '';
-                        listReset = true;
+                        buttonPressed = 0;
                       });
                       debugPrint(searchName);
                       // ignore: use_build_context_synchronously
-                      Navigator.pushReplacementNamed(context, '/consulta');
-                      //Navigator.pushNamed(context, '/consulta', arguments: "limpalista");
-                      //Navigator.pop(context);
+                      Navigator.pop(context);
                     },
                     style: buttonsTheme.elevatedButtonTheme.style,
                     child: const Text('Limpar Filtro')),

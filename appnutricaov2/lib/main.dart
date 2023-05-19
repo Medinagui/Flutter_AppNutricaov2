@@ -1,5 +1,6 @@
 import 'package:appnutricao/screens/cadastro.dart';
 import 'package:appnutricao/screens/consulta.dart';
+import 'package:appnutricao/screens/edit_records.dart';
 import 'package:appnutricao/screens/tela_principal.dart';
 import 'package:appnutricao/screens/tela_testes.dart';
 import 'package:appnutricao/screens/tela_testes2.dart';
@@ -29,6 +30,7 @@ class _NutricaoAppState extends State<NutricaoApp> {
       routes: {
         '/consulta' : (context) => const ConsultaScreen(),
         '/telaprincipal' : (context) => const TelaPrincipal(),
+        // '/editrecords':(context) => const EditRecordsScreen()
       },
     );
   }
