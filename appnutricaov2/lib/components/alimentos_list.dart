@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:appnutricao/components/edit%20forms/alimento_edit.dart';
 import 'package:appnutricao/screens/consulta.dart';
 import 'package:appnutricao/screens/edit_records.dart';
 import 'package:appnutricao/themes/theme.dart';
@@ -14,24 +15,23 @@ class AlimentosList extends StatefulWidget {
   @override
   State<AlimentosList> createState() => _AlimentosListState();
 }
-  List<dynamic> listaAlimentos = [];
-  bool isLoading = true;
+
+List<dynamic> listaAlimentos = [];
+bool isLoading = true;
 
 class _AlimentosListState extends State<AlimentosList> {
-
   @override
   void initState() {
     super.initState();
-    if(searchName == ''){
-    refreshAlimentos();
-    }
-    else{
+    if (searchName == '') {
+      refreshAlimentos();
+    } else {
       searchAlimentosName(searchName);
     }
     debugPrint('..numero de items: ${listaAlimentos.length}');
   }
 
-    Future searchAlimentosName(String name) async {
+  Future searchAlimentosName(String name) async {
     setState(() => isLoading = true);
     final data = await SQLHelperAlimentos.getItemsByName(name);
     setState(() {
@@ -95,6 +95,10 @@ class _AlimentosListState extends State<AlimentosList> {
                                     fit: BoxFit.cover,
                                   );
 
+                                  AlimentoRecordEdit alimentoEdit =
+                                      AlimentoRecordEdit(
+                                          idRecord: exemplo['id']);
+
                                   return Card(
                                     margin: const EdgeInsets.all(5),
                                     elevation: 5,
@@ -132,7 +136,15 @@ class _AlimentosListState extends State<AlimentosList> {
                                           ),
                                           IconButton(
                                               onPressed: () {
-                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  EditRecordsScreen(idRecord: exemplo['id'], buttonPressed: buttonPressed,)));
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            EditRecordsScreen(
+                                                              buttonPressed:
+                                                                  buttonPressed,
+                                                              alimentoEdit:
+                                                                  alimentoEdit,
+                                                            )));
                                               },
                                               icon: const Icon(Icons.edit)),
                                           //IconButton(onPressed: () => _deleteItem(exemplo['id']), icon: const Icon(Icons.delete))

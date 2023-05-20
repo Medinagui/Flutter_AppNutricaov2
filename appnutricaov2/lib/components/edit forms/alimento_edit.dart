@@ -16,7 +16,7 @@ class _AlimentoRecordEditState extends State<AlimentoRecordEdit> {
     super.initState();
     getItem();
   }
-  late List<dynamic> item;
+  List<dynamic>? item;
   getItem() async {
     final data = await db.SQLHelperAlimentos.getItemByID(widget.idRecord);
     setState(()  {
@@ -28,9 +28,9 @@ class _AlimentoRecordEditState extends State<AlimentoRecordEdit> {
     return Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text(item[0]['nome']),
-          Text(item[0]['tipo']),
-          Text(item[0]['categoria']),
+          Text(item![0]['nome']),
+          Text(item![0]['tipo']),
+          Text(item![0]['categoria']),
           ]);
   }
 }
