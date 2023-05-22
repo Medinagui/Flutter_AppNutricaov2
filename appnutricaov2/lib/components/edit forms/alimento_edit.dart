@@ -9,6 +9,8 @@ class AlimentoRecordEdit extends StatefulWidget {
   State<AlimentoRecordEdit> createState() => _AlimentoRecordEditState();
 }
 
+bool isLoading = true;
+
 class _AlimentoRecordEditState extends State<AlimentoRecordEdit> {
 
   @override
@@ -18,14 +20,21 @@ class _AlimentoRecordEditState extends State<AlimentoRecordEdit> {
   }
   List<dynamic>? item;
   getItem() async {
-    final data = await db.SQLHelperAlimentos.getItemByID(widget.idRecord);
+    var data = await db.SQLHelperAlimentos.getItemByID(widget.idRecord);
     setState(()  {
     item = data;
+    isLoading = false;
     });
   }
   @override
   Widget build(BuildContext context) {  
-    return Column(
+    return  (isLoading)
+          ? const Center(child: Card(
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text('Carregando'),
+            ))
+            ):Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(item![0]['nome']),

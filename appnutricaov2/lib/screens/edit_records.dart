@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:appnutricao/themes/theme.dart';
 
@@ -5,29 +7,33 @@ import '../components/edit forms/alimento_edit.dart';
 
 class EditRecordsScreen extends StatefulWidget {
   EditRecordsScreen(
-      {super.key, required this.buttonPressed, required this.alimentoEdit});
+      {super.key, required this.buttonPressed, required this.idRecord});
   int buttonPressed;
-  AlimentoRecordEdit alimentoEdit;
+  int idRecord;
 
   @override
-  State<EditRecordsScreen> createState() => _EditRecordsScreenState(widgetAlimento: alimentoEdit);
+  State<EditRecordsScreen> createState() => _EditRecordsScreenState();
 }
 
+bool isLoading = true;
+
 class _EditRecordsScreenState extends State<EditRecordsScreen> {
-  Widget widgetAlimento;
-  _EditRecordsScreenState({required this.widgetAlimento});
   @override
   Widget build(BuildContext context) {
-  List<Widget?> editForms = [const Text('Teste'), widgetAlimento];
-
-    @override
-    void initState() {
-      super.initState();
-    }
+    List<Widget> widgetList = [
+      const Text('Edit Usuario'),
+      AlimentoRecordEdit(idRecord: widget.idRecord),
+      const Text('Edit Cardápio'),
+    ];
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true,
+        leading: IconButton(  
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         backgroundColor: colorsTwo.colorScheme.secondary,
         title: const Text('Editar', textAlign: TextAlign.center),
         centerTitle: true,
@@ -41,7 +47,7 @@ class _EditRecordsScreenState extends State<EditRecordsScreen> {
             margin: const EdgeInsets.fromLTRB(15, 15, 15, 15),
             child: Padding(
                 padding: const EdgeInsets.all(10),
-                child: editForms[widget.buttonPressed]),
+                child: widgetList[widget.buttonPressed]),
           ))
         ],
       ),

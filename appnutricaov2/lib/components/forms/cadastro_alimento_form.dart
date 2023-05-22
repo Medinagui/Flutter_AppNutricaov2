@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:appnutricao/screens/cadastro_updated.dart';
 import 'package:flutter/material.dart';
 import '../../db/alimentos_database.dart';
 import '../../themes/theme.dart';
@@ -123,7 +124,6 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
                   onChanged: (val) {
                     setState(() {
                       tipoAlimento = val.toString();
-                      //AlimentoCadastrado!.tipo = val.toString();
                     });
                   }),
             ),
@@ -133,14 +133,9 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ElevatedButton(
-              onPressed: ()async {
-                await createAlimento(_nomeController.text, selectedImage!.path, tipoAlimento!,categoriaRefeicao!);
-                setState(() {  
-                _nomeController.text = '';
-                imageStateHelper = null;
-                tipoAlimento = '';
-                categoriaRefeicao = '';
-                });
+              onPressed: () {
+                createAlimento(_nomeController.text, selectedImage!.path, tipoAlimento!,categoriaRefeicao!);
+                Navigator.popAndPushNamed(context, '/cadastroUpdated');
                 },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(

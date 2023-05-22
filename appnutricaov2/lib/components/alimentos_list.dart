@@ -95,9 +95,7 @@ class _AlimentosListState extends State<AlimentosList> {
                                     fit: BoxFit.cover,
                                   );
 
-                                  AlimentoRecordEdit alimentoEdit =
-                                      AlimentoRecordEdit(
-                                          idRecord: exemplo['id']);
+
 
                                   return Card(
                                     margin: const EdgeInsets.all(5),
@@ -115,17 +113,16 @@ class _AlimentosListState extends State<AlimentosList> {
                                                   minHeight: 100,
                                                   minWidth: 100),
                                               child:
-                                                  //Text('fotoBytes: ${exemplo['fotoBytes']},\nID: ${exemplo['id']}}')),
                                                   ClipOval(child: foto)),
                                           Flexible(
                                             child: Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.center,
                                               children: [
                                                 Text(
                                                   exemplo['nome'],
                                                   style: myTextThemes
-                                                      .textTheme.labelMedium,
+                                                      .textTheme.labelLarge,
                                                 ),
                                                 Text(
                                                     '${exemplo['tipo']}\n${exemplo['categoria']}',
@@ -142,8 +139,7 @@ class _AlimentosListState extends State<AlimentosList> {
                                                             EditRecordsScreen(
                                                               buttonPressed:
                                                                   buttonPressed,
-                                                              alimentoEdit:
-                                                                  alimentoEdit,
+                                                              idRecord: exemplo['id'],
                                                             )));
                                               },
                                               icon: const Icon(Icons.edit)),
