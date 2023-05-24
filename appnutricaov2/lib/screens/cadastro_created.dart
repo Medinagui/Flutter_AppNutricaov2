@@ -4,14 +4,14 @@ import 'dart:io';
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
 
-class CadastroUpdateScreen extends StatefulWidget {
-  const CadastroUpdateScreen({super.key});
+class CadastroCreatedScreen extends StatefulWidget {
+  const CadastroCreatedScreen({super.key});
 
   @override
-  State<CadastroUpdateScreen> createState() => _CadastroUpdateScreenState();
+  State<CadastroCreatedScreen> createState() => _CadastroCreatedScreenState();
 }
 
-class _CadastroUpdateScreenState extends State<CadastroUpdateScreen> {
+class _CadastroCreatedScreenState extends State<CadastroCreatedScreen> {
   @override
   void initState()
   {
@@ -23,7 +23,7 @@ class _CadastroUpdateScreenState extends State<CadastroUpdateScreen> {
   Widget build(BuildContext context) {
       var time = const Duration(seconds: 5);
     Timer(time, () {
-    Navigator.popAndPushNamed(context, '/cadastro');  
+    Navigator.pushReplacementNamed(context, '/cadastro');  
     });
     return Container(
       color: colorsOne.colorScheme.primary,

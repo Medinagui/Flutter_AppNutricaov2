@@ -21,7 +21,7 @@ class _CadastroUserFormState extends State<CadastroUserForm> {
     return Form(
         child: Column(
       children: [
-        const MyImagePicker(),
+        MyImagePicker(),
         const SizedBox(height: 15,),
         TextFormField(
           validator: (String? value) {

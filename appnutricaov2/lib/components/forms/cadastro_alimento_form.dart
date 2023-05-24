@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:appnutricao/screens/cadastro_updated.dart';
+import 'package:appnutricao/screens/cadastro_created.dart';
 import 'package:flutter/material.dart';
 import '../../db/alimentos_database.dart';
 import '../../themes/theme.dart';
@@ -38,22 +38,7 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
     return Form(
         child: Column(
       children: [
-        const MyImagePicker(),
-        // TextFormField(
-        //   validator: (String? value) {
-        //     if (value == null || value.isEmpty) {
-        //       return 'Insira o nome da foto';
-        //     }
-        //     return null;
-        //   },
-        //   textInputAction: TextInputAction.next,
-        //   controller: _fotoController,
-        //   decoration: InputDecoration(
-        //       hintText: 'Nome da foto',
-        //       border: OutlineInputBorder(
-        //         borderSide: BorderSide(color: colorsTwo.colorScheme.secondary),
-        //       )),
-        // ),
+        MyImagePicker(),
         const SizedBox(
           height: 15,
         ),
@@ -135,7 +120,7 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
             ElevatedButton(
               onPressed: () {
                 createAlimento(_nomeController.text, selectedImage!.path, tipoAlimento!,categoriaRefeicao!);
-                Navigator.popAndPushNamed(context, '/cadastroUpdated');
+                Navigator.pushReplacementNamed(context, '/cadastroUpdated');
                 },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
