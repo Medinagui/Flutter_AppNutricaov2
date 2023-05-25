@@ -21,11 +21,14 @@ Alimento? alimentoCadastrado;
 
 class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
   final TextEditingController _nomeController = TextEditingController();
-  final TextEditingController _fotoController = TextEditingController();
 
     @override
   void initState(){
     super.initState();
+    setState(() {
+    categoriaRefeicao = null;
+    tipoAlimento = null;
+    });
   }
 
   Future<void> createAlimento(String nome,String fotoBytes, String categoria, String tipo) async {
@@ -38,7 +41,7 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
     return Form(
         child: Column(
       children: [
-        MyImagePicker(),
+        const MyImagePicker(),
         const SizedBox(
           height: 15,
         ),
@@ -80,7 +83,6 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
                   onChanged: (val) {
                     setState(() {
                       categoriaRefeicao = val.toString();
-                      // alimentoCadastrado!.categoria = val.toString();
                     });
                   }),
             ),

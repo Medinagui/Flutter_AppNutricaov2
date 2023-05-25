@@ -23,22 +23,6 @@ class _EditRecordsScreenState extends State<EditRecordsScreen> {
       AlimentoRecordEdit(idRecord: widget.idRecord),
       const Text('Edit Cardápio'),
     ];
-    
-    // userDelete(){
-    //   Navigator.pop(context);
-    // }
-    // alimentoDelete(){
-    //   Navigator.pop(context);
-    // }
-    // cardapioDelete(){
-    //   Navigator.pop(context);
-    // }
-
-    // List typeDelete = [
-    //   userDelete(),
-    //   alimentoDelete(),
-    //   cardapioDelete(),
-    // ];
 
     return Scaffold(
       appBar: AppBar(

@@ -168,7 +168,7 @@ class _AlimentoRecordEditState extends State<AlimentoRecordEdit> {
                             tipoAlimento!,
                             widget.idRecord);
 
-                            Navigator.pop(context);
+                            Navigator.pushReplacementNamed(context, '/consulta');
                             },
                         style: buttonsTheme.elevatedButtonTheme.style,
                         child: const Text(

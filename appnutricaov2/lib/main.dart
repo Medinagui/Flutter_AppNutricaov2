@@ -33,7 +33,6 @@ class _NutricaoAppState extends State<NutricaoApp> {
         '/telaprincipal' : (context) => const TelaPrincipal(),
         '/cadastro' : (context) => const CadastroScreen(),
         '/cadastroUpdated' : (context) => const CadastroCreatedScreen()
-        // '/editrecords':(context) => const EditRecordsScreen()
       },
     );
   }
