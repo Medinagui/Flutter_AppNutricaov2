@@ -1,4 +1,3 @@
-import 'package:appnutricao/db/alimentos_database.dart';
 import 'package:flutter/material.dart';
 import '../components/alimentos_list.dart';
 import '../themes/theme.dart';

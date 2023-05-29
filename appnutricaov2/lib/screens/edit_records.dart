@@ -3,6 +3,7 @@ import 'package:appnutricao/themes/theme.dart';
 import '../components/edit forms/alimento_edit.dart';
 import 'package:appnutricao/db/alimentos_database.dart';
 
+// ignore: must_be_immutable
 class EditRecordsScreen extends StatefulWidget {
   EditRecordsScreen(
       {super.key, required this.buttonPressed, required this.idRecord});

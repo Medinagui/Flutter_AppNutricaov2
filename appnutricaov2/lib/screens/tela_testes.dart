@@ -2,7 +2,6 @@ import 'package:appnutricao/screens/tela_testes2.dart';
 import 'package:flutter/material.dart';
 import '../components/forms/cadastro_alimento_form.dart';
 import '../themes/theme.dart';
-import 'package:appnutricao/db/alimentos_database.dart';
 
 class TestesScreen extends StatefulWidget {
   const TestesScreen({super.key});

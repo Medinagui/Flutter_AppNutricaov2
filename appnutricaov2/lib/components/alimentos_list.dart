@@ -1,14 +1,10 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:appnutricao/components/edit%20forms/alimento_edit.dart';
 import 'package:appnutricao/screens/consulta.dart';
 import 'package:appnutricao/screens/edit_records.dart';
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
-import '../components/classes/alimento.dart';
 import '../db/alimentos_database.dart';
-import '../screens/consulta.dart';
 
 class AlimentosList extends StatefulWidget {
   const AlimentosList({super.key});
@@ -47,14 +43,6 @@ class _AlimentosListState extends State<AlimentosList> {
       isLoading = false;
       listaAlimentos = data;
     });
-  }
-
-  void _deleteItem(int id) async {
-    await SQLHelperAlimentos.deleteItem(id);
-    // ignore: use_build_context_synchronously
-    ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Item Deletado com sucesso!')));
-    refreshAlimentos();
   }
 
   @override

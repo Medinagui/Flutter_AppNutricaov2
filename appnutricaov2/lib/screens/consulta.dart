@@ -1,5 +1,4 @@
 import 'package:appnutricao/components/alimentos_list.dart';
-import 'package:appnutricao/screens/tela_principal.dart';
 import 'package:flutter/material.dart';
 import '../components/alimentos_list.dart' as alimentos_list;
 import '../themes/theme.dart';

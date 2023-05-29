@@ -1,7 +1,3 @@
-import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:appnutricao/screens/cadastro_created.dart';
 import 'package:flutter/material.dart';
 import '../../db/alimentos_database.dart';
 import '../../themes/theme.dart';

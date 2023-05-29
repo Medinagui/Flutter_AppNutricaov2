@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
 

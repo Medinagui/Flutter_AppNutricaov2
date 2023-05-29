@@ -35,7 +35,7 @@ class _MyImagePickerState extends State<MyImagePicker> {
         this.image = imageTemporary;
       });
     } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
+      debugPrint('Failed to pick image: $e');
     }
   }
 

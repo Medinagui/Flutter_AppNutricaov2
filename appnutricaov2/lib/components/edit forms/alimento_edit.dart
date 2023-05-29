@@ -1,14 +1,12 @@
-import 'dart:io';
 
-import 'package:appnutricao/components/forms/imagepicker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:appnutricao/db/alimentos_database.dart' as db;
 
 import '../../themes/theme.dart';
 
 class AlimentoRecordEdit extends StatefulWidget {
-  AlimentoRecordEdit({super.key, required this.idRecord});
-  int idRecord;
+  const AlimentoRecordEdit({super.key, required this.idRecord});
+  final int idRecord;
 
   @override
   State<AlimentoRecordEdit> createState() => _AlimentoRecordEditState();
