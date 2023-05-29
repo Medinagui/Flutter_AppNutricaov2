@@ -72,7 +72,7 @@ class _AlimentosListState extends State<AlimentosList> {
                       children: [
                         SizedBox(
                             height:
-                                (MediaQuery.of(context).size.height * 0.8) - 35,
+                                (MediaQuery.of(context).size.height * 0.75),
                             child: ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: listaAlimentos.length,
@@ -128,11 +128,11 @@ class _AlimentosListState extends State<AlimentosList> {
                                                             EditRecordsScreen(
                                                               buttonPressed:
                                                                   buttonPressed,
-                                                              alimentoEdit: AlimentoRecordEdit(idRecord: exemplo['id'])
+                                                              alimentoEdit: AlimentoRecordEdit(idRecord: exemplo['id']),
+                                                              idRecord: exemplo['id'],
                                                             )));
                                               },
                                               icon: const Icon(Icons.edit)),
-                                          //IconButton(onPressed: () => _deleteItem(exemplo['id']), icon: const Icon(Icons.delete))
                                         ],
                                       ),
                                     ),

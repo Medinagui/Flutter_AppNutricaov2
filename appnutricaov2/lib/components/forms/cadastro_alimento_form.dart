@@ -18,17 +18,16 @@ Alimento? alimentoCadastrado;
 class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
   final TextEditingController _nomeController = TextEditingController();
 
-  @override
-  void initState() {
+    @override
+  void initState(){
     super.initState();
     setState(() {
-      categoriaRefeicao = null;
-      tipoAlimento = null;
+    categoriaRefeicao = null;
+    tipoAlimento = null;
     });
   }
 
-  Future<void> createAlimento(
-      String nome, String fotoBytes, String categoria, String tipo) async {
+  Future<void> createAlimento(String nome,String fotoBytes, String categoria, String tipo) async {
     await SQLHelperAlimentos.createItem(nome, fotoBytes, categoria, tipo);
     debugPrint('cadastrado!');
   }
@@ -118,19 +117,9 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
           children: [
             ElevatedButton(
               onPressed: () {
-                if (_nomeController.text == '' ||
-                    selectedImage!.path == '' ||
-                    tipoAlimento == null ||
-                    categoriaRefeicao == null)
-                    {
-                      var mensagem = const SnackBar(content: Text('Preencha todos os campos antes de cadastrar.'),);
-                      ScaffoldMessenger.of(context).showSnackBar(mensagem);
-                      return;
-                    }
-                  createAlimento(_nomeController.text, selectedImage!.path,
-                      tipoAlimento!, categoriaRefeicao!);
+                createAlimento(_nomeController.text, selectedImage!.path, tipoAlimento!,categoriaRefeicao!);
                 Navigator.pushReplacementNamed(context, '/cadastroUpdated');
-              },
+                },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
                       colorsOne.colorScheme.secondary)),
