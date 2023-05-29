@@ -5,6 +5,7 @@ import 'package:appnutricao/screens/edit_records.dart';
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
 import '../db/alimentos_database.dart';
+import 'edit forms/alimento_edit.dart';
 
 class AlimentosList extends StatefulWidget {
   const AlimentosList({super.key});
@@ -127,7 +128,7 @@ class _AlimentosListState extends State<AlimentosList> {
                                                             EditRecordsScreen(
                                                               buttonPressed:
                                                                   buttonPressed,
-                                                              idRecord: exemplo['id'],
+                                                              alimentoEdit: AlimentoRecordEdit(idRecord: exemplo['id'])
                                                             )));
                                               },
                                               icon: const Icon(Icons.edit)),
