@@ -72,7 +72,7 @@ class _AlimentosListState extends State<AlimentosList> {
                       children: [
                         SizedBox(
                             height:
-                                (MediaQuery.of(context).size.height * 0.75),
+                                (MediaQuery.of(context).size.height * 0.70),
                             child: ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: listaAlimentos.length,
