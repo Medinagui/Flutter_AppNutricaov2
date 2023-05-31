@@ -29,7 +29,7 @@ class _MyImagePickerState extends State<MyImagePicker> {
       await getApplicationDocumentsDirectory().then((value) => value.path);
       final imageTemporary = File(image.path);
       newImage =
-          await imageTemporary.copy('$path/Alimento - ${DateTime.now()}.jpg');
+          await imageTemporary.copy('$path/Fotos - ${DateTime.now()}.jpg');
       setState(() {
         selectedImage = newImage;
         this.image = imageTemporary;

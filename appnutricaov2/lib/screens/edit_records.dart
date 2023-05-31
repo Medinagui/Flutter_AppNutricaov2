@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:appnutricao/themes/theme.dart';
 
 import '../components/edit forms/alimento_edit.dart';
+import '../components/edit forms/user_edit.dart';
 import '../db/alimentos_database.dart';
 
 class EditRecordsScreen extends StatefulWidget {
   EditRecordsScreen(
-      {super.key, required this.buttonPressed, this.alimentoEdit, required this.idRecord});
+      {super.key, required this.buttonPressed, this.alimentoEdit, required this.idRecord, this.userEdit});
+  
   int buttonPressed;
   AlimentoRecordEdit? alimentoEdit;
+  UserEdit? userEdit;
   int idRecord;
 
   @override
@@ -18,7 +21,7 @@ class EditRecordsScreen extends StatefulWidget {
 class _EditRecordsScreenState extends State<EditRecordsScreen> {
   @override
   Widget build(BuildContext context) {
-  List<Widget?> editForms = [const Text('Teste'), widget.alimentoEdit];
+  List<Widget?> editForms = [widget.userEdit, widget.alimentoEdit];
 
     deleteDialog(){
       showDialog(context: context, builder: (context) {

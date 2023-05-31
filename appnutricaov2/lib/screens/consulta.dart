@@ -1,6 +1,7 @@
 import 'package:appnutricao/components/alimentos_list.dart';
 import 'package:flutter/material.dart';
 import '../components/alimentos_list.dart' as alimentos_list;
+import '../components/users_list.dart';
 import '../themes/theme.dart';
 import 'package:appnutricao/db/alimentos_database.dart';
 
@@ -22,7 +23,7 @@ MaterialStateProperty<Color> buttonSelected(int buttonPressed, int buttonID) {
 }
 
 List<Widget> listasDisponiveis = const [
-  Text('Lista Usuários'),
+  UsersList(),
   AlimentosList(),
   Text('Lista Cardápios'),
 ];
