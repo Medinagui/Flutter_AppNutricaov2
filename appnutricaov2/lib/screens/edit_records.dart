@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:appnutricao/themes/theme.dart';
-
 import '../components/edit forms/alimento_edit.dart';
 import '../components/edit forms/user_edit.dart';
 import '../db/alimentos_database.dart';
 
+// ignore: must_be_immutable
 class EditRecordsScreen extends StatefulWidget {
   EditRecordsScreen(
       {super.key, required this.buttonPressed, this.alimentoEdit, required this.idRecord, this.userEdit});

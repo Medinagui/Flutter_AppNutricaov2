@@ -11,6 +11,7 @@ class CadastroUserForm extends StatefulWidget {
   State<CadastroUserForm> createState() => _CadastroUserFormState();
 }
 
+var listEmails = [];
 class _CadastroUserFormState extends State<CadastroUserForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   DateTime dataSelecionada = DateTime.now();
@@ -18,10 +19,28 @@ class _CadastroUserFormState extends State<CadastroUserForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  @override
+  void initState(){
+    super.initState();
+    getItems();
+  }
+
   Future<void> createUser(String name, String email, String password,
       String imagePath, int birthDateD, int birthDateM, int birthDateA) async {
     await SQLHelperUsers.createItem(
-        name, email, password, imagePath, birthDateD, birthDateM, birthDateA);
+        name, email, password, imagePath, birthDateD, birthDateM, birthDateA, 0);
+  }
+
+  Future<void> getItems() async {
+    List<Map<String, dynamic>> items = await SQLHelperUsers.getItems();
+    List<dynamic> emails = [];
+    for(var item in items){
+      emails.add(item['email']);
+    }
+    setState(() {
+      listEmails = emails;
+    });
+
   }
 
   @override
@@ -59,7 +78,9 @@ class _CadastroUserFormState extends State<CadastroUserForm> {
                 if (value == null || value.isEmpty) {
                   return 'Insira o seu email';
                 } else if (!value.contains('@')) {
-                  return 'Insira um email valido';
+                  return 'Insira um email válido';
+                } else if (listEmails.contains(value)){
+                  return 'Email já cadastrado, insira outro email';
                 }
                 return null;
               },

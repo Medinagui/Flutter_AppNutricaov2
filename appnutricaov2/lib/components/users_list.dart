@@ -120,7 +120,7 @@ class _UsersListState extends State<UsersList> {
                                                       .textTheme.labelLarge,
                                                 ),
                                                 Text(
-                                                    '${exemplo['email']}\n${exemplo['password']}',
+                                                    '${exemplo['email']}\n${exemplo['password']}\n${exemplo['hashCode']}',
                                                     style: myTextThemes
                                                         .textTheme.labelSmall),
                                                 Text(

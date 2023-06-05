@@ -10,6 +10,7 @@ class UsersFields {
   static const String birthDateD = 'birthDateD';
   static const String birthDateM = 'birthDateM';
   static const String birthDateA = 'birthDateA';
+  static const String hash = 'hashCode';
 }
 
 class User {
@@ -20,7 +21,7 @@ class User {
   int birthDateD;
   int birthDateM;
   int birthDateA;
-
+  
   User(
       {required this.name,
       required this.email,

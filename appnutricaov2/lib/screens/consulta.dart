@@ -1,7 +1,8 @@
-import 'package:appnutricao/components/alimentos_list.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '../components/alimentos_list.dart' as alimentos_list;
-import '../components/users_list.dart';
+import '../components/users_list.dart' as users_list;
 import '../themes/theme.dart';
 import 'package:appnutricao/db/alimentos_database.dart';
 
@@ -23,18 +24,21 @@ MaterialStateProperty<Color> buttonSelected(int buttonPressed, int buttonID) {
 }
 
 List<Widget> listasDisponiveis = const [
-  UsersList(),
-  AlimentosList(),
+  users_list.UsersList(),
+  alimentos_list.AlimentosList(),
   Text('Lista Cardápios'),
+  Text('Carregando...')
 ];
 
 List<String> listaOptionsSearch = [
   'Nome do Usuário',
   'Nome do Alimento',
   'Cardápio',
+  'Carregando'
 ];
 
 String searchName = '';
+int searcher = 0;
 
 class _ConsultaScreenState extends State<ConsultaScreen> {
   Future searchAlimentosName(String name) async {
@@ -50,7 +54,7 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
   Widget build(BuildContext context) {
     final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
-        resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           automaticallyImplyLeading: true,
           backgroundColor: colorsTwo.colorScheme.secondary,
@@ -72,11 +76,11 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
                             onPressed: () {
                               setState(() {
                                 buttonPressed = 0;
+                                searchName = '';
                               });
                             },
                             style: ButtonStyle(
-                              backgroundColor:
-                                  buttonSelected(buttonPressed, 0),
+                              backgroundColor: buttonSelected(buttonPressed, 0),
                             ),
                             child: const Text('Usuário'),
                           ),
@@ -84,6 +88,7 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
                               onPressed: () {
                                 setState(() {
                                   buttonPressed = 1;
+                                  searchName = '';
                                 });
                               },
                               style: ButtonStyle(
@@ -94,6 +99,7 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
                               onPressed: () {
                                 setState(() {
                                   buttonPressed = 2;
+                                  searchName = '';
                                 });
                               },
                               style: ButtonStyle(
@@ -128,8 +134,12 @@ class _ConsultaScreenState extends State<ConsultaScreen> {
                               builder: ((context) {
                                 return const ModalSearcher();
                               })).then((value) async {
-                            await  searchAlimentosName(searchName);
-                            buttonPressed = 1;
+                            await searchAlimentosName(searchName);
+                            sleep(const Duration(milliseconds: 1000));
+
+                            setState(() {
+                              buttonPressed = searcher;
+                            });
                           });
                         },
                         icon: const Icon(
@@ -157,7 +167,7 @@ class _ModalSearcherState extends State<ModalSearcher> {
   Widget build(BuildContext context) {
     return Container(
       color: colorsOne.colorScheme.primary,
-      height: 400,
+      height: MediaQuery.of(context).size.height,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -190,9 +200,14 @@ class _ModalSearcherState extends State<ModalSearcher> {
                     onPressed: () {
                       setState(() {
                         searchName = '';
-                        buttonPressed = 0;
+                        if (buttonPressed == 0) searcher = 0;
+                        if (buttonPressed == 1) searcher = 1;
+                        buttonPressed = 3;
+                        alimentos_list.isLoading = true;
+                        users_list.isLoading = true;
                       });
                       debugPrint(searchName);
+                      sleep(const Duration(milliseconds: 500));
                       // ignore: use_build_context_synchronously
                       Navigator.pop(context);
                     },
@@ -200,7 +215,15 @@ class _ModalSearcherState extends State<ModalSearcher> {
                     child: const Text('Limpar Filtro')),
                 ElevatedButton(
                     onPressed: () {
-                      setState(() => searchName = _nomeController.text);
+                      setState(() {
+                        if (buttonPressed == 0) searcher = 0;
+                        if (buttonPressed == 1) searcher = 1;
+                        buttonPressed = 3;
+                        searchName = _nomeController.text;
+                        alimentos_list.isLoading = true;
+                        users_list.isLoading = true;
+                      });
+                      sleep(const Duration(milliseconds: 500));
                       debugPrint(searchName);
                       // ignore: use_build_context_synchronously
                       Navigator.pop(context);

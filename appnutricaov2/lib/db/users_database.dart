@@ -32,13 +32,14 @@ class SQLHelperUsers {
       ${UsersFields.birthDateD} INTEGER,
       ${UsersFields.birthDateM} INTEGER,
       ${UsersFields.birthDateA} INTEGER,
+      ${UsersFields.hash} INTEGER,
       logged INTEGER NOT NULL
     )
 ''');
   }
 
   static Future<int> createItem(String name, String email, String password,
-      String imagePath, int birthDateD, int birthDateM, int birthDateA) async {
+      String imagePath, int birthDateD, int birthDateM, int birthDateA, int logged) async {
     // await dropDB();
     final db = await SQLHelperUsers.db();
     final data = {
@@ -49,7 +50,8 @@ class SQLHelperUsers {
       UsersFields.birthDateD: birthDateD,
       UsersFields.birthDateM: birthDateM,
       UsersFields.birthDateA: birthDateA,
-      'logged': 0
+      UsersFields.hash: (email.hashCode * password.hashCode),
+      'logged': logged
     };
     final id = await db.insert('Users', data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
@@ -70,17 +72,20 @@ class SQLHelperUsers {
   }
 
   static Future<int> updateItem(String nome, String email, String password,
-      String imagePath, DateTime birthDate, int id) async {
+      String imagePath,  int birthDateD, int birthDateM, int birthDateA, int id) async {
     final db = await SQLHelperUsers.db();
 
     final item = await SQLHelperUsers.getItemByID(id);
 
     final data = {
-      'nome': nome,
+      'name': nome,
       'email': email,
       'password': password,
       'imagePath': item[0]['imagePath'],
-      'birthDate': birthDate,
+      UsersFields.birthDateD: birthDateD,
+      UsersFields.birthDateM: birthDateM,
+      UsersFields.birthDateA: birthDateA,
+      'hash': (email.hashCode * password.hashCode)
     };
 
     final result =
@@ -101,6 +106,6 @@ class SQLHelperUsers {
   static Future<List<Map<String, dynamic>>> getItemsByName(String name) async {
     final db = await SQLHelperUsers.db();
     return db
-        .rawQuery('SELECT * FROM Users WHERE nome like "%$name%" ORDER BY id');
+        .rawQuery('SELECT * FROM Users WHERE name like "%$name%" ORDER BY id');
   }
 }
