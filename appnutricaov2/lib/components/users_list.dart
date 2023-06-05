@@ -3,6 +3,7 @@ import 'package:appnutricao/screens/consulta.dart';
 import 'package:appnutricao/screens/edit_records.dart';
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../db/users_database.dart';
 import 'edit forms/alimento_edit.dart';
 import 'edit forms/user_edit.dart';
@@ -69,29 +70,35 @@ class _UsersListState extends State<UsersList> {
                         children: const [
                           SizedBox(height: 80),
                           Text(
-                              'Lista vazia.\nVá para a tela de cadastros\ne cadastre novos usuários.', textAlign: TextAlign.center,),
+                            'Lista vazia.\nVá para a tela de cadastros\ne cadastre novos usuários.',
+                            textAlign: TextAlign.center,
+                          ),
                         ],
                       ),
                     )
-                  : Column( 
+                  : Column(
                       children: [
                         SizedBox(
-                            height:
-                                (MediaQuery.of(context).size.height * 0.70),
+                            height: (MediaQuery.of(context).size.height * 0.70),
                             child: ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: listaUsers.length,
                                 itemBuilder: (context, index) {
                                   final exemplo = listaUsers[index];
+                                  final userBirth = DateFormat('dd/MM/yyyy')
+                                      .format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              exemplo['birthDate']));
 
-                                  final userBirth = '${exemplo['birthDateD'].toString()}/${exemplo['birthDateM'].toString()}/${exemplo['birthDateA'].toString()}';
+                                  final Duration userAge = DateTime.now()
+                                      .difference(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              exemplo['birthDate']));
 
                                   Image foto = Image.file(
                                     File(exemplo['imagePath']),
                                     fit: BoxFit.cover,
                                   );
-
-
 
                                   return Card(
                                     margin: const EdgeInsets.all(5),
@@ -108,12 +115,11 @@ class _UsersListState extends State<UsersList> {
                                                   maxWidth: 100,
                                                   minHeight: 100,
                                                   minWidth: 100),
-                                              child:
-                                                  ClipOval(child: foto)),
+                                              child: ClipOval(child: foto)),
                                           Flexible(
                                             child: Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   exemplo['name'],
@@ -121,27 +127,31 @@ class _UsersListState extends State<UsersList> {
                                                       .textTheme.labelLarge,
                                                 ),
                                                 Text(
-                                                    '${exemplo['email']}\n${exemplo['password']}\n${exemplo['hashCode']}',
+                                                    'Idade: ${(userAge.inDays / 365).truncate()}',
                                                     style: myTextThemes
-                                                        .textTheme.labelSmall),
-                                                Text(
-                                                    userBirth,
-                                                    style: myTextThemes
-                                                        .textTheme.labelSmall)        
+                                                        .textTheme.labelSmall)
                                               ],
                                             ),
                                           ),
                                           IconButton(
                                               onPressed: () {
-                                                Navigator.of(context).pushReplacement(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            EditRecordsScreen(
-                                                              buttonPressed:
-                                                                  buttonPressed,
-                                                              userEdit: UserEdit(idRecord: exemplo['id'],),
-                                                              idRecord: exemplo['id'],
-                                                            )));
+                                                Navigator.of(context)
+                                                    .pushReplacement(
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                EditRecordsScreen(
+                                                                  buttonPressed:
+                                                                      buttonPressed,
+                                                                  userEdit:
+                                                                      UserEdit(
+                                                                    idRecord:
+                                                                        exemplo[
+                                                                            'id'],
+                                                                  ),
+                                                                  idRecord:
+                                                                      exemplo[
+                                                                          'id'],
+                                                                )));
                                               },
                                               icon: const Icon(Icons.edit)),
                                         ],

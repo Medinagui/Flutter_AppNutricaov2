@@ -58,7 +58,7 @@ class SQLHelperAlimentos{
     return db.query('alimentos', where: 'id = ?', whereArgs: [id.toString()]);
   }
 
-  static Future<int> updateItem(String nome,String fotoBytes, String categoria, String tipo, int id) async {
+  static Future<int> updateItem(String nome, String categoria, String tipo, int id) async {
     final db = await SQLHelperAlimentos.db();
 
     final item = await SQLHelperAlimentos.getItemByID(id);

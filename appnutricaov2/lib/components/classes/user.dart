@@ -7,9 +7,7 @@ class UsersFields {
   static const String email = 'email';
   static const String password = 'password';
   static const String imagePath = 'imagePath';
-  static const String birthDateD = 'birthDateD';
-  static const String birthDateM = 'birthDateM';
-  static const String birthDateA = 'birthDateA';
+  static const String birthDate = 'birthDate';
   static const String hash = 'hashCode';
 }
 
@@ -18,27 +16,22 @@ class User {
   String email;
   String password;
   String imagePath;
-  int birthDateD;
-  int birthDateM;
-  int birthDateA;
+  int birthDate;
   
   User(
       {required this.name,
       required this.email,
       required this.password,
       required this.imagePath,
-      required this.birthDateD,
-      required this.birthDateM,
-      required this.birthDateA});
+      required this.birthDate,
+      });
 
   Map<String, dynamic> toJson() => {
         UsersFields.name: name,
         UsersFields.email: email,
         UsersFields.password: password,
         UsersFields.imagePath: imagePath,
-        UsersFields.birthDateD: birthDateD,
-        UsersFields.birthDateM: birthDateM,
-        UsersFields.birthDateA: birthDateA
+        UsersFields.birthDate: birthDate,
       };
 
   User copy({
@@ -46,7 +39,7 @@ class User {
     String? email,
     String? password,
     String? imagePath,
-    int? birthDateD,
+    int? birthDate,
     int? birthDateM,
     int? birthDateA,
   }) =>
@@ -55,18 +48,15 @@ class User {
           email: email ?? this.email,
           password: password ?? this.password,
           imagePath: imagePath ?? this.imagePath,
-          birthDateD: birthDateD ?? this.birthDateD,
-          birthDateM: birthDateM ?? this.birthDateM,
-          birthDateA: birthDateA ?? this.birthDateA);
+          birthDate: birthDate ?? this.birthDate,
+          );
 
   static User fromJson(Map<String, dynamic> json) => User(
         name: json[UsersFields.name] as String,
         email: json[UsersFields.email] as String,
         password: json[UsersFields.password] as String,
         imagePath: json[UsersFields.imagePath] as String,
-        birthDateD: json[UsersFields.birthDateD] as int,
-        birthDateM: json[UsersFields.birthDateM] as int,
-        birthDateA: json[UsersFields.birthDateA] as int,
+        birthDate: json[UsersFields.birthDate] as int,
       );
 
   @override

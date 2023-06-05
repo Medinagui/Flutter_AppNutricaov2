@@ -29,9 +29,7 @@ class SQLHelperUsers {
       ${UsersFields.email} TEXT,
       ${UsersFields.password} TEXT,
       ${UsersFields.imagePath} TEXT,
-      ${UsersFields.birthDateD} INTEGER,
-      ${UsersFields.birthDateM} INTEGER,
-      ${UsersFields.birthDateA} INTEGER,
+      ${UsersFields.birthDate} INTEGER,
       ${UsersFields.hash} INTEGER,
       logged INTEGER NOT NULL
     )
@@ -39,7 +37,7 @@ class SQLHelperUsers {
   }
 
   static Future<int> createItem(String name, String email, String password,
-      String imagePath, int birthDateD, int birthDateM, int birthDateA, int logged) async {
+      String imagePath, int birthDate, int logged) async {
     // await dropDB();
     final db = await SQLHelperUsers.db();
     final data = {
@@ -47,9 +45,7 @@ class SQLHelperUsers {
       UsersFields.email: email,
       UsersFields.password: password,
       UsersFields.imagePath: imagePath,
-      UsersFields.birthDateD: birthDateD,
-      UsersFields.birthDateM: birthDateM,
-      UsersFields.birthDateA: birthDateA,
+      UsersFields.birthDate: birthDate,
       UsersFields.hash: (email.hashCode * password.hashCode),
       'logged': logged
     };
@@ -71,21 +67,18 @@ class SQLHelperUsers {
     return db.query('Users', where: 'id = ?', whereArgs: [id.toString()]);
   }
 
-  static Future<int> updateItem(String nome, String email, String password,
-      String imagePath,  int birthDateD, int birthDateM, int birthDateA, int id) async {
+  static Future<int> updateItem(String nome, String password, int id) async {
     final db = await SQLHelperUsers.db();
 
     final item = await SQLHelperUsers.getItemByID(id);
 
     final data = {
       'name': nome,
-      'email': email,
+      'email': item[0]['email'],
       'password': password,
       'imagePath': item[0]['imagePath'],
-      UsersFields.birthDateD: birthDateD,
-      UsersFields.birthDateM: birthDateM,
-      UsersFields.birthDateA: birthDateA,
-      'hash': (email.hashCode * password.hashCode)
+      UsersFields.birthDate: item[0]['birthDate'],
+      'hashCode': (item[0]['email'].hashCode * password.hashCode)
     };
 
     final result =

@@ -26,9 +26,9 @@ class _CadastroUserFormState extends State<CadastroUserForm> {
   }
 
   Future<void> createUser(String name, String email, String password,
-      String imagePath, int birthDateD, int birthDateM, int birthDateA) async {
+      String imagePath, int birthDate) async {
     await SQLHelperUsers.createItem(
-        name, email, password, imagePath, birthDateD, birthDateM, birthDateA, 0);
+        name, email, password, imagePath, birthDate, 0);
   }
 
   Future<void> getItems() async {
@@ -118,7 +118,7 @@ class _CadastroUserFormState extends State<CadastroUserForm> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Data Selecionada:\n\n${DateFormat('dd/MM/yyyy').format(dataSelecionada)}',
+                  'Data de Nascimento:\n\n${DateFormat('dd/MM/yyyy').format(dataSelecionada)}',
                   textAlign: TextAlign.center,
                 ),
                 TextButton(
@@ -140,7 +140,7 @@ class _CadastroUserFormState extends State<CadastroUserForm> {
 
                       setState(() => dataSelecionada = newDate);
                     },
-                    child: Text('Selecione a data',
+                    child: Text('Data de nascimento',
                         style: TextStyle(
                             color: colorsTwo.colorScheme.secondary,
                             decoration: TextDecoration.underline,
@@ -157,9 +157,7 @@ class _CadastroUserFormState extends State<CadastroUserForm> {
                 ElevatedButton(
                   onPressed: () {
                     final String dataString = DateFormat('dd/MM/yyyy').format(dataSelecionada).toString();
-                    final int dia = int.parse(dataString.substring(0, 2));
-                    final int mes = int.parse(dataString.substring(3, 5));
-                    final int ano = int.parse(dataString.substring(6, 10));
+                    
                     if (selectedImage == null) {
                       _formKey.currentState!.validate();
                       String imageNull = 'Insira uma imagem\n';
@@ -175,7 +173,8 @@ class _CadastroUserFormState extends State<CadastroUserForm> {
                           _emailController.text,
                           _passwordController.text,
                           selectedImage!.path,
-                          dia, mes, ano);
+                          dataSelecionada.millisecondsSinceEpoch.abs()
+                          );
                       Navigator.pushReplacementNamed(
                           context, '/cadastroUpdated');
                       setState(() {

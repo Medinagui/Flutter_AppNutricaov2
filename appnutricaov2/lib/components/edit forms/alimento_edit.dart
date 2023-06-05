@@ -38,10 +38,10 @@ class _AlimentoRecordEditState extends State<AlimentoRecordEdit> {
     });
   }
 
-  ediItem(String nome, String fotoBytes, String categoria, String tipo,
+  ediItem(String nome, String categoria, String tipo,
       int id) async {
     await db.SQLHelperAlimentos.updateItem(
-        nome, fotoBytes, categoria, tipo, id);
+        nome, categoria, tipo, id);
   }
 
   @override
@@ -158,7 +158,6 @@ class _AlimentoRecordEditState extends State<AlimentoRecordEdit> {
 
                           ediItem(
                             nameController.text,
-                            'teste',
                             categoriaRefeicao!,
                             tipoAlimento!,
                             widget.idRecord);
