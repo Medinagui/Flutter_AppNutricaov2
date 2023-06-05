@@ -5,6 +5,7 @@ import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
 import '../db/users_database.dart';
 import 'edit forms/alimento_edit.dart';
+import 'edit forms/user_edit.dart';
 
 class UsersList extends StatefulWidget {
   const UsersList({super.key});
@@ -138,7 +139,7 @@ class _UsersListState extends State<UsersList> {
                                                             EditRecordsScreen(
                                                               buttonPressed:
                                                                   buttonPressed,
-                                                              alimentoEdit: AlimentoRecordEdit(idRecord: exemplo['id']),
+                                                              userEdit: UserEdit(idRecord: exemplo['id'],),
                                                               idRecord: exemplo['id'],
                                                             )));
                                               },

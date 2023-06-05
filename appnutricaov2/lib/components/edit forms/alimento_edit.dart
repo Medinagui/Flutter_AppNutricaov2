@@ -59,9 +59,6 @@ class _AlimentoRecordEditState extends State<AlimentoRecordEdit> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // MyImagePicker(
-                //   receivedImage: File(item![0]['fotoBytes']),
-                // ),
                 const Text('Fotos não são editáveis'),
                 const SizedBox(
                   height: 60,
