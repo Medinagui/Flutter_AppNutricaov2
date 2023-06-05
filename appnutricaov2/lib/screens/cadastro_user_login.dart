@@ -1,3 +1,4 @@
+import 'package:appnutricao/components/forms/cadastro_user_form.dart';
 import 'package:flutter/material.dart';
 import '../components/login_cadastro_form.dart';
 import '../themes/theme.dart';
@@ -16,37 +17,28 @@ class _CadastroUserLoginState extends State<CadastroUserLogin> {
   Widget build(BuildContext context) {
     return
         // BackGround
-        Scaffold(
-      body: Column(
-        children: <Widget>[
-          const Flexible(
-            fit: FlexFit.tight,
-            flex: 15,
-            child: SizedBox(
-              height: 1,
+      Scaffold(
+        appBar: AppBar(
+        automaticallyImplyLeading: true,
+        backgroundColor: colorsTwo.colorScheme.secondary,
+        title: const Text('Criar Usuário', textAlign: TextAlign.center),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(15),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: MediaQuery.of(context).size.width,
+            minHeight: MediaQuery.of(context).size.height * 0.872,
+          ),
+          child: const Card(
+            child: Padding(
+              padding:  EdgeInsets.all(15),
+              child: CadastroUserForm()
+                  ),
             ),
           ),
-          // CARD LOGIN
-          Flexible(
-              fit: FlexFit.tight,
-              flex: 70,
-              child: Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                  color: colorsThree.colorScheme.primary,
-                  margin: const EdgeInsets.fromLTRB(25, 0, 25, 0),
-                  elevation: 10,
-                  child: const Padding(
-                    padding: EdgeInsets.fromLTRB(10, 25, 10, 0),
-                child: LoginCadastroForm()
-              ))),
-           const Flexible(
-              fit: FlexFit.tight,
-              flex: 15,
-              child: SizedBox(
-                height: 1,
-              )),
-        ],
-      ),
+        ),
       backgroundColor: colorsOne.colorScheme.primary,
     );
   }

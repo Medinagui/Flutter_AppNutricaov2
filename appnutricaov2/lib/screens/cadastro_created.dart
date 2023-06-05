@@ -19,9 +19,9 @@ class _CadastroCreatedScreenState extends State<CadastroCreatedScreen> {
 
   @override
   Widget build(BuildContext context) {
-      var time = const Duration(seconds: 5);
+    var time = const Duration(seconds: 5);
     Timer(time, () {
-    Navigator.pushReplacementNamed(context, '/cadastro');  
+    Navigator.pop(context);
     });
     return Container(
       color: colorsOne.colorScheme.primary,
