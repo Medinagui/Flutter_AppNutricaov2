@@ -1,26 +1,44 @@
+import 'package:appnutricao/screens/consulta.dart';
+import 'package:appnutricao/screens/creditos.dart';
+import 'package:appnutricao/screens/login.dart';
 import 'package:flutter/material.dart';
-
+import 'package:appnutricao/db/users_database.dart' as db;
 import '../components/buttons/principal_button.dart';
-import '../components/classes/screens_list.dart';
 import '../themes/theme.dart';
+import 'cadastro.dart';
 
 class TelaPrincipal extends StatefulWidget {
-  const TelaPrincipal({super.key});
-
+  TelaPrincipal({super.key, required this.arg});
+  int arg;
   @override
   State<TelaPrincipal> createState() => _TelaPrincipalState();
 }
 
+List<Map<String, dynamic>> user = [];
+
 class _TelaPrincipalState extends State<TelaPrincipal> {
+
+  @override
+  void initState() {
+    super.initState();
+    getUser(widget.arg);
+  }
+
+  getUser(int id) async {
+    var thisUser =  await db.SQLHelperUsers.getItemByID(id);
+    setState(() {
+      user = thisUser;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-
-
+    var arg = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: colorsTwo.colorScheme.secondary,
-        title: const Text('Tela Principal', textAlign: TextAlign.center),
+        title: Text('Olá, ${user[0]['name']}!', textAlign: TextAlign.center),
         centerTitle: true,
       ),
       body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -32,43 +50,43 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                       PrincipalScreenButton(
+                  children: const [
+                     PrincipalScreenButton(
                       icon: Icons.app_registration,
                       label: 'Cadastro',
-                      screen: screenList[4],
+                      screen: CadastroScreen(),
                     ),
-                    const SizedBox(
+                     SizedBox(
                       height: 10,
                     ),
                     PrincipalScreenButton(
                       icon: Icons.search,
                       label: 'Consulta',
-                      screen: screenList[5],
+                      screen: ConsultaScreen(),
                     ),
-                    const SizedBox(
+                   SizedBox(
                       height: 10,
                     ),
                     PrincipalScreenButton(
                       icon: Icons.share,
                       label: 'Compartilhar',
-                      screen: screenList[3],
+                      screen: CreditosScreen(),
                     ),
-                    const SizedBox(
+                     SizedBox(
                       height: 10,
                     ),
                     PrincipalScreenButton(
                       icon: Icons.emoji_events,
                       label: 'Créditos',
-                      screen: screenList[3],
+                      screen: CreditosScreen(),
                     ),
-                    const SizedBox(
+                     SizedBox(
                       height: 10,
                     ),
                     PrincipalScreenButton(
                       icon: Icons.logout,
                       label: 'Logout',
-                      screen: screenList[0],
+                      screen: LoginScreen(),
                     ),
                   ]),
             ),

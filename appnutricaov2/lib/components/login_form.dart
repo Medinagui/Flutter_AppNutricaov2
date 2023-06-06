@@ -131,10 +131,7 @@ class _LoginFormState extends State<LoginForm> {
                               var loginHash = email.hashCode * password.hashCode;
                               if(verifyHash(loginHash)){
                                   Navigator.of(context)
-                                  .push(MaterialPageRoute(
-                                builder: (context) =>
-                                    const TelaPrincipal(),
-                              ));
+                                  .pushReplacement(MaterialPageRoute(builder: (BuildContext context) =>  TelaPrincipal(arg: UserToLogin!,)));
                               } else
                               {
                                 SnackBar snackbar = const SnackBar(content: Text('Usuário não encontrado. Tente Novamente.'),);

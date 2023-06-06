@@ -10,7 +10,7 @@ class CadastroCreatedScreen extends StatefulWidget {
 }
 
 class _CadastroCreatedScreenState extends State<CadastroCreatedScreen> {
-
+  
 
   @override
   void initState()

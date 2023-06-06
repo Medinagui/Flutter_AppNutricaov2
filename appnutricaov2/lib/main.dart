@@ -30,7 +30,6 @@ class _NutricaoAppState extends State<NutricaoApp> {
       routes: {
         '/login' : (context) => const LoginScreen(),
         '/consulta' : (context) => const ConsultaScreen(),
-        '/telaprincipal' : (context) => const TelaPrincipal(),
         '/cadastro' : (context) => const CadastroScreen(),
         '/cadastroUpdated' : (context) => const CadastroCreatedScreen(),
         '/cadastroUserLogin': (context) => const CadastroUserLogin()
