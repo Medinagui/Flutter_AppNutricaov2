@@ -157,7 +157,6 @@ class _CadastroUserFormState extends State<CadastroUserForm> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    final String dataString = DateFormat('dd/MM/yyyy').format(dataSelecionada).toString();
                     
                     if (selectedImage == null) {
                       _formKey.currentState!.validate();

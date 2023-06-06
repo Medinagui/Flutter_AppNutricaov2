@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../screens/cadastro_user_login.dart';
 import '../screens/tela_principal.dart';
 import '../themes/theme.dart';
 import 'package:appnutricao/db/users_database.dart' as db;
@@ -14,7 +13,8 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  List<Map<int, int>> myHashList = [];
+  List<Map<String, int>> myHashList = [];
+  int? UserToLogin = 0;
 
   @override
   void initState() {
@@ -25,19 +25,29 @@ class _LoginFormState extends State<LoginForm> {
   Future<void> getHashs() async {
     List<Map<String, dynamic>> items = await db.SQLHelperUsers.getItems();
     for(var item in items){
-      myHashList.add({item['id']: item['hashCode']});
+      Map<String, int> mapItem = {
+        'id': item['id'],
+        'hash': item['hashCode']};
+      debugPrint(mapItem.toString());
+      myHashList.add(mapItem);
     }
   }
 
   bool verifyHash(int loginHash){
+    debugPrint('loginHash: ${loginHash.toString()}');
+    bool result = false;
     for(var map in myHashList){
       if(map.containsKey('id')){
-        if(map['hashCode'] == loginHash){
-          return true;
+        if(map['hash'] == loginHash){
+          setState(() {
+            result = true;
+            UserToLogin = map['id'];
+          });
         }
       }
     }
-    return false;
+    debugPrint(UserToLogin.toString());
+    return result;
   }
 
   @override
