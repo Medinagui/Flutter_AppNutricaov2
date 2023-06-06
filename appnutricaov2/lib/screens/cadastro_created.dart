@@ -10,6 +10,8 @@ class CadastroCreatedScreen extends StatefulWidget {
 }
 
 class _CadastroCreatedScreenState extends State<CadastroCreatedScreen> {
+
+
   @override
   void initState()
   {
@@ -20,8 +22,15 @@ class _CadastroCreatedScreenState extends State<CadastroCreatedScreen> {
   @override
   Widget build(BuildContext context) {
     var time = const Duration(seconds: 5);
+    var arg = ModalRoute.of(context)!.settings.arguments as String;
     Timer(time, () {
-    Navigator.pop(context);
+    if (arg == 'login'){
+    Navigator.pushReplacementNamed(context, '/login');
+    }
+    else
+    {
+    Navigator.pushReplacementNamed(context, '/cadastro');
+    }
     });
     return Container(
       color: colorsOne.colorScheme.primary,

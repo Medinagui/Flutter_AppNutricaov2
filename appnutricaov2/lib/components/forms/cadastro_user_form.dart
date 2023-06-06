@@ -5,7 +5,8 @@ import '../../themes/theme.dart';
 import 'imagepicker/image_picker.dart';
 
 class CadastroUserForm extends StatefulWidget {
-  const CadastroUserForm({super.key});
+  const CadastroUserForm({super.key, required this.argument});
+  final String argument;
 
   @override
   State<CadastroUserForm> createState() => _CadastroUserFormState();
@@ -176,7 +177,7 @@ class _CadastroUserFormState extends State<CadastroUserForm> {
                           dataSelecionada.millisecondsSinceEpoch.abs()
                           );
                       Navigator.pushReplacementNamed(
-                          context, '/cadastroUpdated');
+                          context, '/cadastroUpdated', arguments: widget.argument);
                       setState(() {
                         selectedImage = null;
                       });

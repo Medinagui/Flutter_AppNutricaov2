@@ -101,4 +101,45 @@ class SQLHelperUsers {
     return db
         .rawQuery('SELECT * FROM Users WHERE name like "%$name%" ORDER BY id');
   }
+
+    static Future<int> userLogin(int id) async {
+    final db = await SQLHelperUsers.db();
+
+    final item = await SQLHelperUsers.getItemByID(id);
+
+    final data = {
+      'name': item[0]['name'],
+      'email': item[0]['email'],
+      'password': item[0]['password'],
+      'imagePath': item[0]['imagePath'],
+      UsersFields.birthDate: item[0]['birthDate'],
+      'hashCode': item[0]['hashCode'],
+      'logged': 1
+    };
+
+    final result =
+        await db.update('Users', data, where: 'id = ?', whereArgs: [id]);
+    return result;
+  }
+
+    static Future<int> userLogout(id) async {
+    final db = await SQLHelperUsers.db();
+
+    final item = await SQLHelperUsers.getItemByID(id);
+
+    final data = {
+      'name': item[0]['name'],
+      'email': item[0]['email'],
+      'password': item[0]['password'],
+      'imagePath': item[0]['imagePath'],
+      UsersFields.birthDate: item[0]['birthDate'],
+      'hashCode': item[0]['hashCode'],
+      'logged': 0
+    };
+
+    final result =
+        await db.update('Users', data, where: 'id = ?', whereArgs: [id]);
+    return result;
+  }
+
 }

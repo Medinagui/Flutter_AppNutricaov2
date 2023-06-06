@@ -1,5 +1,6 @@
 import 'package:appnutricao/screens/cadastro.dart';
 import 'package:appnutricao/screens/cadastro_created.dart';
+import 'package:appnutricao/screens/cadastro_user_login.dart';
 import 'package:appnutricao/screens/consulta.dart';
 import 'package:appnutricao/screens/login.dart';
 import 'package:appnutricao/screens/tela_principal.dart';
@@ -31,7 +32,8 @@ class _NutricaoAppState extends State<NutricaoApp> {
         '/consulta' : (context) => const ConsultaScreen(),
         '/telaprincipal' : (context) => const TelaPrincipal(),
         '/cadastro' : (context) => const CadastroScreen(),
-        '/cadastroUpdated' : (context) => const CadastroCreatedScreen()
+        '/cadastroUpdated' : (context) => const CadastroCreatedScreen(),
+        '/cadastroUserLogin': (context) => const CadastroUserLogin()
       },
     );
   }

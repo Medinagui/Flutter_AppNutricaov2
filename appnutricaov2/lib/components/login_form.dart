@@ -14,7 +14,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  List<int> myHashList = [];
+  List<Map<int, int>> myHashList = [];
 
   @override
   void initState() {
@@ -25,9 +25,20 @@ class _LoginFormState extends State<LoginForm> {
   Future<void> getHashs() async {
     List<Map<String, dynamic>> items = await db.SQLHelperUsers.getItems();
     for(var item in items){
-      myHashList.add(item['hashCode']);
+      myHashList.add({item['id']: item['hashCode']});
     }
-  } 
+  }
+
+  bool verifyHash(int loginHash){
+    for(var map in myHashList){
+      if(map.containsKey('id')){
+        if(map['hashCode'] == loginHash){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,12 +109,7 @@ class _LoginFormState extends State<LoginForm> {
                                             TextButton(
                           style: buttonsTheme.textButtonTheme.style,
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const CadastroUserLogin(),
-                              ),
-                            );
+                            Navigator.pushReplacementNamed(context, '/cadastroUserLogin');
                           },
                           child: const Text('Cadastrar')),
                       ElevatedButton(
@@ -113,7 +119,7 @@ class _LoginFormState extends State<LoginForm> {
                               String email = emailController.text;
                               String password= passwordController.text;
                               var loginHash = email.hashCode * password.hashCode;
-                              if(myHashList.contains(loginHash)){
+                              if(verifyHash(loginHash)){
                                   Navigator.of(context)
                                   .push(MaterialPageRoute(
                                 builder: (context) =>

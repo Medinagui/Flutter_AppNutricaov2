@@ -1,6 +1,5 @@
 import 'package:appnutricao/components/forms/cadastro_user_form.dart';
 import 'package:flutter/material.dart';
-import '../components/login_cadastro_form.dart';
 import '../themes/theme.dart';
 
 class CadastroUserLogin extends StatefulWidget {
@@ -19,7 +18,9 @@ class _CadastroUserLoginState extends State<CadastroUserLogin> {
         // BackGround
       Scaffold(
         appBar: AppBar(
-        automaticallyImplyLeading: true,
+        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: (){
+          Navigator.pushReplacementNamed(context, '/login');
+        },),
         backgroundColor: colorsTwo.colorScheme.secondary,
         title: const Text('Criar Usuário', textAlign: TextAlign.center),
         centerTitle: true,
@@ -34,7 +35,7 @@ class _CadastroUserLoginState extends State<CadastroUserLogin> {
           child: const Card(
             child: Padding(
               padding:  EdgeInsets.all(15),
-              child: CadastroUserForm()
+              child: CadastroUserForm(argument: 'login',)
                   ),
             ),
           ),

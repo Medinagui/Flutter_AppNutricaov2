@@ -12,7 +12,7 @@ class CadastroScreen extends StatefulWidget {
 }
 
 List<Widget> cadastroForms = const [
-  CadastroUserForm(),
+  CadastroUserForm(argument: 'none',),
   CadastroAlimentoForm(),
   CadastroCardapioForm()
 ];
