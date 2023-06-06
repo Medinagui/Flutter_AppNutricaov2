@@ -1,3 +1,4 @@
+import 'package:appnutricao/screens/compartilhar.dart';
 import 'package:appnutricao/screens/consulta.dart';
 import 'package:appnutricao/screens/creditos.dart';
 import 'package:appnutricao/screens/login.dart';
@@ -73,7 +74,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     const PrincipalScreenButton(
                       icon: Icons.share,
                       label: 'Compartilhar',
-                      screen: CreditosScreen(),
+                      screen: CompartilharScreen(),
                       logout: false,
                     ),
                     const SizedBox(

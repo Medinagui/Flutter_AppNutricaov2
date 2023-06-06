@@ -4,19 +4,19 @@ import 'package:appnutricao/screens/consulta.dart';
 import 'package:appnutricao/screens/edit_records.dart';
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
-import '../db/alimentos_database.dart';
-import 'edit forms/alimento_edit.dart';
+import '../../db/alimentos_database.dart';
+import '../edit forms/alimento_edit.dart';
 
-class AlimentosList extends StatefulWidget {
-  const AlimentosList({super.key});
+class ShareAlimentosList extends StatefulWidget {
+  const ShareAlimentosList({super.key});
   @override
-  State<AlimentosList> createState() => _AlimentosListState();
+  State<ShareAlimentosList> createState() => _ShareAlimentosListState();
 }
 
 List<dynamic> listaAlimentos = [];
 bool isLoading = true;
 
-class _AlimentosListState extends State<AlimentosList> {
+class _ShareAlimentosListState extends State<ShareAlimentosList> {
   @override
   void initState() {
     super.initState();
@@ -127,17 +127,9 @@ class _AlimentosListState extends State<AlimentosList> {
                                           ),
                                           IconButton(
                                               onPressed: () {
-                                                Navigator.of(context).pushReplacement(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            EditRecordsScreen(
-                                                              buttonPressed:
-                                                                  buttonPressed,
-                                                              alimentoEdit: AlimentoRecordEdit(idRecord: exemplo['id']),
-                                                              idRecord: exemplo['id'],
-                                                            )));
+                                                
                                               },
-                                              icon: const Icon(Icons.edit)),
+                                              icon: const Icon(Icons.share)),
                                         ],
                                       ),
                                     ),

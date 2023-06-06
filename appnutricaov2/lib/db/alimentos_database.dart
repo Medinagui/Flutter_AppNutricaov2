@@ -29,19 +29,15 @@ class SQLHelperAlimentos{
       ${AlimentosFields.nome} TEXT,
       ${AlimentosFields.fotoBytes} TEXT,
       ${AlimentosFields.categoria} TEXT,
-      ${AlimentosFields.tipo} TEXT
+      ${AlimentosFields.tipo} TEXT,
+      ${AlimentosFields.pdfPath} TEXT
     )
 ''');
   }
 
-  static Future<int> createItem(String nome,String fotoBytes, String categoria, String tipo) async {
+  static Future<int> createItem(Alimento alimento) async {
     final db = await SQLHelperAlimentos.db();
-    final data = {
-      AlimentosFields.nome: nome,
-      AlimentosFields.fotoBytes: fotoBytes,
-      AlimentosFields.categoria: categoria,
-      AlimentosFields.tipo: tipo
-      };
+    final data = alimento.toJson();
     final id = await db.insert('alimentos', data, conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return id;
   }

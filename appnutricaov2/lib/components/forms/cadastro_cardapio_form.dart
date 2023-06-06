@@ -1,5 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-
+import 'package:appnutricao/db/alimentos_database.dart' as db_alimentos;
 import '../../themes/theme.dart';
 
 class CadastroCardapioForm extends StatefulWidget {
@@ -12,14 +13,6 @@ class CadastroCardapioForm extends StatefulWidget {
 class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
   String? categoriaRefeicao;
   String? tipoAlimento;
-
-  List<DropdownMenuItem> usersList = const [
-    DropdownMenuItem(value: 'Usuário 1', child: Text('Usuário 1')),
-    DropdownMenuItem(value: 'Usuário 2', child: Text('Usuário 2')),
-    DropdownMenuItem(value: 'Usuário 3', child: Text('Usuário 3')),
-    DropdownMenuItem(value: 'Usuário 4', child: Text('Usuário 4')),
-    DropdownMenuItem(value: 'Usuário 5', child: Text('Usuário 5')),
-  ];
 
   List<String> alimentosCafe = [
     "Café\n",
@@ -48,25 +41,14 @@ class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Card(
+        const Card(
           elevation: 5,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton(
-                  iconSize: 30,
-                  borderRadius: BorderRadius.circular(10),
-                  isExpanded: true,
-                  hint: const Text('Usuário'),
-                  value: categoriaRefeicao,
-                  items: usersList,
-                  onChanged: (val) {
-                    setState(() {
-                      categoriaRefeicao = val.toString();
-                    });
-                  }),
-            ),
-          ),
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Você está cadastrando um cardápio \npara o usuário Usuário X.\nCaso queira cadastrar para outro usuário, \nfaça o login com o usuário que deseja cadastrar.',
+                textAlign: TextAlign.center,
+              )),
         ),
         const SizedBox(
           height: 10,
@@ -108,7 +90,13 @@ class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
               ),
             ),
             TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return ModalAlimentoSelector(categoriaRefeicao: 1);
+                      });
+                },
                 child: Text('Buscar\nAlimentos',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -158,7 +146,13 @@ class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
               ),
             ),
             TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return ModalAlimentoSelector(categoriaRefeicao: 2);
+                      });
+                },
                 child: Text('Buscar\nAlimentos',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -208,7 +202,13 @@ class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
               ),
             ),
             TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return ModalAlimentoSelector(categoriaRefeicao: 3);
+                      });
+                },
                 child: Text('Buscar\nAlimentos',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -227,13 +227,184 @@ class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
             ElevatedButton(
               onPressed: () {},
               style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(colorsOne.colorScheme.secondary)),
+                  backgroundColor: MaterialStateProperty.all(
+                      colorsOne.colorScheme.secondary)),
               child: const Text('Cadastrar'),
             ),
           ],
         )
       ],
     ));
+  }
+}
+
+// ignore: must_be_immutable
+class ModalAlimentoSelector extends StatefulWidget {
+  ModalAlimentoSelector({super.key, required this.categoriaRefeicao});
+  int categoriaRefeicao;
+  @override
+  State<ModalAlimentoSelector> createState() => _ModalAlimentoSelectorState();
+}
+
+bool? isLoading;
+List<Map<String, dynamic>> listaAlimentos = [];
+List<Map<String, dynamic>> listaAlimentosSelected = [];
+List<Map<String, dynamic>> listaAlimentosCreate = [];
+
+class _ModalAlimentoSelectorState extends State<ModalAlimentoSelector> {
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      isLoading = true;
+    });
+    verifyAlimentos(widget.categoriaRefeicao);
+  }
+
+  Future<void> verifyAlimentos(id) async {
+    listaAlimentos.clear();
+    listaAlimentosSelected.clear();
+    List<Map<String, dynamic>> alimentos =
+        await db_alimentos.SQLHelperAlimentos.getItems();
+    if (id == 1) {
+      for (var alimento in alimentos) {
+        debugPrint(alimento['categoria'].toString());
+        if (alimento['categoria'].toString() == 'Café da Manhã') {
+          Map<String, dynamic> alimentoAdd = {
+            'id': alimento['id'],
+            'nome': alimento['nome'].toString(),
+            'imagePath': alimento['fotoBytes'],
+            'categoria': alimento['categoria'],
+            'tipo': alimento['tipo'],
+          };
+          listaAlimentos.add(alimentoAdd);
+          debugPrint(alimentoAdd.toString());
+        }
+      }
+    }
+    if (id == 2) {
+      for (var alimento in alimentos) {
+        debugPrint(alimento['categoria'].toString());
+        if (alimento['categoria'].toString() == 'Almoço') {
+          Map<String, dynamic> alimentoAdd = {
+            'id': alimento['id'],
+            'nome': alimento['nome'].toString(),
+            'imagePath': alimento['fotoBytes'],
+            'categoria': alimento['categoria'],
+            'tipo': alimento['tipo'],
+          };
+          listaAlimentos.add(alimentoAdd);
+          debugPrint(alimentoAdd.toString());
+        }
+      }
+    }
+    if (id == 3) {
+      for (var alimento in alimentos) {
+        debugPrint(alimento['categoria'].toString());
+        if (alimento['categoria'].toString() == 'Janta') {
+          listaAlimentos.add({
+            'id': alimento['id'],
+            'nome': alimento['nome'].toString(),
+            'imagePath': alimento['fotoBytes'],
+            'categoria': alimento['categoria'],
+            'tipo': alimento['tipo'],
+          });
+        }
+      }
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      color: colorsOne.colorScheme.primary,
+      child: (isLoading!)
+          ? const Text('Carregando')
+          : Padding(
+              padding: const EdgeInsets.all(10),
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                (widget.categoriaRefeicao == 1)
+                    ? const Text(
+                        'Selecione 3 alimentos para o Café da Manhã',
+                        style: TextStyle(color: Colors.white),
+                      )
+                    : (widget.categoriaRefeicao == 2)
+                        ? const Text(
+                            'Selecione 5 alimentos para o Almoço',
+                            style: TextStyle(color: Colors.white),
+                          )
+                        : const Text(
+                            'Selecione 4 alimentos para a Janta',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.45,
+                  child: ListView.builder(
+                      itemCount: listaAlimentos.length,
+                      itemBuilder: (context, index) {
+                        var exemplo = listaAlimentos[index];
+                        Image foto = Image.file(
+                          File(exemplo['imagePath']),
+                          fit: BoxFit.cover,
+                        );
+                        return Card(
+                          elevation: 5,
+                          margin: const EdgeInsets.only(
+                              left: 10, right: 10, top: 10),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ConstrainedBox(
+                                      constraints: const BoxConstraints(
+                                          maxHeight: 90,
+                                          maxWidth: 90,
+                                          minHeight: 90,
+                                          minWidth: 90),
+                                      child: ClipOval(child: foto)),
+                                  Flexible(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          exemplo['nome'],
+                                          style:
+                                              myTextThemes.textTheme.labelLarge,
+                                        ),
+                                        Text(
+                                            '${exemplo['tipo']}\n${exemplo['categoria']}',
+                                            style: myTextThemes
+                                                .textTheme.labelSmall)
+                                      ],
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        // listaAlimentosSelected.add({
+                                        //   'id': exemplo['id'],
+                                        //   'nome': exemplo['nome'].toString(),
+                                        //   'imagePath': exemplo['fotoBytes'],
+                                        //   'categoria': exemplo['categoria'],
+                                        //   'tipo': exemplo['tipo'],
+                                        // });
+
+                                      },
+                                      child: const Text('Adicionar'))
+                                ]),
+                          ),
+                        );
+                      }),
+                )
+              ]),
+            ),
+    );
   }
 }

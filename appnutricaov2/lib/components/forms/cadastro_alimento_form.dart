@@ -1,8 +1,13 @@
+import 'dart:typed_data';
+import 'package:flutter/services.dart' show rootBundle;
+
 import 'package:flutter/material.dart';
 import '../../db/alimentos_database.dart';
 import '../../themes/theme.dart';
 import '../classes/alimento.dart';
 import 'imagepicker/image_picker.dart';
+import '../mobile.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class CadastroAlimentoForm extends StatefulWidget {
   const CadastroAlimentoForm({super.key});
@@ -28,9 +33,36 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
     });
   }
 
-  Future<void> createAlimento(
-      String nome, String fotoBytes, String categoria, String tipo) async {
-    await SQLHelperAlimentos.createItem(nome, fotoBytes, categoria, tipo);
+  Future<String> _createPDF() async {
+    PdfDocument document = PdfDocument();
+    final page = document.pages.add();
+
+    page.graphics.drawString('TESTE TESTE TESTE TESTE PDF PDF PDF PDF',
+        PdfStandardFont(PdfFontFamily.helvetica, 30));
+    page.graphics.drawImage(
+        PdfBitmap(await _readImageData('images/Nature - logo.jpg')),
+        const Rect.fromLTWH(0, 100, 440, 550));
+
+    List<int> bytes = document.save();
+    document.dispose();
+
+    var caminho = saveFile(bytes, 'Alimento - ${DateTime.now()}');
+    return caminho;
+  }
+
+  Future<Uint8List> _readImageData(String imagePath) async {
+    final data = await rootBundle.load(imagePath);
+    return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+  }
+
+  Future<void> createAlimento(String nome, String fotoBytes, String categoria,
+      String tipo, String pdfPath) async {
+    await SQLHelperAlimentos.createItem(Alimento(
+        nome: nome,
+        fotoBytes: fotoBytes,
+        categoria: categoria,
+        tipo: tipo,
+        pdfPath: pdfPath));
     debugPrint('cadastrado!');
   }
 
@@ -154,10 +186,12 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
                     }
 
                     if (_formKey.currentState!.validate()) {
+                      var caminhoPdf = _createPDF;
                       createAlimento(_nomeController.text, selectedImage!.path,
-                          tipoAlimento!, categoriaRefeicao!);
+                          categoriaRefeicao!, tipoAlimento!, caminhoPdf.toString());
                       Navigator.pushReplacementNamed(
-                          context, '/cadastroUpdated');
+                          context, '/cadastroUpdated',
+                          arguments: 'consulta');
                       setState(() {
                         selectedImage = null;
                       });
