@@ -36,6 +36,7 @@ dependencies:
   open_file: ^3.1.0
   sqflite: ^2.0.0+3
   syncfusion_flutter_pdf: ^18.4.47-beta
+  share: ^0.6.5+4
 
 
 

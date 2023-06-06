@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/services.dart' show rootBundle;
 
@@ -33,25 +34,34 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
     });
   }
 
-  Future<String> _createPDF() async {
+  Future<void> _createPDF(
+      String nome, String imgPath, String categoria, String refeicao) async {
     PdfDocument document = PdfDocument();
     final page = document.pages.add();
 
     page.graphics.drawString('TESTE TESTE TESTE TESTE PDF PDF PDF PDF',
         PdfStandardFont(PdfFontFamily.helvetica, 30));
     page.graphics.drawImage(
-        PdfBitmap(await _readImageData('images/Nature - logo.jpg')),
+        PdfBitmap(await _readImageData(imgPath)),
         const Rect.fromLTWH(0, 100, 440, 550));
 
     List<int> bytes = document.save();
     document.dispose();
 
-    var caminho = saveFile(bytes, 'Alimento - ${DateTime.now()}');
-    return caminho;
+    var caminho = await saveFile(bytes, 'Alimento - ${DateTime.now()}');
+
+    createAlimento(nome, imgPath, categoria, refeicao, caminho.toString());
+    debugPrint('Objeto Criado');
+    // ignore: use_build_context_synchronously
+    Navigator.pushReplacementNamed(context, '/cadastroUpdated',
+        arguments: 'consulta');
+    setState(() {
+      selectedImage = null;
+    });
   }
 
   Future<Uint8List> _readImageData(String imagePath) async {
-    final data = await rootBundle.load(imagePath);
+    final ByteData data = Image.file(File('imagePath')) as ByteData;
     return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
   }
 
@@ -186,15 +196,8 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
                     }
 
                     if (_formKey.currentState!.validate()) {
-                      var caminhoPdf = _createPDF;
-                      createAlimento(_nomeController.text, selectedImage!.path,
-                          categoriaRefeicao!, tipoAlimento!, caminhoPdf.toString());
-                      Navigator.pushReplacementNamed(
-                          context, '/cadastroUpdated',
-                          arguments: 'consulta');
-                      setState(() {
-                        selectedImage = null;
-                      });
+                      _createPDF(_nomeController.text, selectedImage!.path,
+                          categoriaRefeicao!, tipoAlimento!);
                     }
                   },
                   style: ButtonStyle(

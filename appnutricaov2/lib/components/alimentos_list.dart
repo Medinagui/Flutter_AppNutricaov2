@@ -119,7 +119,7 @@ class _AlimentosListState extends State<AlimentosList> {
                                                       .textTheme.labelLarge,
                                                 ),
                                                 Text(
-                                                    '${exemplo['tipo']}\n${exemplo['categoria']}',
+                                                    '${exemplo['tipo']}\n${exemplo['categoria']}\n${exemplo['pdfPath'].toString()}',
                                                     style: myTextThemes
                                                         .textTheme.labelSmall)
                                               ],

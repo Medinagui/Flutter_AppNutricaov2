@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:share/share.dart';
 import 'package:appnutricao/screens/consulta.dart';
 import 'package:appnutricao/screens/edit_records.dart';
 import 'package:appnutricao/themes/theme.dart';
@@ -69,15 +69,16 @@ class _ShareAlimentosListState extends State<ShareAlimentosList> {
                         children: const [
                           SizedBox(height: 80),
                           Text(
-                              'Lista vazia.\nVá para a tela de cadastros\ne cadastre novos alimentos.', textAlign: TextAlign.center,),
+                            'Lista vazia.\nVá para a tela de cadastros\ne cadastre novos alimentos.',
+                            textAlign: TextAlign.center,
+                          ),
                         ],
                       ),
                     )
-                  : Column( 
+                  : Column(
                       children: [
                         SizedBox(
-                            height:
-                                (MediaQuery.of(context).size.height * 0.70),
+                            height: (MediaQuery.of(context).size.height * 0.70),
                             child: ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: listaAlimentos.length,
@@ -88,8 +89,6 @@ class _ShareAlimentosListState extends State<ShareAlimentosList> {
                                     File(exemplo['fotoBytes']),
                                     fit: BoxFit.cover,
                                   );
-
-
 
                                   return Card(
                                     margin: const EdgeInsets.all(5),
@@ -106,8 +105,7 @@ class _ShareAlimentosListState extends State<ShareAlimentosList> {
                                                   maxWidth: 100,
                                                   minHeight: 100,
                                                   minWidth: 100),
-                                              child:
-                                                  ClipOval(child: foto)),
+                                              child: ClipOval(child: foto)),
                                           Flexible(
                                             child: Column(
                                               crossAxisAlignment:
@@ -127,7 +125,7 @@ class _ShareAlimentosListState extends State<ShareAlimentosList> {
                                           ),
                                           IconButton(
                                               onPressed: () {
-                                                
+                                                Share.shareFiles([exemplo['pdfPath']], text: 'Veja esse Alimento!');
                                               },
                                               icon: const Icon(Icons.share)),
                                         ],
