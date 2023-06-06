@@ -1,27 +1,40 @@
 import 'package:flutter/material.dart';
 import '../../themes/theme.dart';
+import 'package:appnutricao/db/users_database.dart' as db;
 
 class PrincipalScreenButton extends StatelessWidget {
   final String label;
   final IconData icon;
   final Widget screen;
+  final bool logout;
+  final int? id;
 
-  const PrincipalScreenButton({
-    super.key,
-    required this.label,
-    required this.icon,
-    required this.screen
-  });
+  const PrincipalScreenButton(
+      {super.key,
+      required this.label,
+      required this.icon,
+      required this.screen,
+      required this.logout,
+      this.id});
 
   @override
   Widget build(BuildContext context) {
-
-      navCadastro(Widget toScreen) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => toScreen,
-        ),
-      );
+    Future<void> navCadastro(Widget toScreen) async {
+      if (logout) {
+        await db.SQLHelperUsers.userLogout(id);
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => toScreen,
+          ),
+        );
+      } else {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => toScreen,
+          ),
+        );
+      }
     }
 
     return Flexible(
@@ -36,9 +49,7 @@ class PrincipalScreenButton extends StatelessWidget {
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
                         colorsOne.colorScheme.secondary)),
-                onPressed: () => {
-                  navCadastro(screen)
-                  },
+                onPressed: () => {navCadastro(screen)},
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -62,7 +73,10 @@ class PrincipalScreenButton extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
               child: IconButton(
-                icon: Icon(icon, size: 75,),
+                icon: Icon(
+                  icon,
+                  size: 75,
+                ),
                 onPressed: () => navCadastro(screen),
                 color: Colors.white,
               ),

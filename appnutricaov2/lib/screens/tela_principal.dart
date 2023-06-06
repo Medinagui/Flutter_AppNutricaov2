@@ -15,6 +15,7 @@ class TelaPrincipal extends StatefulWidget {
 }
 
 List<Map<String, dynamic>> user = [];
+bool isLoading = true;
 
 class _TelaPrincipalState extends State<TelaPrincipal> {
 
@@ -28,17 +29,17 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     var thisUser =  await db.SQLHelperUsers.getItemByID(id);
     setState(() {
       user = thisUser;
+      isLoading = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var arg = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: colorsTwo.colorScheme.secondary,
-        title: Text('Olá, ${user[0]['name']}!', textAlign: TextAlign.center),
+        title: (isLoading)? const Text('Carregando...') : Text('Olá, ${user[0]['name']}!', textAlign: TextAlign.center),
         centerTitle: true,
       ),
       body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -50,43 +51,49 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                     PrincipalScreenButton(
+                  children:  [
+                    const PrincipalScreenButton(
                       icon: Icons.app_registration,
                       label: 'Cadastro',
                       screen: CadastroScreen(),
+                      logout: false,
                     ),
-                     SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    PrincipalScreenButton(
+                    const PrincipalScreenButton(
                       icon: Icons.search,
                       label: 'Consulta',
                       screen: ConsultaScreen(),
+                      logout: false,
                     ),
-                   SizedBox(
+                   const SizedBox(
                       height: 10,
                     ),
-                    PrincipalScreenButton(
+                    const PrincipalScreenButton(
                       icon: Icons.share,
                       label: 'Compartilhar',
                       screen: CreditosScreen(),
+                      logout: false,
                     ),
-                     SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    PrincipalScreenButton(
+                    const PrincipalScreenButton(
                       icon: Icons.emoji_events,
                       label: 'Créditos',
                       screen: CreditosScreen(),
+                      logout: false,
                     ),
-                     SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     PrincipalScreenButton(
                       icon: Icons.logout,
                       label: 'Logout',
-                      screen: LoginScreen(),
+                      screen: const LoginScreen(),
+                      logout: true,
+                      id: (isLoading)? 0 : user[0]['id'],
                     ),
                   ]),
             ),

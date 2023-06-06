@@ -78,7 +78,8 @@ class SQLHelperUsers {
       'password': password,
       'imagePath': item[0]['imagePath'],
       UsersFields.birthDate: item[0]['birthDate'],
-      'hashCode': (item[0]['email'].hashCode * password.hashCode)
+      'hashCode': (item[0]['email'].hashCode * password.hashCode),
+      'logged': 0
     };
 
     final result =

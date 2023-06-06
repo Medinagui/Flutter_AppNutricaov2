@@ -12,9 +12,12 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  bool _passwordVisible = false;
 
   List<Map<String, int>> myHashList = [];
-  int? UserToLogin = 0;
+  int? userToLogin = 0;
 
   @override
   void initState() {
@@ -24,36 +27,55 @@ class _LoginFormState extends State<LoginForm> {
 
   Future<void> getHashs() async {
     List<Map<String, dynamic>> items = await db.SQLHelperUsers.getItems();
-    for(var item in items){
+    for (var item in items) {
       Map<String, int> mapItem = {
         'id': item['id'],
-        'hash': item['hashCode']};
+        'hash': item['hashCode'],
+        'logged': item['logged']
+      };
       debugPrint(mapItem.toString());
       myHashList.add(mapItem);
     }
+    verifyLogged();
   }
 
-  bool verifyHash(int loginHash){
+  Future<void> userLogin(int id) async {
+    await db.SQLHelperUsers.userLogin(id);
+  }
+
+  bool verifyHash(int loginHash) {
     debugPrint('loginHash: ${loginHash.toString()}');
     bool result = false;
-    for(var map in myHashList){
-      if(map.containsKey('id')){
-        if(map['hash'] == loginHash){
+    for (var map in myHashList) {
+      if (map.containsKey('id')) {
+        if (map['hash'] == loginHash) {
           setState(() {
             result = true;
-            UserToLogin = map['id'];
+            userToLogin = map['id'];
           });
         }
       }
     }
-    debugPrint(UserToLogin.toString());
+    debugPrint(userToLogin.toString());
     return result;
+  }
+
+  verifyLogged() {
+    for (var map in myHashList) {
+      if (map.containsKey('id')) {
+        if (map['logged'] == 1) {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => TelaPrincipal(
+                    arg: map['id']!,
+                  )));
+          return;
+        }
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -63,10 +85,14 @@ class _LoginFormState extends State<LoginForm> {
             child: SizedBox(
               height: 5,
               child: Center(
-                  child: ClipOval(child: Image.asset('lib/images/Nature - logo.jpg',))),
-            )
-            ),
-            const SizedBox(height: 20,),
+                  child: ClipOval(
+                      child: Image.asset(
+                'lib/images/Nature - logo.jpg',
+              ))),
+            )),
+        const SizedBox(
+          height: 20,
+        ),
         // FORMULÁRIO
         Form(
             key: _formKey,
@@ -94,10 +120,21 @@ class _LoginFormState extends State<LoginForm> {
                     height: 25,
                   ),
                   TextFormField(
+                    obscureText: !_passwordVisible,
                     controller: passwordController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(_passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        ),
                         hintText: 'Senha',
-                        border: OutlineInputBorder(
+                        border: const OutlineInputBorder(
                           borderSide: BorderSide(
                               strokeAlign: BorderSide.strokeAlignOutside),
                         )),
@@ -108,7 +145,6 @@ class _LoginFormState extends State<LoginForm> {
                       return null;
                     },
                     textInputAction: TextInputAction.done,
-                    obscureText: true,
                   ),
                   const SizedBox(
                     height: 25,
@@ -116,10 +152,11 @@ class _LoginFormState extends State<LoginForm> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                                            TextButton(
+                      TextButton(
                           style: buttonsTheme.textButtonTheme.style,
                           onPressed: () {
-                            Navigator.pushReplacementNamed(context, '/cadastroUserLogin');
+                            Navigator.pushReplacementNamed(
+                                context, '/cadastroUserLogin');
                           },
                           child: const Text('Cadastrar')),
                       ElevatedButton(
@@ -127,17 +164,25 @@ class _LoginFormState extends State<LoginForm> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               String email = emailController.text;
-                              String password= passwordController.text;
-                              var loginHash = email.hashCode * password.hashCode;
-                              if(verifyHash(loginHash)){
-                                  Navigator.of(context)
-                                  .pushReplacement(MaterialPageRoute(builder: (BuildContext context) =>  TelaPrincipal(arg: UserToLogin!,)));
-                              } else
-                              {
-                                SnackBar snackbar = const SnackBar(content: Text('Usuário não encontrado. Tente Novamente.'),);
-                                ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                              String password = passwordController.text;
+                              var loginHash =
+                                  email.hashCode * password.hashCode;
+                              if (verifyHash(loginHash)) {
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            TelaPrincipal(
+                                              arg: userToLogin!,
+                                            )));
+                                userLogin(userToLogin!);
+                              } else {
+                                SnackBar snackbar = const SnackBar(
+                                  content: Text(
+                                      'Usuário não encontrado. Tente Novamente.'),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackbar);
                               }
-                              
                             }
                           },
                           child: const Text('Entrar')),
@@ -150,11 +195,9 @@ class _LoginFormState extends State<LoginForm> {
             fit: FlexFit.tight,
             flex: 10,
             child: SizedBox(
-            height: 5,
+              height: 5,
             )),
       ],
     );
   }
 }
-
-

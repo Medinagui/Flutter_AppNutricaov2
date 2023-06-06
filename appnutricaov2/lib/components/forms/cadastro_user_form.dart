@@ -13,15 +13,17 @@ class CadastroUserForm extends StatefulWidget {
 }
 
 var listEmails = [];
+
 class _CadastroUserFormState extends State<CadastroUserForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   DateTime dataSelecionada = DateTime.now();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _passwordVisible = false;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     getItems();
   }
@@ -35,13 +37,12 @@ class _CadastroUserFormState extends State<CadastroUserForm> {
   Future<void> getItems() async {
     List<Map<String, dynamic>> items = await SQLHelperUsers.getItems();
     List<dynamic> emails = [];
-    for(var item in items){
+    for (var item in items) {
       emails.add(item['email']);
     }
     setState(() {
       listEmails = emails;
     });
-
   }
 
   @override
@@ -80,7 +81,7 @@ class _CadastroUserFormState extends State<CadastroUserForm> {
                   return 'Insira o seu email';
                 } else if (!value.contains('@')) {
                   return 'Insira um email válido';
-                } else if (listEmails.contains(value)){
+                } else if (listEmails.contains(value)) {
                   return 'Email já cadastrado, insira outro email';
                 }
                 return null;
@@ -97,6 +98,7 @@ class _CadastroUserFormState extends State<CadastroUserForm> {
               height: 10,
             ),
             TextFormField(
+              obscureText: !_passwordVisible,
               controller: _passwordController,
               validator: (String? value) {
                 if (value == null || value.isEmpty) {
@@ -106,6 +108,16 @@ class _CadastroUserFormState extends State<CadastroUserForm> {
               },
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(_passwordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _passwordVisible = !_passwordVisible;
+                      });
+                    },
+                  ),
                   hintText: 'Senha',
                   border: OutlineInputBorder(
                     borderSide:
@@ -157,7 +169,6 @@ class _CadastroUserFormState extends State<CadastroUserForm> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    
                     if (selectedImage == null) {
                       _formKey.currentState!.validate();
                       String imageNull = 'Insira uma imagem\n';
@@ -173,10 +184,10 @@ class _CadastroUserFormState extends State<CadastroUserForm> {
                           _emailController.text,
                           _passwordController.text,
                           selectedImage!.path,
-                          dataSelecionada.millisecondsSinceEpoch.abs()
-                          );
+                          dataSelecionada.millisecondsSinceEpoch.abs());
                       Navigator.pushReplacementNamed(
-                          context, '/cadastroUpdated', arguments: widget.argument);
+                          context, '/cadastroUpdated',
+                          arguments: widget.argument);
                       setState(() {
                         selectedImage = null;
                       });
