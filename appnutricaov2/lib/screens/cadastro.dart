@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../components/forms/cadastro_alimento_form.dart';
 import '../components/forms/cadastro_cardapio_form.dart';
 import '../components/forms/cadastro_user_form.dart';
+import '../db/alimentos_database.dart';
 import '../themes/theme.dart';
 
 class CadastroScreen extends StatefulWidget {
@@ -11,10 +12,19 @@ class CadastroScreen extends StatefulWidget {
   State<CadastroScreen> createState() => _CadastroScreenState();
 }
 
-List<Widget> cadastroForms = const [
-  CadastroUserForm(argument: 'none',),
-  CadastroAlimentoForm(),
-  CadastroCardapioForm()
+List<DropdownMenuItem> alimentosCafe = [];
+List<DropdownMenuItem> alimentosAlmoco = [];
+List<DropdownMenuItem> alimentosJanta = [];
+
+List<Widget> cadastroForms = [
+  const CadastroUserForm(
+    argument: 'none',
+  ),
+  const CadastroAlimentoForm(),
+  CadastroCardapioForm(
+      alimentosAlmoco: alimentosAlmoco,
+      alimentosCafe: alimentosCafe,
+      alimentosJanta: alimentosJanta)
 ];
 
 int _buttonPressed = 0;
@@ -28,6 +38,32 @@ MaterialStateProperty<Color> buttonSelected(int buttonPressed, int buttonID) {
 }
 
 class _CadastroScreenState extends State<CadastroScreen> {
+  @override
+  void initState() {
+    super.initState();
+    getAlimentos();
+  }
+
+  Future getAlimentos() async {
+    var data = await SQLHelperAlimentos.getItems();
+    if (alimentosCafe.isEmpty &&
+        alimentosAlmoco.isEmpty &&
+        alimentosJanta.isEmpty) {
+      for (var alimento in data) {
+        DropdownMenuItem dropDown = DropdownMenuItem(
+            value: alimento['id'], child: Text(alimento['nome']));
+        if (alimento['categoria'].toString() == 'Café da Manhã') {
+          alimentosCafe.add(dropDown);
+        } else if (alimento['categoria'].toString() == 'Almoço') {
+          alimentosAlmoco.add(dropDown);
+        }
+        if (alimento['categoria'].toString() == 'Janta') {
+          alimentosJanta.add(dropDown);
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

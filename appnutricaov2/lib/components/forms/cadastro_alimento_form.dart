@@ -35,22 +35,26 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
   }
 
   Future<void> _createPDF(
-      String nome, String imgPath, String categoria, String refeicao) async {
+      String nome, String imgPath, String categoria, String tipo) async {
     PdfDocument document = PdfDocument();
     final page = document.pages.add();
 
-    page.graphics.drawString('TESTE TESTE TESTE TESTE PDF PDF PDF PDF',
-        PdfStandardFont(PdfFontFamily.helvetica, 30));
-    page.graphics.drawImage(
-        PdfBitmap(await _readImageData(imgPath)),
-        const Rect.fromLTWH(0, 100, 440, 550));
+    page.graphics.drawString('''
+        Nome do Alimento: $nome,\n
+        Categoria: $categoria,\n
+        Tipo: $tipo
+    ''',
+        PdfStandardFont(PdfFontFamily.helvetica, 20));
+    // page.graphics.drawImage(
+    //     PdfBitmap(await _readImageData(imgPath)),
+    //     const Rect.fromLTWH(0, 100, 440, 550));
 
     List<int> bytes = document.save();
     document.dispose();
 
-    var caminho = await saveFile(bytes, 'Alimento - ${DateTime.now()}');
+    var caminho = await saveFile(bytes, 'Alimento - ${DateTime.now()}.pdf');
 
-    createAlimento(nome, imgPath, categoria, refeicao, caminho.toString());
+    createAlimento(nome, imgPath, categoria, tipo, caminho.toString());
     debugPrint('Objeto Criado');
     // ignore: use_build_context_synchronously
     Navigator.pushReplacementNamed(context, '/cadastroUpdated',
@@ -60,10 +64,12 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
     });
   }
 
-  Future<Uint8List> _readImageData(String imagePath) async {
-    final ByteData data = Image.file(File('imagePath')) as ByteData;
-    return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-  }
+  // Future<Uint8List> _readImageData(String imagePath) async {
+  //   File file = File('imagePath');
+  //   Uint8List bytes = file.readAsBytesSync();
+  //   return bytes;
+  //   //return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+  // }
 
   Future<void> createAlimento(String nome, String fotoBytes, String categoria,
       String tipo, String pdfPath) async {
