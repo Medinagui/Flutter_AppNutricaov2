@@ -4,20 +4,19 @@ import 'package:appnutricao/screens/edit_records.dart';
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../db/users_database.dart';
-import 'edit forms/alimento_edit.dart';
-import 'edit forms/user_edit.dart';
+import '../../db/users_database.dart';
+import '../edit forms/user_edit.dart';
 
-class UsersList extends StatefulWidget {
-  const UsersList({super.key});
+class CardapioList extends StatefulWidget {
+  const CardapioList({super.key});
   @override
-  State<UsersList> createState() => _UsersListState();
+  State<CardapioList> createState() => _CardapioListState();
 }
 
 List<dynamic> listaUsers = [];
 bool isLoading = true;
 
-class _UsersListState extends State<UsersList> {
+class _CardapioListState extends State<CardapioList> {
   @override
   void initState() {
     super.initState();

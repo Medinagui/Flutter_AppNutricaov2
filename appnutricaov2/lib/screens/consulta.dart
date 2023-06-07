@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import '../components/alimentos_list.dart' as alimentos_list;
-import '../components/users_list.dart' as users_list;
+import '../components/lists/alimentos_list.dart' as alimentos_list;
+import '../components/lists/cardapio_list.dart' as cardapio_list;
+import '../components/lists/users_list.dart' as users_list;
 import '../themes/theme.dart';
 import 'package:appnutricao/db/alimentos_database.dart';
 
@@ -26,7 +27,7 @@ MaterialStateProperty<Color> buttonSelected(int buttonPressed, int buttonID) {
 List<Widget> listasDisponiveis = const [
   users_list.UsersList(),
   alimentos_list.AlimentosList(),
-  Text('Lista Cardápios'),
+  cardapio_list.CardapioList(),
   Text('Carregando...')
 ];
 

@@ -1,48 +1,49 @@
 import 'dart:io';
-
 import 'package:appnutricao/screens/consulta.dart';
 import 'package:appnutricao/screens/edit_records.dart';
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
-import '../db/alimentos_database.dart';
-import 'edit forms/alimento_edit.dart';
+import 'package:intl/intl.dart';
+import '../../db/users_database.dart';
+import '../edit forms/alimento_edit.dart';
+import '../edit forms/user_edit.dart';
 
-class AlimentosList extends StatefulWidget {
-  const AlimentosList({super.key});
+class UsersList extends StatefulWidget {
+  const UsersList({super.key});
   @override
-  State<AlimentosList> createState() => _AlimentosListState();
+  State<UsersList> createState() => _UsersListState();
 }
 
-List<dynamic> listaAlimentos = [];
+List<dynamic> listaUsers = [];
 bool isLoading = true;
 
-class _AlimentosListState extends State<AlimentosList> {
+class _UsersListState extends State<UsersList> {
   @override
   void initState() {
     super.initState();
     if (searchName == '') {
-      refreshAlimentos();
+      refreshUsers();
     } else {
-      searchAlimentosName(searchName);
+      searchUsersName(searchName);
     }
-    debugPrint('..numero de items: ${listaAlimentos.length}');
+    debugPrint('..numero de items: ${listaUsers.length}');
   }
 
-  Future searchAlimentosName(String name) async {
+  Future searchUsersName(String name) async {
     setState(() => isLoading = true);
-    final data = await SQLHelperAlimentos.getItemsByName(name);
+    final data = await SQLHelperUsers.getItemsByName(name);
     setState(() {
       isLoading = false;
-      listaAlimentos = data;
+      listaUsers = data;
     });
   }
 
-  Future refreshAlimentos() async {
-    final data = await SQLHelperAlimentos.getItems();
+  Future refreshUsers() async {
+    final data = await SQLHelperUsers.getItems();
 
     setState(() {
       isLoading = false;
-      listaAlimentos = data;
+      listaUsers = data;
     });
   }
 
@@ -63,33 +64,41 @@ class _AlimentosListState extends State<AlimentosList> {
           )
         : Column(
             children: [
-              (listaAlimentos.isEmpty)
+              (listaUsers.isEmpty)
                   ? Center(
                       child: Column(
                         children: const [
                           SizedBox(height: 80),
                           Text(
-                              'Lista vazia.\nVá para a tela de cadastros\ne cadastre novos alimentos.', textAlign: TextAlign.center,),
+                            'Lista vazia.\nVá para a tela de cadastros\ne cadastre novos usuários.',
+                            textAlign: TextAlign.center,
+                          ),
                         ],
                       ),
                     )
-                  : Column( 
+                  : Column(
                       children: [
                         SizedBox(
-                            height:
-                                (MediaQuery.of(context).size.height * 0.70),
+                            height: (MediaQuery.of(context).size.height * 0.70),
                             child: ListView.builder(
                                 shrinkWrap: true,
-                                itemCount: listaAlimentos.length,
+                                itemCount: listaUsers.length,
                                 itemBuilder: (context, index) {
-                                  final exemplo = listaAlimentos[index];
+                                  final exemplo = listaUsers[index];
+                                  final userBirth = DateFormat('dd/MM/yyyy')
+                                      .format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              exemplo['birthDate']));
+
+                                  final Duration userAge = DateTime.now()
+                                      .difference(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              exemplo['birthDate']));
 
                                   Image foto = Image.file(
-                                    File(exemplo['fotoBytes']),
+                                    File(exemplo['imagePath']),
                                     fit: BoxFit.cover,
                                   );
-
-
 
                                   return Card(
                                     margin: const EdgeInsets.all(5),
@@ -106,20 +115,19 @@ class _AlimentosListState extends State<AlimentosList> {
                                                   maxWidth: 100,
                                                   minHeight: 100,
                                                   minWidth: 100),
-                                              child:
-                                                  ClipOval(child: foto)),
+                                              child: ClipOval(child: foto)),
                                           Flexible(
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  exemplo['nome'],
+                                                  exemplo['name'],
                                                   style: myTextThemes
                                                       .textTheme.labelLarge,
                                                 ),
                                                 Text(
-                                                    '${exemplo['tipo']}\n${exemplo['categoria']}',
+                                                    'Idade: ${(userAge.inDays / 365).truncate()}',
                                                     style: myTextThemes
                                                         .textTheme.labelSmall)
                                               ],
@@ -127,15 +135,23 @@ class _AlimentosListState extends State<AlimentosList> {
                                           ),
                                           IconButton(
                                               onPressed: () {
-                                                Navigator.of(context).pushReplacement(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            EditRecordsScreen(
-                                                              buttonPressed:
-                                                                  buttonPressed,
-                                                              alimentoEdit: AlimentoRecordEdit(idRecord: exemplo['id']),
-                                                              idRecord: exemplo['id'],
-                                                            )));
+                                                Navigator.of(context)
+                                                    .pushReplacement(
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                EditRecordsScreen(
+                                                                  buttonPressed:
+                                                                      buttonPressed,
+                                                                  userEdit:
+                                                                      UserEdit(
+                                                                    idRecord:
+                                                                        exemplo[
+                                                                            'id'],
+                                                                  ),
+                                                                  idRecord:
+                                                                      exemplo[
+                                                                          'id'],
+                                                                )));
                                               },
                                               icon: const Icon(Icons.edit)),
                                         ],
