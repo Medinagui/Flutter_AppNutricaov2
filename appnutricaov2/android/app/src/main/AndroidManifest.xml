@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.appnutricaov2">
    <application
-        android:label="appnutricaov2"
+        android:label="Nature Nutrition"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

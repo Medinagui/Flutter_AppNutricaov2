@@ -66,6 +66,7 @@ class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
   }
 
   Future createCardapio(Cardapio cardapio) async {
+    debugPrint(cardapio.toString());
     await db_cardapio.SQLHelperCard.createItem(cardapio);
     
     // ignore: use_build_context_synchronously

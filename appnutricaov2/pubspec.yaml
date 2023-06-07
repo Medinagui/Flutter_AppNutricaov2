@@ -69,6 +69,7 @@ flutter:
   assets:
     - lib/images/cadastro.png
     - lib/images/Nature - logo.jpg
+    - lib/images/Nature - logo - png.png
     - lib/images/gifs/clap-gif-1.gif
     - lib/images/gifs/clap-gif-2.gif
     - lib/images/gifs/clap-gif-3.gif
