@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:appnutricao/db/users_database.dart' as db;
 import 'package:intl/intl.dart';

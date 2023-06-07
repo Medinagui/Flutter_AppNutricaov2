@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../screens/login.dart';
-import '../themes/theme.dart';
+import '../../screens/login.dart';
+import '../../themes/theme.dart';
 
 class LoginCadastroForm extends StatefulWidget {
   const LoginCadastroForm({super.key});

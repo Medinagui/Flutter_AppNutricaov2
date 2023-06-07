@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:appnutricao/db/alimentos_database.dart' as db_alimentos;
 import 'package:appnutricao/db/cardapio_database.dart' as db_cardapio;

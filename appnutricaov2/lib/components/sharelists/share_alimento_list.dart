@@ -1,11 +1,10 @@
 import 'dart:io';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:share/share.dart';
 import 'package:appnutricao/screens/consulta.dart';
-import 'package:appnutricao/screens/edit_records.dart';
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
 import '../../db/alimentos_database.dart';
-import '../edit forms/alimento_edit.dart';
 
 class ShareAlimentosList extends StatefulWidget {
   const ShareAlimentosList({super.key});

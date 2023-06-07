@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../components/forms/cadastro_alimento_form.dart';
 import '../components/forms/cadastro_cardapio_form.dart';
 import '../components/forms/cadastro_user_form.dart';
-import '../db/alimentos_database.dart';
 import '../themes/theme.dart';
 
 class CadastroScreen extends StatefulWidget {
@@ -17,7 +16,7 @@ List<Widget> cadastroForms = [
     argument: 'none',
   ),
   const CadastroAlimentoForm(),
-  CadastroCardapioForm()
+  const CadastroCardapioForm()
 ];
 
 int _buttonPressed = 0;

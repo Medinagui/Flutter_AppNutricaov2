@@ -76,8 +76,7 @@ class SQLHelperCard{
 
   static Future<int> updateItem(Cardapio cardapio, int id) async {
     final db = await SQLHelperCard.db();
-
-    final item = await SQLHelperCard.getItemByID(id);
+    // final item = await SQLHelperCard.getItemByID(id);
 
     final data = cardapio.toJson();
 

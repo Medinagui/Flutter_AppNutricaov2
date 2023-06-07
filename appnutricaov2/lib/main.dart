@@ -3,7 +3,6 @@ import 'package:appnutricao/screens/cadastro_created.dart';
 import 'package:appnutricao/screens/cadastro_user_login.dart';
 import 'package:appnutricao/screens/consulta.dart';
 import 'package:appnutricao/screens/login.dart';
-import 'package:appnutricao/screens/tela_principal.dart';
 import 'package:flutter/material.dart';
 
 

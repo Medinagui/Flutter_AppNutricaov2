@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'dart:typed_data';
-import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:flutter/material.dart';
 import '../../db/alimentos_database.dart';
@@ -8,6 +5,7 @@ import '../../themes/theme.dart';
 import '../classes/alimento.dart';
 import 'imagepicker/image_picker.dart';
 import '../mobile.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class CadastroAlimentoForm extends StatefulWidget {
@@ -45,9 +43,6 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
         Tipo: $tipo
     ''',
         PdfStandardFont(PdfFontFamily.helvetica, 20));
-    // page.graphics.drawImage(
-    //     PdfBitmap(await _readImageData(imgPath)),
-    //     const Rect.fromLTWH(0, 100, 440, 550));
 
     List<int> bytes = document.save();
     document.dispose();
@@ -63,13 +58,6 @@ class _CadastroAlimentoFormState extends State<CadastroAlimentoForm> {
       selectedImage = null;
     });
   }
-
-  // Future<Uint8List> _readImageData(String imagePath) async {
-  //   File file = File('imagePath');
-  //   Uint8List bytes = file.readAsBytesSync();
-  //   return bytes;
-  //   //return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-  // }
 
   Future<void> createAlimento(String nome, String fotoBytes, String categoria,
       String tipo, String pdfPath) async {

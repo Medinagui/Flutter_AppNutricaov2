@@ -1,10 +1,8 @@
-import 'dart:io';
+import 'package:appnutricao/db/cardapio_database.dart';
 import 'package:appnutricao/screens/consulta.dart';
 import 'package:appnutricao/screens/edit_records.dart';
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import '../../db/users_database.dart';
 import '../edit forms/user_edit.dart';
 
 class CardapioList extends StatefulWidget {
@@ -13,36 +11,22 @@ class CardapioList extends StatefulWidget {
   State<CardapioList> createState() => _CardapioListState();
 }
 
-List<dynamic> listaUsers = [];
+List<dynamic> listaCardapio = [];
 bool isLoading = true;
 
 class _CardapioListState extends State<CardapioList> {
   @override
   void initState() {
     super.initState();
-    if (searchName == '') {
-      refreshUsers();
-    } else {
-      searchUsersName(searchName);
-    }
-    debugPrint('..numero de items: ${listaUsers.length}');
+      refreshCardapio();
   }
 
-  Future searchUsersName(String name) async {
-    setState(() => isLoading = true);
-    final data = await SQLHelperUsers.getItemsByName(name);
-    setState(() {
-      isLoading = false;
-      listaUsers = data;
-    });
-  }
-
-  Future refreshUsers() async {
-    final data = await SQLHelperUsers.getItems();
+  Future refreshCardapio() async {
+    final data = await SQLHelperCard.getItems();
 
     setState(() {
       isLoading = false;
-      listaUsers = data;
+      listaCardapio = data;
     });
   }
 
@@ -63,7 +47,7 @@ class _CardapioListState extends State<CardapioList> {
           )
         : Column(
             children: [
-              (listaUsers.isEmpty)
+              (listaCardapio.isEmpty)
                   ? Center(
                       child: Column(
                         children: const [
@@ -81,23 +65,11 @@ class _CardapioListState extends State<CardapioList> {
                             height: (MediaQuery.of(context).size.height * 0.70),
                             child: ListView.builder(
                                 shrinkWrap: true,
-                                itemCount: listaUsers.length,
+                                itemCount: listaCardapio.length,
                                 itemBuilder: (context, index) {
-                                  final exemplo = listaUsers[index];
-                                  final userBirth = DateFormat('dd/MM/yyyy')
-                                      .format(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                              exemplo['birthDate']));
+                                  final exemplo = listaCardapio[index];
 
-                                  final Duration userAge = DateTime.now()
-                                      .difference(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                              exemplo['birthDate']));
 
-                                  Image foto = Image.file(
-                                    File(exemplo['imagePath']),
-                                    fit: BoxFit.cover,
-                                  );
 
                                   return Card(
                                     margin: const EdgeInsets.all(5),
@@ -108,27 +80,15 @@ class _CardapioListState extends State<CardapioList> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          ConstrainedBox(
-                                              constraints: const BoxConstraints(
-                                                  maxHeight: 100,
-                                                  maxWidth: 100,
-                                                  minHeight: 100,
-                                                  minWidth: 100),
-                                              child: ClipOval(child: foto)),
                                           Flexible(
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                  exemplo['name'],
-                                                  style: myTextThemes
-                                                      .textTheme.labelLarge,
-                                                ),
-                                                Text(
-                                                    'Idade: ${(userAge.inDays / 365).truncate()}',
-                                                    style: myTextThemes
-                                                        .textTheme.labelSmall)
+                                                Text(exemplo['nome']),
+                                                // Text(exemplo['cafeNome1']),
+                                                // Text(exemplo['cafeNome2']),
+                                                // Text(exemplo['cafeNome3']),
                                               ],
                                             ),
                                           ),

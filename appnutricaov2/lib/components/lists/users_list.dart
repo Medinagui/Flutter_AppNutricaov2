@@ -3,9 +3,7 @@ import 'package:appnutricao/screens/consulta.dart';
 import 'package:appnutricao/screens/edit_records.dart';
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../db/users_database.dart';
-import '../edit forms/alimento_edit.dart';
 import '../edit forms/user_edit.dart';
 
 class UsersList extends StatefulWidget {
@@ -85,11 +83,6 @@ class _UsersListState extends State<UsersList> {
                                 itemCount: listaUsers.length,
                                 itemBuilder: (context, index) {
                                   final exemplo = listaUsers[index];
-                                  final userBirth = DateFormat('dd/MM/yyyy')
-                                      .format(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                              exemplo['birthDate']));
-
                                   final Duration userAge = DateTime.now()
                                       .difference(
                                           DateTime.fromMillisecondsSinceEpoch(

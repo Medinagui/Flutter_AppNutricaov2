@@ -33,7 +33,6 @@ dependencies:
   intl: ^0.18.1
   image_picker: ^0.8.3
   path_provider: ^2.0.1
-  open_file: ^3.1.0
   sqflite: ^2.0.0+3
   syncfusion_flutter_pdf: ^18.4.47-beta
   share: ^0.6.5+4

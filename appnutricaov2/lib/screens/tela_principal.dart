@@ -8,6 +8,7 @@ import '../components/buttons/principal_button.dart';
 import '../themes/theme.dart';
 import 'cadastro.dart';
 
+// ignore: must_be_immutable
 class TelaPrincipal extends StatefulWidget {
   TelaPrincipal({super.key, required this.arg});
   int arg;
