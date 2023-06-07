@@ -5,9 +5,6 @@ import 'package:appnutricao/screens/consulta.dart';
 import 'package:appnutricao/screens/login.dart';
 import 'package:flutter/material.dart';
 
-
-
-
 void main(List<String> args) {
   WidgetsFlutterBinding.ensureInitialized;  
   runApp(const NutricaoApp());

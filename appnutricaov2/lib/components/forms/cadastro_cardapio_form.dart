@@ -10,11 +10,13 @@ class CadastroCardapioForm extends StatefulWidget {
   @override
   State<CadastroCardapioForm> createState() => _CadastroCardapioFormState();
 }
+
 class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
   final TextEditingController _nomeController = TextEditingController();
   List<DropdownMenuItem<String>> alimentosCafe = [];
   List<DropdownMenuItem<String>> alimentosAlmoco = [];
   List<DropdownMenuItem<String>> alimentosJanta = [];
+  List<String> listaAllAlimentos = [];
 
   String? cafe1;
   String? cafe2;
@@ -30,9 +32,7 @@ class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
   String? janta2;
   String? janta3;
   String? janta4;
-  
 
-  
   bool isLoading = true;
 
   @override
@@ -58,6 +58,7 @@ class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
         } else if (alimento['categoria'].toString() == 'Janta') {
           alimentosJanta.add(dropDown);
         }
+        listaAllAlimentos.add(alimento['nome']);
       }
     }
     setState(() {
@@ -66,14 +67,12 @@ class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
   }
 
   Future createCardapio(Cardapio cardapio) async {
-    debugPrint(cardapio.toString());
     await db_cardapio.SQLHelperCard.createItem(cardapio);
-    
+
     // ignore: use_build_context_synchronously
-    Navigator.pushReplacementNamed(context, '/cadastroUpdated', arguments: 'consulta');
+    Navigator.pushReplacementNamed(context, '/cadastroUpdated',
+        arguments: 'consulta');
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -92,24 +91,24 @@ class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
             ),
           ),
           const SizedBox(
-              height: 15,
-            ),
-            TextFormField(
-              controller: _nomeController,
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return 'Insira o nome do Cardápio';
-                }
-                return null;
-              },
-              textInputAction: TextInputAction.next,
-              decoration: InputDecoration(
-                  hintText: 'Nome do Cardápio',
-                  border: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: colorsTwo.colorScheme.secondary),
-                  )),
-            ),
+            height: 15,
+          ),
+          TextFormField(
+            controller: _nomeController,
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Insira o nome do Cardápio';
+              }
+              return null;
+            },
+            textInputAction: TextInputAction.next,
+            decoration: InputDecoration(
+                hintText: 'Nome do Cardápio',
+                border: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(color: colorsTwo.colorScheme.secondary),
+                )),
+          ),
           const SizedBox(height: 10),
           Card(
             color: colorsOne.colorScheme.primary,
@@ -438,38 +437,38 @@ class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
               ElevatedButton(
                 onPressed: () {
                   var cardapio = Cardapio(
-                    name: _nomeController.text, 
-                    cafeId1: 1, 
-                    cafeNome1: cafe1!, 
-                    cafeId2: 2, 
-                    cafeNome2: cafe2!, 
-                    cafeId3: 3, 
-                    cafeNome3: cafe3!, 
-                    almocoId1: 4, 
-                    almocoNome1: almoco1!, 
-                    almocoId2: 5, 
-                    almocoNome2: almoco2!, 
-                    almocoId3: 6, 
-                    almocoNome3: almoco3!, 
-                    almocoId4: 7, 
-                    almocoNome4: almoco4!, 
-                    almocoId5: 8, 
-                    almocoNome5: almoco5!, 
-                    jantarId1: 9, 
-                    jantarNome1: janta1!, 
-                    jantarId2: 10, 
-                    jantarNome2: janta2!, 
-                    jantarId3: 11, 
-                    jantarNome3: janta3!, 
-                    jantarId4: 12, 
-                    jantarNome4: janta4!
-                    );
+                      name: _nomeController.text,
+                      cafeId1: int.parse(cafe1!),
+                      cafeNome1: listaAllAlimentos[int.parse(cafe1!)],
+                      cafeId2: int.parse(cafe2!),
+                      cafeNome2: listaAllAlimentos[int.parse(cafe2!)],
+                      cafeId3: int.parse(cafe3!),
+                      cafeNome3: listaAllAlimentos[int.parse(cafe3!)],
+                      almocoId1: int.parse(almoco1!),
+                      almocoNome1: listaAllAlimentos[int.parse(almoco1!)],
+                      almocoId2: int.parse(almoco2!),
+                      almocoNome2: listaAllAlimentos[int.parse(almoco2!)],
+                      almocoId3: int.parse(almoco3!),
+                      almocoNome3: listaAllAlimentos[int.parse(almoco3!)],
+                      almocoId4: int.parse(almoco4!),
+                      almocoNome4: listaAllAlimentos[int.parse(almoco4!)],
+                      almocoId5: int.parse(almoco5!),
+                      almocoNome5: listaAllAlimentos[int.parse(almoco5!)],
+                      jantarId1: int.parse(janta1!),
+                      jantarNome1: listaAllAlimentos[int.parse(janta1!)],
+                      jantarId2: int.parse(janta2!),
+                      jantarNome2: listaAllAlimentos[int.parse(janta2!)],
+                      jantarId3: int.parse(janta3!),
+                      jantarNome3: listaAllAlimentos[int.parse(janta3!)],
+                      jantarId4: int.parse(janta4!),
+                      jantarNome4: listaAllAlimentos[int.parse(janta4!)]);
+                  debugPrint(cardapio.toString());
+
                   createCardapio(cardapio);
-                  
                 },
                 style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(colorsOne.colorScheme.secondary),
+                  backgroundColor: MaterialStateProperty.all(
+                      colorsOne.colorScheme.secondary),
                 ),
                 child: const Text('Cadastrar'),
               ),

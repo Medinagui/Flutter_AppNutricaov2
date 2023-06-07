@@ -168,4 +168,37 @@ class Cardapio {
           jantarId4: json[CardapioFields.jantarId4] as int,
           jantarNome4: json[CardapioFields.jantarNome4] as String
       );
+
+      @override
+      toString(){
+        var saida = 
+        '''
+      $name,
+      $cafeId1,
+      $cafeNome1,
+      $cafeId2,
+      $cafeNome2,
+      $cafeId3,
+      $cafeNome3,
+      $almocoId1,
+      $almocoNome1,
+      $almocoId2,
+      $almocoNome2,
+      $almocoId3,
+      $almocoNome3,
+      $almocoId4,
+      $almocoNome4,
+      $almocoId5,
+      $almocoNome5,
+      $jantarId1,
+      $jantarNome1,
+      $jantarId2,
+      $jantarNome2,
+      $jantarId3,
+      $jantarNome3,
+      $jantarId4,
+      $jantarNome4
+''';
+      return saida;
+      }
 }

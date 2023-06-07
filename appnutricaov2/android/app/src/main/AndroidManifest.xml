@@ -3,7 +3,7 @@
    <application
         android:label="Nature Nutrition"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/nature_logo_png">
         <activity
             android:name=".MainActivity"
             android:exported="true"
