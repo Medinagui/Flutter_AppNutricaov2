@@ -1,9 +1,9 @@
+import 'package:appnutricao/components/edit%20forms/cardapio_info.dart';
 import 'package:appnutricao/db/cardapio_database.dart';
 import 'package:appnutricao/screens/consulta.dart';
 import 'package:appnutricao/screens/edit_records.dart';
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
-import '../edit forms/user_edit.dart';
 
 class CardapioList extends StatefulWidget {
   const CardapioList({super.key});
@@ -18,11 +18,12 @@ class _CardapioListState extends State<CardapioList> {
   @override
   void initState() {
     super.initState();
-      refreshCardapio();
+    refreshCardapio();
   }
 
   Future refreshCardapio() async {
     final data = await SQLHelperCard.getItems();
+    debugPrint(data.toString());
 
     setState(() {
       isLoading = false;
@@ -69,8 +70,6 @@ class _CardapioListState extends State<CardapioList> {
                                 itemBuilder: (context, index) {
                                   final exemplo = listaCardapio[index];
 
-
-
                                   return Card(
                                     margin: const EdgeInsets.all(5),
                                     elevation: 5,
@@ -85,10 +84,12 @@ class _CardapioListState extends State<CardapioList> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(exemplo['nome']),
-                                                // Text(exemplo['cafeNome1']),
-                                                // Text(exemplo['cafeNome2']),
-                                                // Text(exemplo['cafeNome3']),
+                                                const Text('Nome do cardápio:'),
+                                                Text(
+                                                  exemplo['name'],
+                                                  style: myTextThemes
+                                                      .textTheme.displayLarge,
+                                                )
                                               ],
                                             ),
                                           ),
@@ -101,18 +102,16 @@ class _CardapioListState extends State<CardapioList> {
                                                                 EditRecordsScreen(
                                                                   buttonPressed:
                                                                       buttonPressed,
-                                                                  userEdit:
-                                                                      UserEdit(
-                                                                    idRecord:
-                                                                        exemplo[
-                                                                            'id'],
-                                                                  ),
+                                                                  cardapioInfo:
+                                                                      CardapioInfo(
+                                                                          idRecord:
+                                                                              exemplo['id']),
                                                                   idRecord:
                                                                       exemplo[
                                                                           'id'],
                                                                 )));
                                               },
-                                              icon: const Icon(Icons.edit)),
+                                              icon: const Icon(Icons.list_alt)),
                                         ],
                                       ),
                                     ),

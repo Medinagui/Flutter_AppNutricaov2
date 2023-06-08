@@ -28,29 +28,17 @@ class SQLHelperCard{
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       ${CardapioFields.name} TEXT,
       ${CardapioFields.cafeId1} INTEGER NOT NULL,
-      ${CardapioFields.cafeNome1} TEXT,
       ${CardapioFields.cafeId2} INTEGER NOT NULL,
-      ${CardapioFields.cafeNome2} TEXT,
       ${CardapioFields.cafeId3} INTEGER NOT NULL,
-      ${CardapioFields.cafeNome3} TEXT,
       ${CardapioFields.almocoId1} INTEGER NOT NULL,
-      ${CardapioFields.almocoNome1} TEXT,
       ${CardapioFields.almocoId2} INTEGER NOT NULL,
-      ${CardapioFields.almocoNome2} TEXT,
       ${CardapioFields.almocoId3} INTEGER NOT NULL,
-      ${CardapioFields.almocoNome3} TEXT,
       ${CardapioFields.almocoId4} INTEGER NOT NULL,
-      ${CardapioFields.almocoNome4} TEXT,
       ${CardapioFields.almocoId5} INTEGER NOT NULL,
-      ${CardapioFields.almocoNome5} TEXT,
       ${CardapioFields.jantarId1} INTEGER NOT NULL,
-      ${CardapioFields.jantarNome1} TEXT,
       ${CardapioFields.jantarId2} INTEGER NOT NULL,
-      ${CardapioFields.jantarNome2} TEXT,
       ${CardapioFields.jantarId3} INTEGER NOT NULL,
-      ${CardapioFields.jantarNome3} TEXT,
-      ${CardapioFields.jantarId4} INTEGER NOT NULL,
-      ${CardapioFields.jantarNome4} TEXT
+      ${CardapioFields.jantarId4} INTEGER NOT NULL
     )
 ''');
   }
@@ -95,10 +83,6 @@ class SQLHelperCard{
       debugPrint("Algo deu errado ao tentar deletar o item: $err");
     }
   }
+}
 
-  static Future<List<Map<String, dynamic>>> getItemsByName(String name) async {
-    final db = await SQLHelperCard.db();
-    return db.rawQuery('SELECT * FROM cardapio WHERE nome like "%$name%" ORDER BY id');
-}
-}
 
