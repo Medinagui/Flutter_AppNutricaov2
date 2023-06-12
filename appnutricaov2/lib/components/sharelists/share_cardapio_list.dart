@@ -1,34 +1,98 @@
 import 'dart:io';
 // ignore: import_of_legacy_library_into_null_safe
+import 'package:appnutricao/components/classes/cardapio.dart';
+import 'package:appnutricao/db/cardapio_database.dart';
 import 'package:share/share.dart';
-import 'package:appnutricao/screens/consulta.dart';
 import 'package:appnutricao/themes/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import '../../db/alimentos_database.dart';
+import '../mobile.dart';
 
-class ShareAlimentosList extends StatefulWidget {
-  const ShareAlimentosList({super.key});
+class ShareCardapioList extends StatefulWidget {
+  const ShareCardapioList({super.key});
   @override
-  State<ShareAlimentosList> createState() => _ShareAlimentosListState();
+  State<ShareCardapioList> createState() => _ShareCardapioListState();
 }
 
-List<dynamic> listaAlimentos = [];
+List<dynamic> listaCardapio = [];
 bool isLoading = true;
 
-class _ShareAlimentosListState extends State<ShareAlimentosList> {
+class _ShareCardapioListState extends State<ShareCardapioList> {
   @override
   void initState() {
     super.initState();
-    refreshAlimentos();
+    refreshCardapio();
+
+    debugPrint('..numero de items: ${listaCardapio.length}');
   }
 
-  Future refreshAlimentos() async {
+  Future refreshCardapio() async {
     final data = await SQLHelperAlimentos.getItems();
 
     setState(() {
       isLoading = false;
-      listaAlimentos = data;
+      listaCardapio = data;
     });
+  }
+
+  Future<void> _createPDF(int id) async {
+    List<String> alimentosDesc = [];
+    var dataCardapio = await SQLHelperCard.getItemByID(id);
+    var cardapioAnalise = Cardapio.fromJson(dataCardapio[0]);
+    var idsCardapio = dataCardapio[0].values.toList();
+    idsCardapio.removeAt(0);
+    idsCardapio.removeAt(0);
+
+    for (var index in idsCardapio) {
+      List<Map<String, dynamic>> dataAlimentos =
+          await SQLHelperAlimentos.getItemByID(index);
+      Map<String, dynamic> alimentoAnalise = dataAlimentos[0];
+      String descAlimento = '''
+      Nome do Alimento: ${alimentoAnalise['nome']}
+      Tipo: ${alimentoAnalise['tipo']}
+      ''';
+      alimentosDesc.add(descAlimento);
+    }
+
+    PdfDocument document = PdfDocument();
+    var page = document.pages.add();
+    // Título - Nome do Cardápio
+    page.graphics.drawString('Nome do Cardápio: ${cardapioAnalise.name},\n',
+        PdfStandardFont(PdfFontFamily.helvetica, 40));
+    // Café da manhã
+    page.graphics.drawString(
+        'Café da Manhã\n', PdfStandardFont(PdfFontFamily.helvetica, 30));
+    page.graphics.drawString('''
+    ${alimentosDesc[0]}\n
+    ${alimentosDesc[1]}\n
+    ${alimentosDesc[2]}\n
+    ''', PdfStandardFont(PdfFontFamily.helvetica, 20));
+    page.graphics.drawString(
+        'Almoço\n', PdfStandardFont(PdfFontFamily.helvetica, 30));
+    page.graphics.drawString('''
+    ${alimentosDesc[3]}\n
+    ${alimentosDesc[4]}\n
+    ${alimentosDesc[5]}\n
+    ${alimentosDesc[6]}\n
+    ${alimentosDesc[7]}\n
+    ''', PdfStandardFont(PdfFontFamily.helvetica, 20));
+    page.graphics.drawString(
+        'Janta\n', PdfStandardFont(PdfFontFamily.helvetica, 30));
+    page.graphics.drawString('''
+    ${alimentosDesc[8]}\n
+    ${alimentosDesc[9]}\n
+    ${alimentosDesc[10]}\n
+    ${alimentosDesc[11]}\n
+    ''', PdfStandardFont(PdfFontFamily.helvetica, 20));
+
+    List<int> bytes = document.save();
+    document.dispose();
+
+    String pathString = 'Cardápio - ${DateTime.now().hashCode}.pdf';
+    var caminho = await saveFile(bytes, pathString);
+
+    Share.shareFiles([caminho], text: 'Veja esse Cardápio!');
   }
 
   @override
@@ -48,7 +112,7 @@ class _ShareAlimentosListState extends State<ShareAlimentosList> {
           )
         : Column(
             children: [
-              (listaAlimentos.isEmpty)
+              (listaCardapio.isEmpty)
                   ? Center(
                       child: Column(
                         children: const [
@@ -66,9 +130,9 @@ class _ShareAlimentosListState extends State<ShareAlimentosList> {
                             height: (MediaQuery.of(context).size.height * 0.70),
                             child: ListView.builder(
                                 shrinkWrap: true,
-                                itemCount: listaAlimentos.length,
+                                itemCount: listaCardapio.length,
                                 itemBuilder: (context, index) {
-                                  final exemplo = listaAlimentos[index];
+                                  final exemplo = listaCardapio[index];
 
                                   Image foto = Image.file(
                                     File(exemplo['fotoBytes']),
