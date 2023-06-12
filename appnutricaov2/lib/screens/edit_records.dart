@@ -1,4 +1,5 @@
 import 'package:appnutricao/components/edit%20forms/cardapio_info.dart';
+import 'package:appnutricao/screens/compartilhar.dart';
 import 'package:flutter/material.dart';
 import 'package:appnutricao/themes/theme.dart';
 import '../components/edit forms/alimento_edit.dart';
@@ -37,18 +38,33 @@ class _EditRecordsScreenState extends State<EditRecordsScreen> {
         centerTitle: true,
       ),
       backgroundColor: colorsOne.colorScheme.primary,
-      body: Column(
+      body: (widget.buttonPressed == 2)? 
+      SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Card(
+              margin: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+              child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: editForms[widget.buttonPressed]),
+            )
+          ],
+        ),
+      )
+      : Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
-              child: Card(
-            margin: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-            child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: editForms[widget.buttonPressed]),
-          ))
+            child: Card(
+              margin: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+              child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: editForms[widget.buttonPressed]),
+            ),
+          )
         ],
-      ),
+      )
     );
   }
 }

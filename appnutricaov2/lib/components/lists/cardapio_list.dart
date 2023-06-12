@@ -101,7 +101,7 @@ class _CardapioListState extends State<CardapioList> {
                                                             builder: (context) =>
                                                                 EditRecordsScreen(
                                                                   buttonPressed:
-                                                                      buttonPressed,
+                                                                      2,
                                                                   cardapioInfo:
                                                                       CardapioInfo(
                                                                           idRecord:

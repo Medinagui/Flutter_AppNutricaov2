@@ -49,7 +49,7 @@ class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
       for (var alimento in data) {
         DropdownMenuItem<String> dropDown = DropdownMenuItem(
           value: alimento['id'].toString(),
-          child: Text(alimento['nome']),
+          child: Text('${alimento['nome']} - ${alimento['tipo']}'),
         );
         if (alimento['categoria'].toString() == 'Café da Manhã') {
           alimentosCafe.add(dropDown);
@@ -437,31 +437,20 @@ class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
               ElevatedButton(
                 onPressed: () {
                   var cardapio = Cardapio(
-                      name: _nomeController.text,
-                      cafeId1: int.parse(cafe1!),
-                      cafeNome1: listaAllAlimentos[int.parse(cafe1!) - 1],
-                      cafeId2: int.parse(cafe2!),
-                      cafeNome2: listaAllAlimentos[int.parse(cafe2!) - 1],
-                      cafeId3: int.parse(cafe3!),
-                      cafeNome3: listaAllAlimentos[int.parse(cafe3!) - 1],
-                      almocoId1: int.parse(almoco1!),
-                      almocoNome1: listaAllAlimentos[int.parse(almoco1!) - 1],
-                      almocoId2: int.parse(almoco2!),
-                      almocoNome2: listaAllAlimentos[int.parse(almoco2!) - 1],
-                      almocoId3: int.parse(almoco3!),
-                      almocoNome3: listaAllAlimentos[int.parse(almoco3!) - 1],
-                      almocoId4: int.parse(almoco4!),
-                      almocoNome4: listaAllAlimentos[int.parse(almoco4!) - 1],
-                      almocoId5: int.parse(almoco5!),
-                      almocoNome5: listaAllAlimentos[int.parse(almoco5!) - 1],
-                      jantarId1: int.parse(janta1!),
-                      jantarNome1: listaAllAlimentos[int.parse(janta1!) - 1],
-                      jantarId2: int.parse(janta2!),
-                      jantarNome2: listaAllAlimentos[int.parse(janta2!) - 1],
-                      jantarId3: int.parse(janta3!),
-                      jantarNome3: listaAllAlimentos[int.parse(janta3!) - 1],
-                      jantarId4: int.parse(janta4!),
-                      jantarNome4: listaAllAlimentos[int.parse(janta4!) - 1]);
+                    name: _nomeController.text,
+                    cafeId1: int.parse(cafe1!),
+                    cafeId2: int.parse(cafe2!),
+                    cafeId3: int.parse(cafe3!),
+                    almocoId1: int.parse(almoco1!),
+                    almocoId2: int.parse(almoco2!),
+                    almocoId3: int.parse(almoco3!),
+                    almocoId4: int.parse(almoco4!),
+                    almocoId5: int.parse(almoco5!),
+                    jantarId1: int.parse(janta1!),
+                    jantarId2: int.parse(janta2!),
+                    jantarId3: int.parse(janta3!),
+                    jantarId4: int.parse(janta4!),
+                  );
                   debugPrint(cardapio.toString());
 
                   createCardapio(cardapio);
