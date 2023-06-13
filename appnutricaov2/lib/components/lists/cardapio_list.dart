@@ -54,7 +54,7 @@ class _CardapioListState extends State<CardapioList> {
                         children: const [
                           SizedBox(height: 80),
                           Text(
-                            'Lista vazia.\nVá para a tela de cadastros\ne cadastre novos usuários.',
+                            'Lista vazia.\nVá para a tela de cadastros\ne cadastre novos cardápios.',
                             textAlign: TextAlign.center,
                           ),
                         ],

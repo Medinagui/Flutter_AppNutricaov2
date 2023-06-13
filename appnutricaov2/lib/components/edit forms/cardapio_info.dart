@@ -52,9 +52,9 @@ class _CardapioInfoState extends State<CardapioInfo> {
         margin: const EdgeInsets.all(5),
         elevation: 5,
         child: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(20),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ConstrainedBox(
                   constraints: const BoxConstraints(
@@ -65,7 +65,7 @@ class _CardapioInfoState extends State<CardapioInfo> {
                   child: ClipOval(child: foto)),
               Flexible(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
                       alimentoAnalise['nome'],
