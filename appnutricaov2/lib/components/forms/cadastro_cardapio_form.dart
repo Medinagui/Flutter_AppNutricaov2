@@ -17,6 +17,7 @@ class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
   List<DropdownMenuItem<String>> alimentosAlmoco = [];
   List<DropdownMenuItem<String>> alimentosJanta = [];
   List<String> listaAllAlimentos = [];
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String? cafe1;
   String? cafe2;
@@ -439,7 +440,7 @@ class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
                     jantarId4: int.parse(janta4!),
                   );
                   debugPrint(cardapio.toString());
-
+                  
                   createCardapio(cardapio);
                 },
                 style: ButtonStyle(
