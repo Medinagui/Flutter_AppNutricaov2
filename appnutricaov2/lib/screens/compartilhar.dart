@@ -1,4 +1,5 @@
 import 'package:appnutricao/components/sharelists/share_alimento_list.dart';
+import 'package:appnutricao/components/sharelists/share_cardapio_list.dart';
 import 'package:flutter/material.dart';
 import '../themes/theme.dart';
 
@@ -11,7 +12,7 @@ class CompartilharScreen extends StatefulWidget {
 
 List<Widget> shareForms = const [
   ShareAlimentosList(),
-  Text('Cardápio Share')
+  ShareCardapioList()
 ];
 
 int buttonPressed = 0;

@@ -80,19 +80,6 @@ class _CadastroCardapioFormState extends State<CadastroCardapioForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Card(
-            elevation: 5,
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Você está cadastrando um cardápio \npara o seu usuário.\nCaso queira cadastrar para outro usuário, \nfaça o login com o usuário que deseja cadastrar.',
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
           TextFormField(
             controller: _nomeController,
             validator: (String? value) {

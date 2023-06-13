@@ -28,7 +28,7 @@ class _ShareCardapioListState extends State<ShareCardapioList> {
   }
 
   Future refreshCardapio() async {
-    final data = await SQLHelperAlimentos.getItems();
+    final data = await SQLHelperCard.getItems();
 
     setState(() {
       isLoading = false;
@@ -48,43 +48,32 @@ class _ShareCardapioListState extends State<ShareCardapioList> {
       List<Map<String, dynamic>> dataAlimentos =
           await SQLHelperAlimentos.getItemByID(index);
       Map<String, dynamic> alimentoAnalise = dataAlimentos[0];
-      String descAlimento = '''
-      Nome do Alimento: ${alimentoAnalise['nome']}
-      Tipo: ${alimentoAnalise['tipo']}
-      ''';
+      String descAlimento =
+          'Nome do Alimento: ${alimentoAnalise['nome']}\nTipo: ${alimentoAnalise['tipo']}';
       alimentosDesc.add(descAlimento);
     }
 
     PdfDocument document = PdfDocument();
     var page = document.pages.add();
     // Título - Nome do Cardápio
-    page.graphics.drawString('Nome do Cardápio: ${cardapioAnalise.name},\n',
+    page.graphics.drawString('Nome do Cardápio:\n${cardapioAnalise.name}',
         PdfStandardFont(PdfFontFamily.helvetica, 40));
     // Café da manhã
     page.graphics.drawString(
-        'Café da Manhã\n', PdfStandardFont(PdfFontFamily.helvetica, 30));
-    page.graphics.drawString('''
-    ${alimentosDesc[0]}\n
-    ${alimentosDesc[1]}\n
-    ${alimentosDesc[2]}\n
-    ''', PdfStandardFont(PdfFontFamily.helvetica, 20));
+        '\n\n\nCafé da Manhã', PdfStandardFont(PdfFontFamily.helvetica, 30));
     page.graphics.drawString(
-        'Almoço\n', PdfStandardFont(PdfFontFamily.helvetica, 30));
-    page.graphics.drawString('''
-    ${alimentosDesc[3]}\n
-    ${alimentosDesc[4]}\n
-    ${alimentosDesc[5]}\n
-    ${alimentosDesc[6]}\n
-    ${alimentosDesc[7]}\n
-    ''', PdfStandardFont(PdfFontFamily.helvetica, 20));
-    page.graphics.drawString(
-        'Janta\n', PdfStandardFont(PdfFontFamily.helvetica, 30));
-    page.graphics.drawString('''
-    ${alimentosDesc[8]}\n
-    ${alimentosDesc[9]}\n
-    ${alimentosDesc[10]}\n
-    ${alimentosDesc[11]}\n
-    ''', PdfStandardFont(PdfFontFamily.helvetica, 20));
+        '\n\n\n\n\n\n\n${alimentosDesc[0]}\n\n${alimentosDesc[1]}\n\n${alimentosDesc[2]}\n\n',
+        PdfStandardFont(PdfFontFamily.helvetica, 20));
+    // Almoço
+    page = document.pages.add();
+    page.graphics
+        .drawString('\nAlmoço', PdfStandardFont(PdfFontFamily.helvetica, 30));
+    page.graphics.drawString('\n\n\n\n${alimentosDesc[3]}\n\n${alimentosDesc[4]}\n\n${alimentosDesc[5]}\n\n${alimentosDesc[6]}\n\n${alimentosDesc[7]}', PdfStandardFont(PdfFontFamily.helvetica, 20));
+    //Janta
+    page = document.pages.add();
+    page.graphics
+        .drawString('\nJanta', PdfStandardFont(PdfFontFamily.helvetica, 30));
+    page.graphics.drawString('\n\n\n\n${alimentosDesc[8]}\n\n${alimentosDesc[9]}\n\n${alimentosDesc[10]}\n\n${alimentosDesc[11]}', PdfStandardFont(PdfFontFamily.helvetica, 20));
 
     List<int> bytes = document.save();
     document.dispose();
@@ -134,11 +123,6 @@ class _ShareCardapioListState extends State<ShareCardapioList> {
                                 itemBuilder: (context, index) {
                                   final exemplo = listaCardapio[index];
 
-                                  Image foto = Image.file(
-                                    File(exemplo['fotoBytes']),
-                                    fit: BoxFit.cover,
-                                  );
-
                                   return Card(
                                     margin: const EdgeInsets.all(5),
                                     elevation: 5,
@@ -148,35 +132,23 @@ class _ShareCardapioListState extends State<ShareCardapioList> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          ConstrainedBox(
-                                              constraints: const BoxConstraints(
-                                                  maxHeight: 100,
-                                                  maxWidth: 100,
-                                                  minHeight: 100,
-                                                  minWidth: 100),
-                                              child: ClipOval(child: foto)),
                                           Flexible(
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
+                                                const Text('Nome do cardápio:'),
                                                 Text(
-                                                  exemplo['nome'],
+                                                  exemplo['name'],
                                                   style: myTextThemes
-                                                      .textTheme.labelLarge,
-                                                ),
-                                                Text(
-                                                    '${exemplo['tipo']}\n${exemplo['categoria']}',
-                                                    style: myTextThemes
-                                                        .textTheme.labelSmall)
+                                                      .textTheme.displayLarge,
+                                                )
                                               ],
                                             ),
                                           ),
                                           IconButton(
                                               onPressed: () {
-                                                Share.shareFiles([
-                                                  exemplo['pdfPath']
-                                                ], text: 'Veja esse Alimento!');
+                                                _createPDF(exemplo['id']);
                                               },
                                               icon: const Icon(Icons.share)),
                                         ],

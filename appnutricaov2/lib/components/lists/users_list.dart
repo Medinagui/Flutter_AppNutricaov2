@@ -109,6 +109,7 @@ class _UsersListState extends State<UsersList> {
                                                   minHeight: 100,
                                                   minWidth: 100),
                                               child: ClipOval(child: foto)),
+                                              const SizedBox(width: 20,),
                                           Flexible(
                                             child: Column(
                                               crossAxisAlignment:
@@ -126,6 +127,7 @@ class _UsersListState extends State<UsersList> {
                                               ],
                                             ),
                                           ),
+                                          const SizedBox(width: 20,),
                                           IconButton(
                                               onPressed: () {
                                                 Navigator.of(context)
